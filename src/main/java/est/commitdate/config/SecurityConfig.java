@@ -17,22 +17,31 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(Customizer.withDefaults())
-//
-                .logout(Customizer.withDefaults())
-//
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/process-login")
+                        .defaultSuccessUrl("/", false)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/") // 로그아웃 후 루트 경로로 리디렉션
+                        .permitAll()
+                )
                 .authorizeHttpRequests(
                         auth ->
-                                auth.requestMatchers("/login", "/sign-up")
-                                        .anonymous()
+                                auth
+                                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                                        .requestMatchers("/login", "/sign-up").permitAll()
+                                        .requestMatchers("/member/sign-up",
+                                                "/member/check-email",
+                                                "/member/check-nickname",
+                                                "/member/check-phone-number").permitAll() // 중복 확인 API 허용
                                         .requestMatchers("/users/**")
-                                        .hasAnyAuthority("MEMBER","ADMIN")
-                                        .requestMatchers("/manager/**")
-                                        .hasAnyAuthority("ADMIN")
+                                        .hasAnyAuthority("MEMBER", "ADMIN")
                                         .requestMatchers("/admin/**")
                                         .hasAnyAuthority("ADMIN")
-                                        .anyRequest()
-                                        .authenticated()
+                                        .anyRequest().authenticated()
                 )
                 .build();
     }
@@ -41,5 +50,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
