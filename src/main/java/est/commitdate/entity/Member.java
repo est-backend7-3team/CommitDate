@@ -1,4 +1,4 @@
-package est.commitdate.entity.memberEntity;
+package est.commitdate.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "member")
 public class Member {
 
     @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -23,8 +25,14 @@ public class Member {
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
+    @Column(nullable = false, unique = true, length = 15)
+    private String nickname;
+
     @Column(nullable = false, length = 30)
     private String username;
+
+    @Column(nullable = false, unique = true, length = 15)
+    private String phoneNumber;
 
     @Column(nullable = false, length = 10)
     private String role;
@@ -32,6 +40,9 @@ public class Member {
     private String profileImage;
 
     private String introduce;
+
+    @Column(length = 20)
+    private String comment;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;

@@ -39,8 +39,7 @@
 
 ---
 
-### **4. 데이터베이스 구조**
-#### **Member 엔티티**
+#### **4. Member 엔티티**
 - **테이블 이름**: `Member`
 - **필드**:
     - `memberId`: 기본 키 (Auto Increment)
@@ -58,10 +57,10 @@
 
 ### **5. 검증 및 예외 처리**
 #### 이메일 중복 확인
-- 이메일이 이미 데이터베이스에 존재할 경우 `DuplicatedEmailException`을 발생시킵니다.
+- 이메일이 이미 데이터베이스에 존재할 경우 `DuplicatedEmailException`을 발생.
 
 #### 입력값 검증
-- `MemberSignUpRequest` DTO를 통해 사용자의 입력값을 캡슐화하고 검증합니다.
+- `MemberSignUpRequest` DTO를 통해 사용자의 입력값을 캡슐화하고 검증.
 
 ---
 
