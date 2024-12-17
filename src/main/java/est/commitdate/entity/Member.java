@@ -1,0 +1,78 @@
+package est.commitdate.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+
+
+@AllArgsConstructor//Test 짤 때 필요
+@Setter //Test 짤 때 필요
+@NoArgsConstructor//Test 짤 때 필요
+
+@Entity
+@Getter
+@Table(name = "member")
+public class Member {
+
+    @Id
+    @Column(name = "member_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = true, length = 100)
+    private String password;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String email;
+
+    @Column(nullable = false, unique = true, length = 15)
+    private String nickname;
+
+    @Column(nullable = false, length = 30)
+    private String username;
+
+    @Column(nullable = false, unique = true, length = 15)
+    private String phoneNumber;
+
+    @Column(nullable = false, length = 10)
+    private String role;
+
+    private String profileImage;
+
+    private String introduce;
+
+    @Column(length = 20)
+    private String comment;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private int status;
+
+
+
+    // 테스트용 빌더(삭제해도 됨)
+    @Builder
+    public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
+
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.profileImage = profileImage;
+        this.introduce = introduce;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        
+    }
+}
