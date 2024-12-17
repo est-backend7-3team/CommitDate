@@ -6,18 +6,18 @@ import lombok.*;
 
 
 
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
 public class BoardDto {
+    
+    private Integer boardId;
     private String boardName;
     private int status;
 
+    //entity를 dto로 변환
     public static BoardDto from(Board board) {
-        BoardDto boardDto = new BoardDto();
-        boardDto.boardName = board.getBoardName();
-        boardDto.status = board.getStatus();
-        return boardDto;
+        return new BoardDto(board.getBoardId(),board.getBoardName(), board.getStatus());
     }
 }

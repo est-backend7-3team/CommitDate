@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 수정</title>
+</head>
+<body>
+<h1>게시글 수정</h1>
+
+<form th:action="@{/post/update}" method="post" th:object="${post}">
+  <label for="postTitle">제목 :</label>
+  <input id="postTitle" type="text" th:field="*{title}" required><br>
+
+  <label for="postDescription">내용 :</label>
+  <textarea id="postDescription" th:field="*{description}" required></textarea><br>
+
+  <input type="hidden" th:value="${post.id}" name="id"/>
+
+  <button type="submit">수정 저장</button>
+</form>
+
+</body>
+</html>
