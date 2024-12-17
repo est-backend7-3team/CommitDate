@@ -1,19 +1,29 @@
 package est.commitdate.entity;
 
 
+
+
+import lombok.*;
+
+
 import est.commitdate.dto.post.PostDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
+
+
+
+@Builder//Test 짤 때 필요
+@AllArgsConstructor//Test 짤 때 필요
+@NoArgsConstructor//Test 짤 때 필요
+
 @Entity
 @Getter
 @Table(name = "Post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 @SQLDelete(sql = "UPDATE Board Set status = 0 WHERE board_id = ?")
 @SQLRestriction("status = 1")
 public class Post {
@@ -35,6 +45,7 @@ public class Post {
 
     @Column(name = "text")
     private String text;
+
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -76,4 +87,6 @@ public class Post {
         this.status = 1;
     }
 
+
 }
+
