@@ -1,0 +1,7 @@
+package est.commitdate.exception;
+
+public class PostNotFoundException extends RuntimeException {
+  public PostNotFoundException(String message) {
+    super(message);
+  }
+}

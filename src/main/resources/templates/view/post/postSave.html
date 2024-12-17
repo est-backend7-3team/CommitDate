@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 생성</title>
+</head>
+<body>
+
+<h1>게시글 생성</h1>
+
+<form th:action="@{/post/save}" method="post" th:object="${post}">
+  <label for="title">제목:</label>
+  <input id="title" type="text" th:field="*{title}" placeholder="제목을 입력하세요">
+  <br>
+  <label for="code">코드:</label>
+  <input id="code" type="text" th:field="*{text}" placeholder="제목을 입력하세요">
+  <br>
+  <label for="description">본문:</label>
+  <textarea id="description" th:field="*{description}" placeholder="본문을 입력하세요"></textarea>
+  <br>
+  <button type="submit">저장</button>
+</form>
+
+</body>
+</html>
