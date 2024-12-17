@@ -5,15 +5,12 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-
-
-@AllArgsConstructor//Test 짤 때 필요
-@Setter //Test 짤 때 필요
-@NoArgsConstructor//Test 짤 때 필요
+import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "member")
+@Table(name = "Member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @Id
@@ -37,25 +34,29 @@ public class Member {
     private String phoneNumber;
 
     @Column(nullable = false, length = 10)
-    private String role;
+    private String role; //Member , Admin
 
+    @Column(name = "profile_image", length = 300)
     private String profileImage;
 
+    @Column(length = 500)
     private String introduce;
 
     @Column(length = 20)
     private String comment;
 
-    @Column(nullable = false)
+
+    @Column(name = "created_at" , nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at" , nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private int status;
-
-
+  
+    @OneToMany(mappedBy = "member")
+      private List<Post> posts;
 
     // 테스트용 빌더(삭제해도 됨)
     @Builder
@@ -75,4 +76,5 @@ public class Member {
         this.status = status;
         
     }
+
 }
