@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커밋데이트</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script th:src="@{/js/swipe.js}" type="module" defer></script>
+  <style>
+    pre {
+      word-break: break-word;    /* 긴 단어 줄바꿈 */
+      white-space: pre-wrap;     /* 공백과 줄바꿈 유지 */
+    }
+  </style>
+</head>
+<body class="bg-green-300 min-h-screen flex justify-center items-center">
+
+<div class="relative"> <!-- 부모 컨테이너를 relative로 설정 -->
+
+  <!-- 왼쪽 화살표 버튼 -->
+  <button onclick="prePostData()" class="btn btn-circle btn-ghost absolute left-0 top-1/2 -translate-y-1/2 ml-2">⬅️</button>
+
+  <!-- 카드 영역 -->
+  <div class="bg-white p-4 rounded-lg shadow-lg w-96 mx-10"> <!-- 화살표 버튼과 겹치지 않도록 약간의 마진 추가 -->
+    <!-- 제목 -->
+    <div class="flex items-center justify-between mb-4">
+      <h1 id="title" class="font-bold text-lg" th:text="${swipeDTO.title}">Singleton Coders</h1>
+      <button class="btn btn-sm btn-circle btn-ghost">⚙️</button>
+    </div>
+
+    <!-- 이미지 및 사용자 정보 -->
+    <div class="flex items-center mb-4">
+      <div class="avatar">
+        <div class="w-12 rounded-full">
+          <img id="profileImageURL" th:src="${swipeDTO.profileImageURL}" alt="User Avatar">
+        </div>
+      </div>
+      <div class="ml-3">
+        <p id="userName" class="font-semibold" th:text="${swipeDTO.userName}">k User</p>
+        <p id="introduce" class="text-gray-500 text-sm" th:text="${swipeDTO.introduce}">소개글</p>
+      </div>
+      <div class="ml-auto flex items-center">
+        <span id="likeCount" class="mr-1 text-lg" th:text="${swipeDTO.likeCount}">8</span>
+        <span>💓</span>
+      </div>
+    </div>
+
+    <!-- 댓글 -->
+    <div class="bg-gray-100 p-3 rounded-lg mb-4">
+      <p id="comment" class="text-gray-700 text-sm" th:text="${swipeDTO.comment}">
+        기본 댓글 텍스트
+      </p>
+    </div>
+
+    <!-- 소스 코드 -->
+    <div class="bg-gray-100 p-3 rounded-lg mb-4">
+      <pre id= "sourceCode" class="text-gray-700 text-sm">[[|${swipeDTO.sourceCode}|]]</pre>
+    </div>
+
+    <!-- 좋아요 버튼 -->
+    <div class="flex justify-center">
+      <button class="btn btn-circle btn-outline">
+        ⭐
+      </button>
+    </div>
+  </div>
+
+  <!-- 오른쪽 화살표 버튼 -->
+  <button onclick="loadPostData()" class="btn btn-circle btn-ghost absolute right-0 top-1/2 -translate-y-1/2 mr-2">➡️</button>
+
+</div>
+
+</body>
+</html>

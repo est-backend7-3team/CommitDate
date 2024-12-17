@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/board/update}" method="post" th:object="${boardDto}">
+    <label for="boardNameUpdate">
+        수정할 제목 :
+    </label>
+    <input id="boardNameUpdate" type="text" name="boardName" th:value="${boardDto.boardName}">
+    <input type="hidden" th:value="${boardDto.boardId}" name="boardId"/>
+    <input type="hidden" th:value="${boardDto.status}" name="status"/>
+    <button type="submit">저장</button>
+</form>
+</body>
+</html>
