@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Entity
@@ -17,7 +18,8 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Column(nullable = true, length = 100)
+    private String password;
 
     @Column(nullable = false, unique = true, length = 50)
     private String email;
@@ -27,9 +29,6 @@ public class Member {
 
     @Column(nullable = false, length = 30)
     private String username;
-
-    @Column(nullable = true, length = 100)
-    private String password;
 
     @Column(nullable = false, unique = true, length = 15)
     private String phoneNumber;
@@ -46,6 +45,7 @@ public class Member {
     @Column(length = 20)
     private String comment;
 
+
     @Column(name = "created_at" , nullable = false)
     private LocalDateTime createdAt;
 
@@ -54,11 +54,27 @@ public class Member {
 
     @Column(nullable = false)
     private int status;
-
+  
     @OneToMany(mappedBy = "member")
-    private List<Post> posts;
+      private List<Post> posts;
 
-//    private String provider;
+    // 테스트용 빌더(삭제해도 됨)
+    @Builder
+    public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
 
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.profileImage = profileImage;
+        this.introduce = introduce;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        
+    }
 
 }

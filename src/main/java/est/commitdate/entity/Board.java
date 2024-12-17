@@ -1,6 +1,7 @@
 package est.commitdate.entity;
 
 
+
 import est.commitdate.dto.board.BoardDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -59,4 +60,16 @@ public class Board {
     public void restore() {
         this.status = 1;
     }
+
+
+    @Builder
+    public Board(Integer boardId, int status, String boardName) {
+        this.boardId = boardId;
+        this.status = status;
+        this.boardName = boardName;
+    }
 }
+
+
+
+
