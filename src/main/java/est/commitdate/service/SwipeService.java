@@ -75,7 +75,7 @@ public class SwipeService {
         return chooseDTOList;
     }
 
-    //postEntity를 SwipeDto로 변환
+    //postEntity 를 SwipeDto 로 변환
     public SwipeDto postToSwipeDto(Post post){
 
         SwipeDto swipeDto = new SwipeDto();
@@ -129,6 +129,7 @@ public class SwipeService {
                 .board(board)
                 .title("허허허 좋십니더.."+i)
                 .text("저랑 같이 Hello World? 하실분?"+i)
+                .description("TEEEEEEEST"+i)
                 .member(member)
                 .likeCount(i)
                 .createdAt(LocalDateTime.now())
