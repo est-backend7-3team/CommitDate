@@ -1,4 +1,4 @@
-package est.commitdate.dto;
+package est.commitdate.dto.board;
 
 
 import est.commitdate.entity.Board;
@@ -11,7 +11,7 @@ import lombok.*;
 @Data
 @Builder
 public class BoardDto {
-    
+
     private Integer boardId;
     private String boardName;
     private int status;

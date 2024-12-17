@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post List</title>
+    <link rel="stylesheet" href="../../../static/css/styles.css">
+</head>
+<body>
+<header>
+    <div class="logo">Fusion Platform</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Explore</a>
+        <a href="#">Profile</a>
+    </nav>
+</header>
+
+<main>
+    <aside class="sidebar">
+        <h3>Trending Topics</h3>
+        <ul>
+            <li>#Programming</li>
+            <li>#WebDevelopment</li>
+            <li>#Design</li>
+            <li>#Gaming</li>
+            <li>#Photography</li>
+        </ul>
+    </aside>
+
+    <section class="content">
+        <!-- 게시글이 없을 때 메시지 출력 -->
+        <div th:if="${#lists.isEmpty(post)}">
+            <p>게시글이 없습니다. 새로운 게시글을 작성해보세요!</p>
+        </div>
+
+        <!-- 게시글이 있을 때 목록 출력 -->
+        <div th:unless="${#lists.isEmpty(post)}" th:each="post : ${post}" class="post">
+            <!-- 제목 -->
+            <h2 th:text="${post.title}">Post Title</h2>
+
+            <!-- 이미지 (기본 이미지 사용) -->
+            <img src="https://via.placeholder.com/600x400" alt="Post Image">
+
+            <!-- 작성자 및 작성 시간 -->
+            <div class="post-info">
+                <span>Posted by <span th:text="${post.member != null ? post.member.memberName : 'Anonymous'}">작성자</span></span>
+                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">5 hours ago</span>
+            </div>
+
+            <!-- 본문 내용 -->
+            <p th:text="${post.text}">Post Content</p>
+
+            <!-- 좋아요 및 액션 버튼 -->
+            <div class="actions">
+                <button>👍 <span th:text="${post.likeCount}">0</span></button>
+                <button>💬 Comment</button>
+                <button>🔗 Share</button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    &copy; 2024 Fusion Platform. All rights reserved.
+</footer>
+</body>
+</html>

@@ -2,13 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>게시판 목록</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        a, button {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-    <li>게시판 목록
-        <ul>
-            게시글
-        </ul>
-    </li>
+<h1>게시판 목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>게시판 이름</th>
+        <th>액션</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- boards는 모델에서 전달받은 게시판 목록 -->
+    <th:block th:each="board : ${boards}">
+        <tr>
+            <td th:text="${board.boardName}"></td>
+            <td>
+                <!-- 게시판 업데이트 버튼 -->
+                <form th:action="@{'/board/updateView/' + ${board.boardId}}" method="get" style="display: inline;">
+                    <button type="submit">게시판 업데이트</button>
+                </form>
+                <!-- 게시판 삭제 버튼 -->
+                <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display: inline;">
+                    <button type="submit" onclick="return confirm('이 게시판을 삭제하시겠습니까?')">게시판 삭제</button>
+                </form>
+
+<!--                <form th:action="@{'/board/restore/' + ${board.boardId}}" method="post" style="display: inline;">-->
+<!--                    <button type="submit" onclick="return confirm('이 게시판을 복구 하시겠습니까?')">게시판 복구</button>-->
+<!--                </form>-->
+            </td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<!-- 게시판 생성 버튼 -->
+<form action="/board/saveView" method="get" style="margin-top: 20px;">
+    <button type="submit">게시판 생성</button>
+</form>
+
+<form action="/post" method="get" style="margin-top: 20px;">
+    <button type="submit">목록</button>
+</form>
 </body>
 </html>

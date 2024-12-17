@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
-public class PostDto1 {
+public class PostDto {
     private Long postId;
     private Integer boardId;
     private String title;
@@ -26,8 +26,8 @@ public class PostDto1 {
     private LocalDateTime updatedAt;
     private int status;
 
-    public static PostDto1 from(Post post) {
-        return PostDto1.builder()
+    public static PostDto from(Post post) {
+        return PostDto.builder()
                 .postId(post.getPostId())
                 .boardId(post.getBoard().getBoardId())
                 .title(post.getTitle())
