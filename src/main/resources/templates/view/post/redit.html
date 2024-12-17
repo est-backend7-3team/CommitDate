@@ -5,7 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Okky + Reddit + Instagram</title>
     <!-- 스타일시트 연결 -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* 코드블럭 스타일 */
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        pre:empty {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -18,42 +33,67 @@
 </header>
 
 <main>
+    <div>
+        <form action="/board/saveView"><button>게시판생성</button></form>
+        <form action="/board/updateView/"><button >게시판이름변경</button></form>
+        <form action=""><button >게시판삭제</button></form>
+        <form action="/post/saveView"><button >게시글생성</button></form>
+        <form action="/post/updateView"><button >게시글수정</button></form>
+        <form action=""><button >게시글삭제</button></form>
+    </div>
+
     <aside class="sidebar">
-        <h3>Trending Topics</h3>
-        <ul>
-            <li>#Programming</li>
-            <li>#WebDevelopment</li>
-            <li>#Design</li>
-            <li>#Gaming</li>
-            <li>#Photography</li>
+        <h3>게시판 목록</h3>
+        <ul th:if="${#lists.isEmpty(boards)}">
+            <li>게시판이 비어있습니다.</li>
+            <li>게시판을 생성해 주세요</li>
+        </ul>
+        <ul th:unless="${#lists.isEmpty(boards)}" th:each="board : ${boards}" >
+            <a th:href="@{/post/{id}(id=${board.getBoardId()})}" >
+                <li th:text="${board.getBoardName()}">Board title</li>
+            </a>
+
         </ul>
     </aside>
 
     <section class="content">
-        <div class="post">
-            <h2>Beautiful Sunset</h2>
-            <img src="https://via.placeholder.com/600x400" alt="Post image">
-            <div class="post-info">
-                <span>Posted by @user123</span>
-                <span>5 hours ago</span>
-            </div>
-            <p>Check out this amazing sunset I captured last evening! The colors were absolutely mesmerizing.</p>
-            <div class="actions">
-                <button>👍 Like</button>
-                <button>💬 Comment</button>
-                <button>🔗 Share</button>
-            </div>
+        <!-- 게시글이 없을 때 메시지 출력 -->
+        <div th:if="${#lists.isEmpty(post)}">
+            <p>게시글이 없습니다. 새로운 게시글을 작성해보세요!</p>
         </div>
 
-        <div class="post">
-            <h2>How to Learn JavaScript</h2>
-            <div class="post-info">
-                <span>Posted by @devguru</span>
-                <span>1 day ago</span>
+        <!-- 게시글이 있을 때 목록 출력 -->
+        <div th:unless="${#lists.isEmpty(post)}" th:each="post : ${post}" class="post">
+            <!-- 제목 -->
+            <h2 th:text="${post.title}">Post Title</h2>
+
+            <!-- 본문 내용 -->
+            <div>
+                <!-- text가 존재하면 코드블럭으로 출력 -->
+                <div th:if="${post.text != null}">
+                    <pre th:text="${post.text}">Code Content</pre>
+                    <p th:text="${post.description}">Description Content</p>
+                </div>
+                <div th:unless="${post.text != null}">
+                    <p th:text="${post.description}">Description Content</p>
+                </div>
             </div>
-            <p>Learning JavaScript can be tricky at first, but practice is the key. Start by building small projects and understanding the basics.</p>
+
+            <!-- 작성자 및 작성 시간 -->
+            <div class="post-info">
+                <!--                <th:block th:if="${post.member != null}">-->
+                <!--                    <span th:text="${post.member.memberName}"></span>-->
+                <!--                </th:block>-->
+                <!--                <th:block th:unless="${post.member != null}">-->
+                <!--                    <span>Anonymous</span>-->
+                <!--                </th:block>-->
+                <span>작성자</span>
+                <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">5 hours ago</span>
+            </div>
+
+            <!-- 좋아요 및 액션 버튼 -->
             <div class="actions">
-                <button>👍 Like</button>
+                <button>👍 <span th:text="${post.likeCount}">0</span></button>
                 <button>💬 Comment</button>
                 <button>🔗 Share</button>
             </div>
