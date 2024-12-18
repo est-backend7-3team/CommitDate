@@ -33,14 +33,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         if (member.isPresent()) {
 
-            if (!member.get().isAdditionalInfoCompleted()) {
-                // 추가 정보 입력이 필요한 경우
+//            if (!member.get().isAdditionalInfoCompleted()) {
+//                // 추가 정보 입력이 필요한 경우
+//                response.sendRedirect("/additional-info");
+//            } else {
+//                // 추가 정보가 이미 존재하면 메인 페이지로 리디렉션
                 response.sendRedirect("/additional-info");
             } else {
-                // 추가 정보가 이미 존재하면 메인 페이지로 리디렉션
-                response.sendRedirect("/");
-            }
-        } else {
             log.info("등록된 회원이 없습니다!");
         }
 

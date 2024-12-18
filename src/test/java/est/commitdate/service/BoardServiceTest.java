@@ -19,7 +19,6 @@ class BoardServiceTest {
     @Autowired
     public BoardService boardService;
 
-
     // 관리자만 생성 삭제 수정할 수 있도록변경
     @Test
     @DisplayName("게시판 저장테스트")

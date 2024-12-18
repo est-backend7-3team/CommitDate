@@ -25,6 +25,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE Board Set status = 0 WHERE board_id = ?")
 @SQLRestriction("status = 1")
 public class Board {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")

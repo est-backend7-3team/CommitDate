@@ -31,6 +31,8 @@
       <input type="text" id="username" name="username" placeholder="이름 입력" th:field="*{username}" required minlength="2" maxlength="30">
       <small class="errorMessage" id="usernameError"></small>
     </div>
+    <input type="hidden" th:field="${provider}" name="id"/>
+    <di></di>
     <div class="form-group">
       <button type="submit" class="btnSubmit">제출</button>
     </div>
