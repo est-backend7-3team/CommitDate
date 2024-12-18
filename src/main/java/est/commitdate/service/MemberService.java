@@ -48,6 +48,7 @@ public class MemberService {
                 .role("USER") // 기본값은 회원
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
+                .additionalInfoCompleted(true)
                 .status(1) // 기본값 1
                 .build();
 

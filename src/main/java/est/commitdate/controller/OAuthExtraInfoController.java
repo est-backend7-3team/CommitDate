@@ -1,10 +1,12 @@
 package est.commitdate.controller;
 
+import est.commitdate.dto.CustomUserDetails;
 import est.commitdate.dto.MemberAdditionalInfo;
 import est.commitdate.dto.OAuthSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +20,14 @@ public class OAuthExtraInfoController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/additional-info")
-    public String extraInfoForm(Model model) {
-        model.addAttribute("memberInfo", new MemberAdditionalInfo());
+    public String extraInfoForm(Model model, OAuth2AuthenticationToken authentication) {
+        // 현재 로그인된 사용자 이메일 가져오기
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        MemberAdditionalInfo memberInfo = new MemberAdditionalInfo();
+        memberInfo.setEmail(userDetails.getEmail());
+
+        model.addAttribute("memberInfo", memberInfo);
         return "/view/additional-info";
     }
 
