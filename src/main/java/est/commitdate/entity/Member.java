@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Table(name = "member")
@@ -19,7 +21,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
+    @Column(nullable = true, length = 100)
     private String password;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -61,8 +63,8 @@ public class Member {
     @Column(nullable = false)
     private boolean additionalInfoCompleted = false;
 
-//    @OneToMany(mappedBy = "member")
-//    private List<Post> posts;
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts;
 
     // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
     @PrePersist
@@ -75,6 +77,24 @@ public class Member {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+  
+    @Builder
+    public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
+
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.profileImage = profileImage;
+        this.introduce = introduce;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        
     }
 
 }

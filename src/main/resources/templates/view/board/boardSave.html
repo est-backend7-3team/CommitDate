@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<form th:action="@{/board/save}" method="post" th:object="${boardDto}">
+    <label for ="boardName">제목 :</label>
+    <input id="boardName" type="text" th:field ="*{boardName}">
+    <button type="submit">저장</button>
+</form>
+</body>
+</html>
