@@ -9,5 +9,4 @@ public class CommitDateApplication {
     public static void main(String[] args) {
         SpringApplication.run(CommitDateApplication.class, args);
     }
-
 }
