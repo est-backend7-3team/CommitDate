@@ -4,13 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
+
 
 @Entity
 @Getter
-@Table(name = "Member")
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Table(name = "member")
 public class Member {
 
     @Id
@@ -34,7 +37,7 @@ public class Member {
     private String phoneNumber;
 
     @Column(nullable = false, length = 10)
-    private String role; //Member , Admin
+    private String role;
 
     @Column(name = "profile_image", length = 300)
     private String profileImage;
@@ -45,8 +48,7 @@ public class Member {
     @Column(length = 20)
     private String comment;
 
-
-    @Column(name = "created_at" , nullable = false)
+    @Column(name = "created_at" , nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at" , nullable = false)
@@ -54,11 +56,29 @@ public class Member {
 
     @Column(nullable = false)
     private int status;
-  
-    @OneToMany(mappedBy = "member")
-      private List<Post> posts;
 
-    // 테스트용 빌더(삭제해도 됨)
+    @Column(nullable = true, length = 20)
+    private String provider;
+
+    @Column(nullable = false)
+    private boolean additionalInfoCompleted = false;
+
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts;
+
+    // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.status = 1;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+  
     @Builder
     public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
 
