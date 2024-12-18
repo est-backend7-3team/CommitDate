@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("signup-form");
+    const pageType = document.body.getAttribute("data-page-type");
+    // 일반 유저와 OAuth 유저의 가입페이지 구분
 
 
     function createField(elementId, validateFn, errorMessage, url = null) {
+        const element = document.getElementById(elementId);
+        if (!element) return null;
         return {
-            element: document.getElementById(elementId),
+            element: element,
             error: document.getElementById(`${elementId}Error`),
             validate: validateFn,
             errorMessage,
@@ -12,38 +16,48 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    const fields = {
-        email: createField(
-            "email",
-            (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
-            "유효한 이메일 주소를 입력해주세요.",
-            "/member/check-email"
-        ),
-        username: createField(
-            "username",
-            (value) => value.length >= 2 && value.length <= 30,
-            "사용자명은 2자 이상 30자 이하로 입력해주세요."
-        ),
-        password: createField(
-            "password",
-            (value) => value.length >= 8 && value.length <= 12,
-            "비밀번호는 8자 이상 12자 이하로 입력해주세요."
-        ),
-        nickname: createField(
-            "nickname",
-            (value) => value.length >= 2 && value.length <= 15,
-            "닉네임은 2자 이상 15자 이하로 입력해주세요.",
-            "/member/check-nickname"
-        ),
-        phoneNumber: createField(
-            "phoneNumber",
-            (value) => /^[0-9]{10,11}$/.test(value.replace(/-/g, "")), // '-' 제거 후 검증
-            "전화번호는 10~11자리 숫자만 입력 가능합니다.",
-            "/member/check-phone-number"
-        )
-    };
+    // 페이지에 따라 필드 설정
+    const fields = {};
+    if (pageType === "signup") {
+        Object.assign(fields, {
+            email: createField(
+                "email",
+                (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
+                "유효한 이메일 주소를 입력해주세요.",
+                "/member/check-email"
+            ),
+            username: createField(
+                "username",
+                (value) => value.length >= 2 && value.length <= 30,
+                "사용자명은 2자 이상 30자 이하로 입력해주세요."
+            ),
+            password: createField(
+                "password",
+                (value) => value.length >= 8 && value.length <= 12,
+                "비밀번호는 8자 이상 12자 이하로 입력해주세요."
+            )
+        });
+    } else if (pageType === "oauth") {
+        Object.assign(fields, {
+            nickname: createField(
+                "nickname",
+                (value) => value.length >= 2 && value.length <= 15,
+                "닉네임은 2자 이상 15자 이하로 입력해주세요.",
+                "/member/check-nickname"
+            ),
+            phoneNumber: createField(
+                "phoneNumber",
+                (value) => /^[0-9]{10,11}$/.test(value.replace(/-/g, "")),
+                "전화번호는 10~11자리 숫자만 입력 가능합니다.",
+                "/member/check-phone-number"
+            )
+        });
+    }
 
-    // 폼 유효성 검사 함수로 변경
+    // 존재하는 필드만 검증하도록 설정
+    const activeFields = Object.values(fields).filter(Boolean);
+
+    // 폼 유효성 검사 함수
     function validateForm() {
         let isValid = true;
 
@@ -101,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 전화번호 포맷팅 함수
+    // 전화번호 포맷팅용 함수
     function formatPhoneNumber(value) {
         const numbers = value.replace(/\D/g, ""); // 숫자만 추출
         if (numbers.length === 11) {

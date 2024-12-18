@@ -19,7 +19,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String password;
 
     @Column(nullable = false, unique = true, length = 50)
@@ -37,20 +37,44 @@ public class Member {
     @Column(nullable = false, length = 10)
     private String role;
 
+    @Column(name = "profile_image", length = 300)
     private String profileImage;
 
+    @Column(length = 500)
     private String introduce;
 
     @Column(length = 20)
     private String comment;
 
-    @Column(nullable = false)
+    @Column(name = "created_at" , nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "updated_at" , nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private int status;
+
+    @Column(nullable = true, length = 20)
+    private String provider;
+
+    @Column(nullable = false)
+    private boolean additionalInfoCompleted = false;
+
+//    @OneToMany(mappedBy = "member")
+//    private List<Post> posts;
+
+    // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.status = 1;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }
