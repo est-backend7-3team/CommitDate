@@ -1,6 +1,8 @@
 package est.commitdate.service;
 
 import est.commitdate.dto.CustomUserDetails;
+import est.commitdate.dto.MemberAdditionalInfo;
+import est.commitdate.dto.OAuthSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Override
     @Transactional
@@ -32,25 +34,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String email = extractEmail(oAuth2User, registrationId);
+//        memberService.providerSave(registrationId);
 
-        Member findMember = memberRepository.findByEmail(email).orElseGet(() -> {
-            Member tempMember = Member.builder()
-                    .email(email)
-                    .provider(registrationId)
-                    .role("USER")
-                    .username("Pending")
-                    .nickname("Pending")
-                    .phoneNumber("Pending")
-                    .additionalInfoCompleted(false)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
-            return memberRepository.save(tempMember);
-        });
-
-        log.info("findMember.isAdditionalInfoCompleted() = {}", findMember.isAdditionalInfoCompleted());
-        //return oAuth2User;
-        return new CustomUserDetails(findMember.getUsername(), findMember.getEmail(), findMember.getRole(), findMember.isAdditionalInfoCompleted(), oAuth2User.getAttributes());
+//        Member findMember = memberRepository.findByEmail(email).orElseGet(() -> {
+//            Member tempMember = Member.of(new OAuthSignUpRequest(email), new MemberAdditionalInfo(), registrationId);
+//            return memberRepository.save(tempMember);
+//        });
+//
+//        log.info("findMember.isAdditionalInfoCompleted() = {}", findMember.isAdditionalInfoCompleted());
+//        //return oAuth2User;
+//        return new CustomUserDetails(findMember.getUsername(), findMember.getEmail(), findMember.getRole(), findMember.isAdditionalInfoCompleted(), oAuth2User.getAttributes());
     }
 
     private String extractEmail(OAuth2User oAuth2User, String registrationId) {

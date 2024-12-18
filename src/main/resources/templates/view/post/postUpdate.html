@@ -8,15 +8,20 @@
 <body>
 <h1>게시글 수정</h1>
 
-<form th:action="@{/post/update}" method="post" th:object="${post}">
+<form th:action="@{/post/update}" method="post" th:object="${postUpdateDto}">
   <label for="postTitle">제목 :</label>
-  <input id="postTitle" type="text" th:field="*{title}" required><br>
+  <input id="postTitle" type="text" th:value="*{postUpdateDto.title}" required><br>
+
+  <div th:unless="${postUpdateDto.text !=null}">
+    <label for="postText">내용 :</label>
+    <textarea id="postText" th:value="*{postUpdateDto.text}" required></textarea><br>
+  </div>
 
   <label for="postDescription">내용 :</label>
-  <textarea id="postDescription" th:field="*{description}" required></textarea><br>
+  <textarea id="postDescription" th:value="*{postUpdateDto.description}" required></textarea><br>
 
-  <input type="hidden" th:value="${post.id}" name="id"/>
-
+  <input type="hidden" th:value="${postUpdateDto.postId}" name="id"/>
+  <input type="hidden" th:value="${postUpdateDto.updatedAt}" name="id"/>
   <button type="submit">수정 저장</button>
 </form>
 
