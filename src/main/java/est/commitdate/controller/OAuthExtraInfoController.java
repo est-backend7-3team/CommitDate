@@ -36,10 +36,7 @@ public class OAuthExtraInfoController {
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 
-        member.setNickname(request.getNickname());
-        member.setPhoneNumber(request.getPhoneNumber());
-        member.setUsername(request.getUsername());
-        member.setAdditionalInfoCompleted(true);
+        request.applyToMember(member);
         memberRepository.save(member);
 
         return "redirect:/";
