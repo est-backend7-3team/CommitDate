@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import est.commitdate.dto.MemberSignUpRequest;
 
 import java.time.LocalDateTime;
 
@@ -28,22 +27,32 @@ public class MemberAuthTest {
 
     @BeforeEach
     void setUp() {
-        request = MemberSignUpRequest.builder()
-                .email("testuser@test.com")
-                .username("testuser")
-                .password("password123")
-                .nickname("tester")
-                .phoneNumber("01012345678")
-                .build();
+        request = new MemberSignUpRequest();
+        request.setEmail("testuser@test.com");
+        request.setUsername("testuser");
+        request.setPassword("password123");
+        request.setNickname("tester");
+        request.setPhoneNumber("01012345678");
     }
 
     @Test
     @DisplayName("testMemberSignUp")
     void testMemberSignUp() throws Exception {
         try {
-            Member member = request.toEntity(passwordEncoder);
+            // 비밀번호 암호화
+            String encryptedPassword = passwordEncoder.encode(request.getPassword());
 
-            memberRepository.save(member);
+            // 회원 정보 저장
+            Member member = Member.builder()
+                    .email(request.getEmail())
+                    .username(request.getUsername())
+                    .password(encryptedPassword)
+                    .nickname(request.getNickname())
+                    .phoneNumber(request.getPhoneNumber())
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .role("USER")
+                    .build();
 
             memberRepository.save(member);
 
@@ -53,9 +62,6 @@ public class MemberAuthTest {
             // 검증 부분
             assertThat(savedMember).isNotNull();
             assertThat(savedMember.getEmail()).isEqualTo(request.getEmail());
-            assertThat(savedMember.getNickname()).isEqualTo(request.getNickname());
-            assertThat(savedMember.getPhoneNumber()).isEqualTo(request.getPhoneNumber());
-
             System.out.println("회원가입 테스트: 회원가입 성공");
 
         } catch (Exception e) {

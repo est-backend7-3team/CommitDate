@@ -1,18 +1,13 @@
 package est.commitdate.dto;
 
-import lombok.*;
-import est.commitdate.entity.Member;
+import lombok.Getter;
+import lombok.Setter;
 
-@AllArgsConstructor
-@Builder
-@NoArgsConstructor
-@Data
 @Getter
+@Setter
 public class OAuthSignUpRequest {
-    private String email;
-
-    public Member toEntity(MemberAdditionalInfo additionalInfo, String provider) {
-        return Member.of(this, additionalInfo, provider);
-    }
-
+    private String email;       // OAuth 에서 가져온 이메일
+    private String nickname;
+    private String phoneNumber;
+    private String username;
 }

@@ -1,17 +1,18 @@
 package est.commitdate.entity;
 
-import est.commitdate.dto.MemberAdditionalInfo;
-import est.commitdate.dto.MemberSignUpRequest;
-import est.commitdate.dto.OAuthSignUpRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 @Table(name = "member")
 public class Member {
 
@@ -59,8 +60,8 @@ public class Member {
     @Column(nullable = true, length = 20)
     private String provider;
 
-//    @Column(nullable = false)
-//    private boolean additionalInfoCompleted = false;
+    @Column(nullable = false)
+    private boolean additionalInfoCompleted = false;
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
@@ -78,51 +79,22 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
   
+    @Builder
+    public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
 
-    // DTO를 통해서 생성할 생성자
-    //form 로그인
-    public static Member of(MemberSignUpRequest signUpRequest) {
-        Member member = new Member();
-
-        member.email = signUpRequest.getEmail();
-        member.password = signUpRequest.getPassword();
-        member.nickname = signUpRequest.getNickname();
-        member.username = signUpRequest.getUsername();
-        member.phoneNumber = signUpRequest.getPhoneNumber();
-        member.role = "member";
-//        member.additionalInfoCompleted = true;
-        member.createdAt = LocalDateTime.now();
-        member.updatedAt = LocalDateTime.now();
-        member.status = 1;
-
-        return member;
+        this.password = password;
+        this.email = email;
+        this.nickname = nickname;
+        this.username = username;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.profileImage = profileImage;
+        this.introduce = introduce;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        
     }
-
-
-    //oauth 로그인
-    public static Member of( MemberAdditionalInfo memberAdditionalInfo) {
-        Member member = new Member();
-        member.email = memberAdditionalInfo.getEmail();
-        member.nickname = memberAdditionalInfo.getNickname();
-        member.username = memberAdditionalInfo.getUsername();
-        member.phoneNumber = memberAdditionalInfo.getPhoneNumber();
-        member.role = "member";
-        member.provider = member.getProvider();
-//        member.additionalInfoCompleted = true;
-        member.createdAt = LocalDateTime.now();
-        member.updatedAt = LocalDateTime.now();
-        member.status = 1;
-
-        return member;
-    }
-
-    // 추가정보 업데이트 메서드
-//    public void updateAdditionalInfo(String nickname, String phoneNumber, String username) {
-//        this.nickname = nickname;
-//        this.phoneNumber = phoneNumber;
-//        this.username = username;
-//        this.additionalInfoCompleted = true;
-//        this.updatedAt = LocalDateTime.now();
-//    }
 
 }
