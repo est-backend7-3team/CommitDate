@@ -1,8 +1,6 @@
 package est.commitdate.controller;
 
-import est.commitdate.dto.MemberAdditionalInfo;
-import est.commitdate.dto.MemberSignUpRequest;
-import est.commitdate.service.CustomOAuth2UserService;
+import est.commitdate.dto.member.MemberSignUpRequest;
 import est.commitdate.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

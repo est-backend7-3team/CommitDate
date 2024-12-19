@@ -1,17 +1,14 @@
 package est.commitdate.service;
 
-import est.commitdate.dto.MemberSignUpRequest;
+import est.commitdate.dto.member.MemberSignUpRequest;
+import est.commitdate.entity.Board;
 import est.commitdate.entity.Member;
-import est.commitdate.exception.DuplicatedEmailException;
-import est.commitdate.exception.DuplicatedNicknameException;
-import est.commitdate.exception.DuplicatedPhoneNumberException;
+import est.commitdate.exception.*;
 import est.commitdate.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +17,22 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    public Member getMemberById(Integer id) {
+        return memberRepository.findById(id).orElseThrow(
+                ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
+        );
+    }
+
+    public Member getMemberByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname).orElseThrow(
+                ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
+        );
+    }
+
     @Transactional
     public void signUp(MemberSignUpRequest request) {
+
         // 이메일 중복 여부 확인
         if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new DuplicatedEmailException("이미 가입된 이메일 입니다.");

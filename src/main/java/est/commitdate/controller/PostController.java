@@ -2,6 +2,7 @@ package est.commitdate.controller;
 
 
 import est.commitdate.dto.post.PostDto;
+import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.service.BoardService;
 import est.commitdate.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class PostController {
     }
 
     @PostMapping("/update")
-    public String postUpdatePost(PostDto postDto) {
+    public String postUpdatePost(PostUpdateDto postDto) {
         postService.update(postDto);
         return "redirect:/post";
     }
