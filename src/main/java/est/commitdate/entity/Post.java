@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 
 
 
-@Builder//Test 짤 때 필요
-@AllArgsConstructor//Test 짤 때 필요
+
 @Entity
 @Getter
 @Table(name = "Post")
@@ -59,6 +58,7 @@ public class Post {
     @Column(name = "status", nullable = false )
     private int status = 1;
 
+    @Builder//Test 짤 때 필요
     public static Post of(PostDto dto , Board board) {
         Post post = new Post();
         post.board = board;

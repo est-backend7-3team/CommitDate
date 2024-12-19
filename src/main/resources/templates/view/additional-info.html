@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>추가 정보 입력</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/js/signupValidation.js"></script>
+</head>
+<body data-page-type="oauth">
+<div class="container">
+  <h1>추가 정보 입력</h1>
+  <form id="signup-form" th:action="@{/additional-info}" th:object="${memberInfo}" method="post" novalidate>
+    <div class="form-group">
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email" th:field="*{email}" readonly>
+      <small class="errorMessage" id="emailError"></small>
+    </div>
+    <div class="form-group">
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" name="nickname" placeholder="닉네임 입력" th:field="*{nickname}" required minlength="2" maxlength="15">
+      <small class="errorMessage" id="nicknameError"></small>
+    </div>
+    <div class="form-group">
+      <label for="phoneNumber">전화번호</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" placeholder="전화번호 입력 (숫자만)" th:field="*{phoneNumber}" required>
+      <small class="errorMessage" id="phoneNumberError"></small>
+    </div>
+    <div class="form-group">
+      <label for="username">이름</label>
+      <input type="text" id="username" name="username" placeholder="이름 입력" th:field="*{username}" required minlength="2" maxlength="30">
+      <small class="errorMessage" id="usernameError"></small>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btnSubmit">제출</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>
