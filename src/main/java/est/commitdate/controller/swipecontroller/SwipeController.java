@@ -29,51 +29,51 @@ public class SwipeController {
     private final PostRepository postRepository;
 
 
-    @GetMapping("/")
-    public String getSwipePage(Model model) {
-
-        swipeService.testInput(66); //member, board, post 입력
-
-        Random r = new Random(System.currentTimeMillis());
-
-        Post findPost = postRepository.findByPostId(r.nextLong(65)+1).orElseThrow(() -> new EntityNotFoundException("Post not found") );
-        SwipeDto swipeDto = swipeService.postToSwipeDto(findPost);
-
-        model.addAttribute("swipeDTO", swipeDto);
-
-        return "view/swipe";
-    }
-
-
-    @GetMapping("/choose")
-    public String getChoicePage(Model model) {
-
-        swipeService.testInput(56); //member, board, post 입력
-
-        List<ChooseDto> swipeList = swipeService.getDummyChooseDTO(2);
-
-        log.info("tmpList = {}", swipeList.toArray().length);
-
-        model.addAttribute("swipeList", swipeList);
-
-        log.info("chooseDTOList[0] = {}", swipeList.getFirst());
-
-        return "view/choose";
-    }
-
-
-    @ResponseBody
-    @GetMapping("/jsons")
-    public ResponseEntity<SwipeDto> getSwipeJson2() {
-
-        Random r = new Random(System.currentTimeMillis());
-
-        Post findPost = postRepository.findByPostId(r.nextLong(65)+1).orElseThrow(() -> new EntityNotFoundException("Post not found") );
-        SwipeDto swipeDto = swipeService.postToSwipeDto(findPost);
-
-
-        return ResponseEntity.ok(swipeDto);
-    }
+//    @GetMapping("/")
+//    public String getSwipePage(Model model) {
+//
+//        swipeService.testInput(66); //member, board, post 입력
+//
+//        Random r = new Random(System.currentTimeMillis());
+//
+//        Post findPost = postRepository.findByPostId(r.nextLong(65)+1).orElseThrow(() -> new EntityNotFoundException("Post not found") );
+//        SwipeDto swipeDto = swipeService.postToSwipeDto(findPost);
+//
+//        model.addAttribute("swipeDTO", swipeDto);
+//
+//        return "view/swipe";
+//    }
+//
+//
+//    @GetMapping("/choose")
+//    public String getChoicePage(Model model) {
+//
+//        swipeService.testInput(56); //member, board, post 입력
+//
+//        List<ChooseDto> swipeList = swipeService.getDummyChooseDTO(2);
+//
+//        log.info("tmpList = {}", swipeList.toArray().length);
+//
+//        model.addAttribute("swipeList", swipeList);
+//
+//        log.info("chooseDTOList[0] = {}", swipeList.getFirst());
+//
+//        return "view/choose";
+//    }
+//
+//
+//    @ResponseBody
+//    @GetMapping("/jsons")
+//    public ResponseEntity<SwipeDto> getSwipeJson2() {
+//
+//        Random r = new Random(System.currentTimeMillis());
+//
+//        Post findPost = postRepository.findByPostId(r.nextLong(65)+1).orElseThrow(() -> new EntityNotFoundException("Post not found") );
+//        SwipeDto swipeDto = swipeService.postToSwipeDto(findPost);
+//
+//
+//        return ResponseEntity.ok(swipeDto);
+//    }
 
 }
 

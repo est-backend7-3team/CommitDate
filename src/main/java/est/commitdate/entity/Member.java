@@ -104,23 +104,5 @@ public class Member {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
-  
-    @Builder
-    public Member(String password, String email, String nickname, String username, String phoneNumber, String role, String profileImage, String introduce, String comment, LocalDateTime createdAt, LocalDateTime updatedAt, int status) {
-
-        this.password = password;
-        this.email = email;
-        this.nickname = nickname;
-        this.username = username;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
-        this.profileImage = profileImage;
-        this.introduce = introduce;
-        this.comment = comment;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.status = status;
-        
-    }
 
 }
