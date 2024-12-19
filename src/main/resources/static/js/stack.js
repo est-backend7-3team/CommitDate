@@ -37,19 +37,3 @@ export class Stack {
     }
 
 }
-
-// 예제 사용법
-// const stack = new Stack();
-//
-// stack.push(10);
-// stack.push(20);
-// stack.push(30);
-//
-// console.log("스택의 맨 위 요소:", stack.peek());  // 30
-//
-//
-// console.log("Pop된 요소:", stack.pop());  // 30
-//
-// console.log("스택이 비어있는가?", stack.isEmpty());  // false
-//
-// console.log("스택 크기:", stack.size());  // 2
