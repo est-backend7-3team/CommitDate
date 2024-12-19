@@ -16,6 +16,5 @@ public class ChooseDto {
     private String comment;
     private String profileImageURL;
     private int timestamp;
-
-
 }
+
