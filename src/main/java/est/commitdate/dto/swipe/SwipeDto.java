@@ -1,8 +1,6 @@
 package est.commitdate.dto.swipe;
 
 
-import est.commitdate.entity.Member;
-import est.commitdate.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,19 +21,5 @@ public class SwipeDto {
     private Integer likeCount;
     private String comment;
     private String sourceCode;
-
-
-    public static SwipeDto from(Post post) {
-        return SwipeDto.builder()
-                .id(post.getPostId())
-                .title(post.getTitle())
-                .profileImageURL(post.getMember().getProfileImage())
-                .userName(post.getMember().getUsername())
-                .introduce(post.getMember().getIntroduce())
-                .likeCount(post.getLikeCount())
-                .comment(post.getMember().getComment())
-                .sourceCode(post.getText())
-                .build();
-    }
 
 }

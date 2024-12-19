@@ -34,7 +34,7 @@ public class PostDto {
                 .text(post.getText())
                 .description(post.getDescription())
 //                .author(post.getMember().getUsername())
-                .author(post.getMember().getUsername())
+                .author("작성자1")
                 .likeCount(post.getLikeCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
