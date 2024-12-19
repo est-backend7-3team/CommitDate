@@ -1,6 +1,7 @@
 package est.commitdate.service;
 
 import est.commitdate.dto.CustomUserDetails;
+import est.commitdate.dto.OAuthSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -33,24 +32,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String email = extractEmail(oAuth2User, registrationId);
 
-        Member findMember = memberRepository.findByEmail(email).orElseGet(() -> {
-            Member tempMember = Member.builder()
-                    .email(email)
-                    .provider(registrationId)
-                    .role("USER")
-                    .username("Pending")
-                    .nickname("Pending")
-                    .phoneNumber("Pending")
-                    .additionalInfoCompleted(false)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
-            return memberRepository.save(tempMember);
+        // 이메일로 회원 조회
+        Member member = memberRepository.findByEmail(email).orElseGet(() -> {
+            // 이메일이 없는 경우, 임시 사용자 생성
+            OAuthSignUpRequest request = new OAuthSignUpRequest(
+                    email,"Pending", "Pending", "Pending");
+            return memberRepository.save(request.toEntity(registrationId));
         });
 
-        log.info("findMember.isAdditionalInfoCompleted() = {}", findMember.isAdditionalInfoCompleted());
-        //return oAuth2User;
-        return new CustomUserDetails(findMember.getUsername(), findMember.getEmail(), findMember.getRole(), findMember.isAdditionalInfoCompleted(), oAuth2User.getAttributes());
+        // CustomUserDetails로 반환
+        return new CustomUserDetails(
+                member.getUsername(),
+                member.getEmail(),
+                member.getRole(),
+                member.isAdditionalInfoCompleted(),
+                oAuth2User.getAttributes()
+        );
     }
 
     private String extractEmail(OAuth2User oAuth2User, String registrationId) {

@@ -39,18 +39,8 @@ public class MemberService {
 
         String encryptedPassword = passwordEncoder.encode(request.getPassword());
 
-        Member member = Member.builder()
-                .email(request.getEmail())
-                .username(request.getUsername())
-                .password(encryptedPassword)
-                .nickname(request.getNickname())
-                .phoneNumber(request.getPhoneNumber())
-                .role("USER") // 기본값은 회원
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .additionalInfoCompleted(true)
-                .status(1) // 기본값 1
-                .build();
+        // MemberSignUpRequest 에서 엔티티 생성
+        Member member = request.toEntity(encryptedPassword);
 
         memberRepository.save(member);
         System.out.println(" 회원가입 완료! : " + member.toString());
