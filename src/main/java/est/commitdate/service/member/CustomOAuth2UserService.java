@@ -1,4 +1,4 @@
-package est.commitdate.service;
+package est.commitdate.service.member;
 
 import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.member.OAuthSignUpRequest;

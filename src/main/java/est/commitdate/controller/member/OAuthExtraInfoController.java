@@ -1,4 +1,4 @@
-package est.commitdate.controller;
+package est.commitdate.controller.member;
 
 import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.member.MemberAdditionalInfo;
@@ -39,7 +39,7 @@ public class OAuthExtraInfoController {
         request.applyToMember(member);
         memberRepository.save(member);
 
-        return "redirect:/";
+        return "redirect:/post";
 
     }
 

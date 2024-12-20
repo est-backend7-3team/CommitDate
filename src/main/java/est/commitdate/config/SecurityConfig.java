@@ -1,7 +1,7 @@
 package est.commitdate.config;
 
 import est.commitdate.repository.MemberRepository;
-import est.commitdate.service.CustomOAuth2UserService;
+import est.commitdate.service.member.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +28,14 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/process-login")
-                        .defaultSuccessUrl("/", false)
+                        .defaultSuccessUrl("/swipe", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/") // 로그아웃 후 루트 경로로 리디렉션
+                        .invalidateHttpSession(true) // 세션 무효화
+                        .deleteCookies("JSESSIONID") // JSESSIONID 쿠키 삭제
                         .permitAll()
                 )
                 .authorizeHttpRequests(
@@ -44,8 +46,9 @@ public class SecurityConfig {
                                         .requestMatchers("/member/**").permitAll() // 중복 확인 관련 API 허용
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")
                                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                        .requestMatchers("/post/**").permitAll()
                                         .requestMatchers("/board/**").permitAll()
+                                        .requestMatchers("/post/**").permitAll()
+                                        .requestMatchers("/swipe/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
