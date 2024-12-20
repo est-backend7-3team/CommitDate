@@ -61,6 +61,9 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Like> likes;
 
+    @OneToMany(mappedBy = "comment")
+    private List<Comment> comments;
+
 
     @Builder//Test 짤 때 필요
     public static Post of(PostDto dto , Board board, Member member) {
@@ -70,7 +73,6 @@ public class Post {
         post.text = dto.getText();
         post.member = member;
         post.description = dto.getDescription();
-        post.member = member;
         return post;
     }
 

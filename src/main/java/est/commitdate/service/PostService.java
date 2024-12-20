@@ -62,7 +62,7 @@ public class PostService {
                 );
     }
 
-
+    // 모든 게시판의 글들을 불러오기
     public List<PostDto> PostList() {
         List<Post> posts = postRepository.findAll();
         List<PostDto> postDtos = new ArrayList<>();
@@ -72,5 +72,19 @@ public class PostService {
         }
         return postDtos;
     }
+    // 게시판에 해당되는 글들만 불러오기
+    public List<PostDto> getPostsByBoardId(Integer boardId) {
+        log.info("boardId = " + boardId);
+        Board findBoard = boardService.getBoardById(boardId);
+        List<Post> BoardPosts = postRepository.findByBoard(findBoard);
+        List<PostDto> postDtos = new ArrayList<>();
+        for (Post post : BoardPosts) {
+            PostDto findDTO = PostDto.from(post);
+            postDtos.add(findDTO);
+        }
+        return postDtos;
+    }
+
+
 
 }
