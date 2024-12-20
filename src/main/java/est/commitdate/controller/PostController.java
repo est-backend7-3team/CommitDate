@@ -1,6 +1,7 @@
 package est.commitdate.controller;
 
 
+import est.commitdate.dto.post.PostDetailDto;
 import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.service.BoardService;
@@ -22,18 +23,35 @@ public class PostController {
     private final PostService postService;
     private final BoardService boardService;
 
+    @GetMapping("/view/{id}")
+    public String postDetailView(@PathVariable Long id, Model model) {
+        PostDetailDto post = PostDetailDto.from(postService.getPostById(id));
+
+        model.addAttribute("postDetail" , PostDetailDto.from(postService.getPostById(id)));
+        return "view/post/fragment/postDetail";
+    }
+
     @GetMapping("")
     public String postView(Model model) {
         model.addAttribute("post", postService.PostList());
         model.addAttribute("boards", boardService.BoardList());
-        return "/view/post/redit";
+        model.addAttribute("pageTitle", "Fusion Platform - Main Page");
+        return "view/post/base";
+    }
+
+    @GetMapping("/{id}" )
+    public String postByBoard(@PathVariable Integer id, Model model) {
+        model.addAttribute("post", postService.getPostsByBoardId(id));
+        model.addAttribute("boards", boardService.BoardList());
+        model.addAttribute("pageTitle", "Fusion Platform - Main Page");
+        return "view/post/base";
     }
 
     @GetMapping("/saveView")
     public String postSaveView(Model model) {
         model.addAttribute("postDto", new PostDto());
         model.addAttribute("boards", boardService.BoardList());
-        return "/view/post/postSave";
+        return "view/post/postSave";
     }
 
     @PostMapping("/save")
@@ -48,7 +66,7 @@ public class PostController {
     public String postUpdateView(@PathVariable Long id, Model model) {
 
         model.addAttribute("postUpdateDto" , PostUpdateDto.from(postService.getPostById(id)));
-        return "/view/post/postUpdate";
+        return "view/post/postUpdate";
     }
 
     @PostMapping("/update")
