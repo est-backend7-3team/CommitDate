@@ -3,8 +3,10 @@ package est.commitdate.service;
 import est.commitdate.dto.post.PostDto;
 import est.commitdate.entity.Board;
 import est.commitdate.entity.Post;
+import est.commitdate.entity.Member;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.PostRepository;
+import est.commitdate.service.member.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,12 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final BoardService boardService;
-//    private final MemberService memberService;
+    private final MemberService memberService;
 
     public PostDto save(PostDto postDto) {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
-        return PostDto.from(postRepository.save(Post.of(postDto, findBoard))) ;
+        Member findMember = memberService.getMemberByNickname(postDto.getAuthor());
+        return PostDto.from(postRepository.save(Post.of(postDto, findBoard, findMember))) ;
     }
 
     // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
