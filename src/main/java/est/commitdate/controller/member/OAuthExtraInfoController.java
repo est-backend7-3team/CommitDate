@@ -1,8 +1,8 @@
-package est.commitdate.controller;
+package est.commitdate.controller.member;
 
-import est.commitdate.dto.CustomUserDetails;
-import est.commitdate.dto.MemberAdditionalInfo;
-import est.commitdate.dto.OAuthSignUpRequest;
+import est.commitdate.dto.member.CustomUserDetails;
+import est.commitdate.dto.member.MemberAdditionalInfo;
+import est.commitdate.dto.member.OAuthSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class OAuthExtraInfoController {
         request.applyToMember(member);
         memberRepository.save(member);
 
-        return "redirect:/";
+        return "redirect:/post";
 
     }
 

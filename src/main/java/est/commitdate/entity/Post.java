@@ -59,11 +59,12 @@ public class Post {
     private int status = 1;
 
     @Builder//Test 짤 때 필요
-    public static Post of(PostDto dto , Board board) {
+    public static Post of(PostDto dto , Board board, Member member) {
         Post post = new Post();
         post.board = board;
         post.title = dto.getTitle();
         post.text = dto.getText();
+        post.member = member;
         post.description = dto.getDescription();
         return post;
     }

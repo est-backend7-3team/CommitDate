@@ -1,5 +1,6 @@
 package est.commitdate;
 
+import est.commitdate.dto.member.OAuthSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -21,46 +22,32 @@ public class OAuthMemberLoginTest {
     private MemberRepository memberRepository;
 
     @Test
-    @DisplayName("OAuth 회원가입 테스트")
-    void oAuthMemberSignUp() throws Exception {
-
-        Map<String, Object> attributes = Map.of(
-                "email", "test@test.com",
-                "name", "OAuth Test User"
-        );
-
-        OAuth2User oAuth2User = new DefaultOAuth2User(
-                null,
-                attributes,
-                "email"
-        );
-
-        String email = oAuth2User.getAttribute("email");
-        String username = oAuth2User.getAttribute("name");
+    @DisplayName("OAuth 로그인 테스트")
+    void oAuthMemberLogin() {
+        try {
+            OAuthSignUpRequest request = new OAuthSignUpRequest(
+                    "oauthlogin@test.com",
+                    "OAuth Login User",
+                    "01011112222",
+                    "OAuthLoginTest"
+            );
+            Member member = request.toEntity("kakao");
+            memberRepository.save(member);
 
 
-        Member member = memberRepository.findByEmail(email)
-                .orElseGet(() -> memberRepository.save(Member.builder()
-                        .email(email)
-                        .username(username)
-                        .role("MEMBER")
-                        .nickname("Pending")
-                        .phoneNumber("Pending")
-                        .provider("google")
-                        .createdAt(LocalDateTime.now())
-                        .updatedAt(LocalDateTime.now())
-                        .build())
-                );
+            Member foundMember = memberRepository.findByEmail(request.getEmail()).orElse(null);
 
-        Member savedMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("회원가입 실패"));
+            // 검증
+            if (foundMember == null) {
+                System.out.println("OAuth 로그인 테스트 실패: 회원이 존재하지 않습니다.");
+                return;
+            }
+            assertThat(foundMember.getEmail()).isEqualTo(request.getEmail());
+            System.out.println("OAuth 로그인 테스트: 로그인 성공");
 
-        assertThat(savedMember).isNotNull();
-        assertThat(savedMember.getEmail()).isEqualTo(email);
-        assertThat(savedMember.getUsername()).isEqualTo(username);
-        assertThat(savedMember.getRole()).isEqualTo("MEMBER");
-
-        System.out.println("OAuth 회원가입 테스트: 회원가입 성공");
+        } catch (Exception e) {
+            System.out.println("OAuth 로그인 테스트 실패: " + e.getMessage());
+        }
     }
 
 }

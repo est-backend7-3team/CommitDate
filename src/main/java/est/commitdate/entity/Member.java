@@ -2,6 +2,8 @@ package est.commitdate.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
+@SQLDelete(sql = "UPDATE Member Set status = 0 WHERE member_id = ?")
+@SQLRestriction("status = 1")
 public class Member {
 
     @Id
@@ -69,6 +73,7 @@ public class Member {
                   String username,
                   String nickname,
                   String phoneNumber,
+                  String password,
                   boolean additionalInfoCompleted,
                   LocalDateTime createdAt,
                   LocalDateTime updatedAt, int status) {
@@ -78,6 +83,7 @@ public class Member {
         this.username = username;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
+        this.password = password;
         this.additionalInfoCompleted = additionalInfoCompleted;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -92,6 +98,17 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void updateMemberDetails(String email, String encryptedPassword, String nickname, String phoneNumber, String profileImage, String comment, String introduce) {
+        this.email = email;
+        this.password = encryptedPassword;
+        this.nickname = nickname;
+        this.phoneNumber = phoneNumber;
+        this.profileImage = profileImage;
+        this.comment = comment;
+        this.introduce = introduce;
+        this.updatedAt = LocalDateTime.now();
+    }
+
     // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
     @PrePersist
     public void prePersist() {
@@ -103,6 +120,11 @@ public class Member {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    // 유저가 탈퇴하더라도 작성한 게시글은 삭제하지않음
+    public void delete() {
+        this.status = 0;
     }
 
 }

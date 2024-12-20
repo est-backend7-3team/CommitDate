@@ -1,4 +1,4 @@
-package est.commitdate.dto;
+package est.commitdate.dto.member;
 
 import est.commitdate.entity.Member;
 import lombok.Getter;
@@ -34,6 +34,7 @@ public class OAuthSignUpRequest {
                 "Pending",
                 "Pending",
                 "Pending",
+                null,
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
