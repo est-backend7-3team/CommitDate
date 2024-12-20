@@ -1,4 +1,4 @@
-package est.commitdate.controller;
+package est.commitdate.controller.member;
 
 
 import est.commitdate.repository.MemberRepository;
