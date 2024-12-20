@@ -79,6 +79,7 @@ public class MemberSignUpLoginTest {
         } catch (Exception e) {
             System.out.println("로그인 테스트 실패: " + e.getMessage());
         }
+
     }
 
 }
