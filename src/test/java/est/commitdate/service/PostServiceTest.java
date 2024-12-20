@@ -1,7 +1,9 @@
 package est.commitdate.service;
 
+
 import est.commitdate.dto.board.BoardDto;
 import est.commitdate.dto.post.PostDto;
+import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.entity.Post;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +28,7 @@ class PostServiceTest {
     @BeforeEach
     void setUp() {
         // 게시판 생성
-//        BoardDto saveReq = new BoardDto(0,"자유게시판", 0);
+        // BoardDto saveReq = new BoardDto(0,"자유게시판", 0);
         BoardDto saveReq = BoardDto.builder().boardName("자유게시판").build();
         savedBoard = boardService.save(saveReq);
 
@@ -63,7 +65,7 @@ class PostServiceTest {
 
         PostDto savedPost = postService.save(postSaveReq);
 
-        PostDto updateReq = PostDto.builder()
+        PostUpdateDto updateReq = PostUpdateDto.builder()
                 .postId(savedPost.getPostId())
                 .title("1번 게시글 제목을 수정합니다.")
                 .description("1번 게시글 내용을 수정합니다.")
