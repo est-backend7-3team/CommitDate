@@ -19,12 +19,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElseThrow(
                 ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
         );
     }
+
     public Member getMemberByNickname(String nickname) {
         return memberRepository.findByNickname(nickname).orElseThrow(
                 ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
@@ -55,6 +55,17 @@ public class MemberService {
 
         memberRepository.save(member);
         System.out.println(" 회원가입 완료! : " + member.toString());
+    }
+
+    @Transactional
+    public Member login(String email, String rawPassword) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        return member;
     }
 
     @Transactional
