@@ -22,7 +22,7 @@ public class MemberSignUpController {
     @PostMapping("/sign-up")
     public String signUp(@ModelAttribute MemberSignUpRequest request) {
         memberService.signUp(request);
-        return "redirect:/";// 회원가입 후 인덱스 페이지로 리디렉션
+        return "redirect:/login";// 회원가입 후 인덱스 페이지로 리디렉션
     }
 
 }

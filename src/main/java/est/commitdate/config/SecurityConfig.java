@@ -3,10 +3,12 @@ package est.commitdate.config;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.service.member.CustomOAuth2UserService;
 
+import est.commitdate.service.member.FormUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final OAuth2SuccessHandler successHandler;
+    private final FormUserDetailsService formUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MemberRepository memberRepository) throws Exception {
@@ -31,6 +34,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/swipe", true)
                         .permitAll()
                 )
+                .userDetailsService(formUserDetailsService)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/") // 로그아웃 후 루트 경로로 리디렉션
