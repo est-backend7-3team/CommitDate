@@ -1,6 +1,6 @@
 package est.commitdate.config;
 
-import est.commitdate.dto.CustomUserDetails;
+import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import jakarta.servlet.ServletException;

@@ -1,5 +1,6 @@
 package est.commitdate.service;
 
+import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
 import est.commitdate.entity.Board;
