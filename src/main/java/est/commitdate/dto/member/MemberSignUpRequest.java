@@ -33,6 +33,7 @@ public class MemberSignUpRequest {
                 username,
                 nickname,
                 phoneNumber,
+                encryptedPassword,
                 true, // 폼유저 기본값
                 LocalDateTime.now(),
                 LocalDateTime.now(),

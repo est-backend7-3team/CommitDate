@@ -1,7 +1,7 @@
-package est.commitdate.service;
+package est.commitdate.service.member;
 
+import est.commitdate.dto.member.MemberDetailRequest;
 import est.commitdate.dto.member.MemberSignUpRequest;
-import est.commitdate.entity.Board;
 import est.commitdate.entity.Member;
 import est.commitdate.exception.*;
 import est.commitdate.repository.MemberRepository;
@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,6 @@ public class MemberService {
                 ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
         );
     }
-
     public Member getMemberByNickname(String nickname) {
         return memberRepository.findByNickname(nickname).orElseThrow(
                 ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
@@ -32,7 +32,6 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberSignUpRequest request) {
-
         // 이메일 중복 여부 확인
         if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new DuplicatedEmailException("이미 가입된 이메일 입니다.");
@@ -56,5 +55,28 @@ public class MemberService {
         memberRepository.save(member);
         System.out.println(" 회원가입 완료! : " + member.toString());
     }
+
+    @Transactional
+    public void updateMemberDetails(Long memberId, MemberDetailRequest request) {
+        Member member = getMemberById(memberId);
+
+        // 비밀번호 변경 여부 확인
+        String encryptedPassword = null;
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            encryptedPassword = passwordEncoder.encode(request.getPassword());
+        }
+
+        // DTO에서 엔티티로 값 적용
+        request.applyToMember(member, encryptedPassword);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Member findMember = getMemberById(id);
+        findMember.delete();
+        System.out.println("탈퇴 완료." + findMember.getStatus()+ " " + findMember.getUsername());
+    }
+
+
 
 }

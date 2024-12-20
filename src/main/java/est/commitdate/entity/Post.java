@@ -65,6 +65,7 @@ public class Post {
         post.board = board;
         post.title = dto.getTitle();
         post.text = dto.getText();
+        post.member = member;
         post.description = dto.getDescription();
         post.member = member;
         return post;
