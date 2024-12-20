@@ -34,6 +34,7 @@ public class OAuthSignUpRequest {
                 "Pending",
                 "Pending",
                 "Pending",
+                null,
                 false,
                 LocalDateTime.now(),
                 LocalDateTime.now(),

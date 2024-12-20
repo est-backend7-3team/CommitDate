@@ -38,10 +38,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 response.sendRedirect("/additional-info");
             } else {
                 // 추가 정보가 이미 존재하면 메인 페이지로 리디렉션
-                response.sendRedirect("/");
+                response.sendRedirect("/swipe");
             }
         } else {
             log.info("등록된 회원이 없습니다!");
+            response.sendRedirect("/login?error=true"); // 회원로그인이 안되어있는상태라면 로그인 페이지로 리디렉션
         }
 
     }

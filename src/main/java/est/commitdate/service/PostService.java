@@ -1,13 +1,16 @@
 package est.commitdate.service;
 
 import est.commitdate.dto.post.PostDto;
+import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.entity.Board;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.PostRepository;
+import est.commitdate.service.member.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
     private final PostRepository postRepository;
     private final BoardService boardService;
@@ -23,14 +27,16 @@ public class PostService {
 
     public PostDto save(PostDto postDto) {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
+
         Member findMember = memberService.getMemberByNickname(postDto.getAuthor());
+        log.info("찾은사람" + findBoard.toString());
         return PostDto.from(postRepository.save(Post.of(postDto, findBoard, findMember))) ;
     }
 
     // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
-    public void update(PostDto postDto) {
-        Post findPost = getPostById(postDto.getPostId());
-        findPost.update(postDto);
+    public void update(PostUpdateDto postUpdateDto) {
+        Post findPost = getPostById(postUpdateDto.getPostId());
+        findPost.update(postUpdateDto);
     }
     // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void delete(Long id) {

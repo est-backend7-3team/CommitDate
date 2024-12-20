@@ -20,4 +20,3 @@ public class MemberNotFoundException extends RuntimeException {
     super(message, cause, enableSuppression, writableStackTrace);
   }
 }
-

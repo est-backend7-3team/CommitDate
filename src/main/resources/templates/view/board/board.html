@@ -38,14 +38,13 @@
             <td th:text="${board.boardName}"></td>
             <td>
                 <!-- 게시판 업데이트 버튼 -->
-                <form th:action="@{'/board/updateView/' + ${board.boardId}}" method="get" style="display: inline;">
+                <form th:action="@{'/board/updateView/'+ ${board.boardId}}" method="get" style="display: inline;">
                     <button type="submit">게시판 업데이트</button>
                 </form>
                 <!-- 게시판 삭제 버튼 -->
                 <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display: inline;">
                     <button type="submit" onclick="return confirm('이 게시판을 삭제하시겠습니까?')">게시판 삭제</button>
                 </form>
-
 <!--                <form th:action="@{'/board/restore/' + ${board.boardId}}" method="post" style="display: inline;">-->
 <!--                    <button type="submit" onclick="return confirm('이 게시판을 복구 하시겠습니까?')">게시판 복구</button>-->
 <!--                </form>-->
