@@ -6,6 +6,7 @@ import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.service.BoardService;
 import est.commitdate.service.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/post")
@@ -29,25 +31,29 @@ public class PostController {
 
     @GetMapping("/saveView")
     public String postSaveView(Model model) {
-        model.addAttribute("post", new PostDto());
+        model.addAttribute("postDto", new PostDto());
         model.addAttribute("boards", boardService.BoardList());
         return "/view/post/postSave";
     }
 
     @PostMapping("/save")
     public String postSavePost(PostDto postDto) {
+        log.info("저장" + postDto.toString());
+        postDto.setAuthor("11"); // 임시방편
         postService.save(postDto);
         return "redirect:/post";
     }
 
     @GetMapping("/updateView/{id}")
     public String postUpdateView(@PathVariable Long id, Model model) {
-        model.addAttribute("post" , PostDto.from(postService.getPostById(id)));
+
+        model.addAttribute("postUpdateDto" , PostUpdateDto.from(postService.getPostById(id)));
         return "/view/post/postUpdate";
     }
 
     @PostMapping("/update")
     public String postUpdatePost(PostUpdateDto postDto) {
+        log.info("찾은 id : "+postDto);
         postService.update(postDto);
         return "redirect:/post";
     }

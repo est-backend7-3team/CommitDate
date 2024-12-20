@@ -18,7 +18,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public Member getMemberById(Integer id) {
+    public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElseThrow(
                 ()-> new MemberNotFoundException("해당 회원을 찾을 수 없습니다.")
         );

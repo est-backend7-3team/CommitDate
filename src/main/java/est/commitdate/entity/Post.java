@@ -74,7 +74,7 @@ public class Post {
         this.title = dto.getTitle();
         this.text = dto.getText();
         this.description = dto.getDescription();
-        this.likeCount = dto.getLikeCount();
+//        this.likeCount = dto.getLikeCount();
         this.updatedAt = dto.getUpdatedAt();
     }
 

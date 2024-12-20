@@ -53,7 +53,7 @@ class BoardServiceTest {
         BoardDto saveReq = new BoardDto(0,"title", 0);
         BoardDto saved = boardService.save(saveReq);
         Board boardById = boardService.getBoardById(saved.getBoardId());
-;
+
         boardService.delete(saved.getBoardId());
         assertThat(boardById.getStatus()).isEqualTo(0);
         boardService.restore(saved.getBoardId());
