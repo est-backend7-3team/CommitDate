@@ -10,10 +10,10 @@
         <label for="boardNameUpdate">
             수정할 제목 :
         </label>
-        <input id="boardNameUpdate" type="text" name="boardName" th:field="${boardName}" th:value="${boardName}">
+        <input id="boardNameUpdate" type="text" name="boardName" th:value="*{boardName}">
     </div>
-    <input type="hidden" th:field="${boardId}" th:value="${boardId}" name="boardId"/>
-    <input type="hidden" th:field="${status}" th:value="${status}" name="status"/>
+    <input type="hidden"  th:value="*{boardId}" name="boardId"/>
+    <input type="hidden"  th:value="*{status}" name="status"/>
     <button type="submit">저장</button>
 </form>
 </body>

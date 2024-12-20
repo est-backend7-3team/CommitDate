@@ -38,7 +38,6 @@ public class BoardController {
     // 게시판 업데이트 화면
     @GetMapping("/updateView/{id}")
     public String boardUpdateView(@PathVariable Integer id, Model model) {
-        log.info("updateView 호출 : "+ BoardDto.from(boardService.getBoardById(id)).toString());
         model.addAttribute("boardDto", BoardDto.from(boardService.getBoardById(id)));
         return "view/board/boardUpdate";
     }
