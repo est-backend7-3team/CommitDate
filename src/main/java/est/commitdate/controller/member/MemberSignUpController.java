@@ -15,7 +15,7 @@ public class MemberSignUpController {
     // 회원가입 페이지 반환
     @GetMapping("/sign-up")
     public String signUpForm() {
-        return "view/signup";
+        return "view/member/signup";
     }
 
     // 회원가입 처리

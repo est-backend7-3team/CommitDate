@@ -1,12 +1,22 @@
 package est.commitdate.exception;
 
 public class MemberNotFoundException extends RuntimeException {
+  public MemberNotFoundException() {
+  }
 
-    public MemberNotFoundException() {
-        super("가입된 회원을 찾을 수 없습니다.");
-    }
-
-    public MemberNotFoundException(String message) {
+  public MemberNotFoundException(String message) {
         super(message);
     }
+
+  public MemberNotFoundException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public MemberNotFoundException(Throwable cause) {
+    super(cause);
+  }
+
+  public MemberNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    super(message, cause, enableSuppression, writableStackTrace);
+  }
 }
