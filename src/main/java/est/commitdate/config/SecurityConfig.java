@@ -1,9 +1,7 @@
 package est.commitdate.config;
 
-import est.commitdate.entity.Member;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.service.CustomOAuth2UserService;
-import est.commitdate.dto.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,10 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.Optional;
 
 @Slf4j
 @Configuration

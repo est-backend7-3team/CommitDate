@@ -12,8 +12,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
-
-
+import java.util.List;
 
 
 @Entity
@@ -23,6 +22,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE Board Set status = 0 WHERE board_id = ?")
 @SQLRestriction("status = 1")
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -33,7 +33,7 @@ public class Post {
     private Board board;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", nullable = true)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @Column(name = "title", nullable = false, length = 50)
@@ -41,7 +41,6 @@ public class Post {
 
     @Column(name = "text")
     private String text;
-
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -58,12 +57,17 @@ public class Post {
     @Column(name = "status", nullable = false )
     private int status = 1;
 
+    @OneToMany(mappedBy = "post")
+    private List<Like> likes;
+
+
     @Builder//Test 짤 때 필요
-    public static Post of(PostDto dto , Board board) {
+    public static Post of(PostDto dto , Board board, Member member) {
         Post post = new Post();
         post.board = board;
         post.title = dto.getTitle();
         post.text = dto.getText();
+        post.member = member;
         post.description = dto.getDescription();
         return post;
     }
@@ -75,6 +79,28 @@ public class Post {
         this.likeCount = dto.getLikeCount();
         this.updatedAt = dto.getUpdatedAt();
     }
+
+    public static Post testTransformEntity(PostDto dto, Board board, Member member) {
+        Post post = new Post();
+        post.board = board;
+        post.member = member;
+        post.title = dto.getTitle();
+        post.text = dto.getText();
+        post.description = dto.getDescription();
+        post.likeCount = dto.getLikeCount();
+
+
+        /*
+        private Member member;
+        private String title;
+        private String text;
+        private String description;
+        */
+
+
+        return post;
+    }
+
 
     public void delete() {
         this.status = 0;

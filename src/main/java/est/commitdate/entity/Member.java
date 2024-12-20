@@ -63,6 +63,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "member")
+    private List<Like> likes;
+
+
+
     public Member(String email,
                   String provider,
                   String role,

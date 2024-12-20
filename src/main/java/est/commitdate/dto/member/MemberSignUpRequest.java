@@ -1,4 +1,4 @@
-package est.commitdate.dto;
+package est.commitdate.dto.member;
 
 import est.commitdate.entity.Member;
 import lombok.Getter;

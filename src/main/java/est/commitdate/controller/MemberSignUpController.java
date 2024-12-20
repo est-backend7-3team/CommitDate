@@ -1,8 +1,6 @@
 package est.commitdate.controller;
 
-import est.commitdate.dto.MemberAdditionalInfo;
-import est.commitdate.dto.MemberSignUpRequest;
-import est.commitdate.service.CustomOAuth2UserService;
+import est.commitdate.dto.member.MemberSignUpRequest;
 import est.commitdate.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,7 @@ public class MemberSignUpController {
     // 회원가입 페이지 반환
     @GetMapping("/sign-up")
     public String signUpForm() {
-        return "view/signup";
+        return "view/member/signup";
     }
 
     // 회원가입 처리

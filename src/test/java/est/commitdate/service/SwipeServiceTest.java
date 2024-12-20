@@ -1,105 +1,156 @@
 package est.commitdate.service;
 
+import est.commitdate.dto.board.BoardDto;
+import est.commitdate.dto.like.LikeDto;
+import est.commitdate.dto.member.MemberSignUpRequest;
+import est.commitdate.dto.post.PostDto;
 import est.commitdate.entity.Board;
+import est.commitdate.entity.Like;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
+import est.commitdate.exception.BoardNotFoundException;
 import est.commitdate.repository.BoardRepository;
+import est.commitdate.repository.LikeRepository;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.LOCAL_DATE;
 
 @Slf4j
 @SpringBootTest
 class SwipeServiceTest {
 
-
     @Autowired
     private SwipeService swipeService;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
     private MemberRepository memberRepository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
+    private PostRepository postRepository;
     @Autowired
     private BoardRepository boardRepository;
 
 
-    @BeforeEach
-    void setUp() {
-        //기존 내용 삭제
-//        postRepository.deleteAll();
-//        boardRepository.deleteAll();
-//        memberRepository.deleteAll();
+    @BeforeAll
+    static void setUp(
+            @Autowired BoardRepository boardRepository,
+            @Autowired PasswordEncoder passwordEncoder,
+            @Autowired MemberRepository memberRepository,
+            @Autowired PostRepository postRepository){
+
+        MemberSignUpRequest requestDto;
+        PostDto postDto;
+        BoardDto boardDto;
+        Board findBoard;
+        Member findMember;
+
+        //Board 저장
+        boardDto = BoardDto.builder()
+                .boardName("SwipeMainPage")
+                .build();
+        boardRepository.save(Board.of(boardDto));
+
+        for (int i = 0; i < 20; i++) {
+            //User 20명 저장
+            requestDto  = new MemberSignUpRequest(
+                    "testuser@test.com" + i,
+                    "testUser",
+                    "password123",
+                    "tester" + i,
+                    "01012345678" + i
+            );
+            String encryptedPassword = passwordEncoder.encode(requestDto.getPassword());
+            Member member = requestDto.toEntity(encryptedPassword);
+            memberRepository.save(member);
+        }
+
+        for (int i = 1; i < 1000 ; i++) {
+
+
+            //보드 찾기
+            findBoard = boardRepository.findByBoardId(1)
+                    .orElseThrow(BoardNotFoundException::new);
+
+            //임의의 사용자 찾기.
+            Random r = new Random(System.currentTimeMillis());
+            findMember = memberRepository.findById(r.nextLong(19)+1)
+                        .orElseThrow(EntityNotFoundException::new);
+
+            //Post20개 저장
+            postDto = PostDto.builder()
+//                    .boardId(findBoard.getBoardId())
+//                    .author(findMember.getNickname())
+                    .title("Random title" + i)
+                    .text("Random text" + i)
+                    .description("Random description" + i)
+                    .likeCount(0)
+                    .build();
+
+            postRepository.save(Post.testTransformEntity(postDto,findBoard,findMember));
+        }
+    }
+
+
+    @Test
+    @DisplayName("Make Like Test")
+    void likeTest() throws Exception{
+
+        MemberSignUpRequest requestDto;
+        PostDto postDto;
+        BoardDto boardDto;
+        Board findBoard;
+        Member findMember;
+        Post findPost;
+
+        Random r = new Random(System.currentTimeMillis());
+
+        for (int i = 0; i < 300; i++) {
+        findMember = memberRepository.findById(r.nextLong(499)+1)
+                .orElseThrow(EntityNotFoundException::new);
+
+        findPost = postRepository.findByPostId(r.nextLong(499)+1)
+                .orElseThrow(EntityNotFoundException::new);
+
+
+        Like likeEntity = Like.of(findMember,findPost);
+
+        likeRepository.save(likeEntity);
+
+
+            assertThat(likeEntity.getMember()).isEqualTo(findMember);
+            assertThat(likeEntity.getPost()).isEqualTo(findPost);
+
+        }
     }
 
     @Test
-    @DisplayName("SwipeTest")
-    void SwipeTest() throws Exception{
+    @DisplayName("Like Test")
+    void likeDtoTest() throws Exception{
 
-    // given
+        Random r = new Random(System.currentTimeMillis());
 
-        //Member 엔티티 생성
-        Member member = Member.builder()
-                .password("1234")
-                .email("test@gmail.com")
-                .nickname("test")
-                .username("사람이름")
-                .phoneNumber("010-5261-7904")
-                .role("MEMBER")
-                .profileImage(null)
-                .introduce("안녕하세요라리 진짜 이거 개쩔지 않냐 크흐 ;;;   ㅗㅁㄴ아러ㅣ;자더ㅏㅣ;렂;디ㅓㄹ")
-                .comment("쌔끈빠끈한 제 키보드좀 보세요")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .status(1)
-                .build();
+        Like like = likeRepository.findByLikeId(r.nextLong(499)+1).orElseThrow(EntityNotFoundException::new);
 
-        //member 저장
-        memberRepository.save(member);
-
-        //Board 엔티티 생성
-        Board board = Board.builder()
-                .boardName("스와이프")
-                .status(1)
-                .build();
-
-        boardRepository.save(board);
-
-        //Post 엔티티 생성
-        Post tmpPost = Post.builder()
-                .board(board)
-                .title("허허허 좋십니더..")
-                .text("저랑 같이 Hello World? 하실분?")
-                .member(member)
-                .likeCount(1)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .status(1)
-                .build();
-
-        postRepository.save(tmpPost);
-        postRepository.flush();
-
-    // when
-        Post findPost = postRepository.findByPostId(tmpPost.getPostId()).orElseThrow(() -> new EntityNotFoundException("Post not found") );
-        swipeService.postToSwipeDto(findPost);
-
-
-    // then
-        assertThat(postRepository.findAll()).hasSize(1);
-        log.info("postRepository.findAll() = {}", findPost);
     }
 
+
 }
+
