@@ -3,6 +3,7 @@ package est.commitdate.entity;
 
 
 
+import est.commitdate.dto.post.PostUpdateDto;
 import lombok.*;
 
 
@@ -20,7 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "Post")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE Board Set status = 0 WHERE board_id = ?")
+@SQLDelete(sql = "UPDATE Post Set status = 0 WHERE post_id = ?")
 @SQLRestriction("status = 1")
 public class Post {
     @Id
@@ -59,20 +60,21 @@ public class Post {
     private int status = 1;
 
     @Builder//Test 짤 때 필요
-    public static Post of(PostDto dto , Board board) {
+    public static Post of(PostDto dto , Board board, Member member) {
         Post post = new Post();
         post.board = board;
         post.title = dto.getTitle();
         post.text = dto.getText();
         post.description = dto.getDescription();
+        post.member = member;
         return post;
     }
 
-    public void update(PostDto dto) {
+    public void update(PostUpdateDto dto) {
         this.title = dto.getTitle();
         this.text = dto.getText();
         this.description = dto.getDescription();
-        this.likeCount = dto.getLikeCount();
+//        this.likeCount = dto.getLikeCount();
         this.updatedAt = dto.getUpdatedAt();
     }
 

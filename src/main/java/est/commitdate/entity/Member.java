@@ -2,6 +2,8 @@ package est.commitdate.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "member")
+@SQLDelete(sql = "UPDATE Member Set status = 0 WHERE member_id = ?")
+@SQLRestriction("status = 1")
 public class Member {
 
     @Id
@@ -90,6 +94,13 @@ public class Member {
         this.username = username;
         this.additionalInfoCompleted = true;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.status = 0;
+    }
+    public void restore() {
+        this.status = 1;
     }
 
     // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
