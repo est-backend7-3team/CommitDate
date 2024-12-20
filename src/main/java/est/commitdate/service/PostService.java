@@ -6,8 +6,8 @@ import est.commitdate.entity.Board;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.exception.PostNotFoundException;
-import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
+import est.commitdate.service.member.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
