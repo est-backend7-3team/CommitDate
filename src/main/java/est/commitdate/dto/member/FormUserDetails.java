@@ -1,5 +1,6 @@
 package est.commitdate.dto.member;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ public class FormUserDetails implements UserDetails {
     private String password;
     private String role;
 
+    @Builder
     public FormUserDetails(Long id, String email, String password, String role) {
         this.id = id;
         this.email = email;

@@ -23,10 +23,11 @@ public class FormUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username+"은 회원이 아닙니다."));
 
-        return User.builder()
-                .username(member.getEmail())
+        return FormUserDetails.builder()
+                .id(member.getId())
+                .email(member.getEmail())
                 .password(member.getPassword())
-                .roles(member.getRole())
+                .role(member.getRole())
                 .build();
     }
 
