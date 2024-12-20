@@ -22,6 +22,7 @@ public class SwipeDto {
     private Integer likeCount;
     private String comment;
     private String sourceCode;
+    private String responseCode;
 
 
     public static SwipeDto from(Post post){
