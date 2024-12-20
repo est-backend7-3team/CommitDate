@@ -18,8 +18,8 @@ public class PostUpdateDto {
     private String text;
     private String description;
     private String author;
-    private Integer likeCount;
-    private LocalDateTime createdAt;
+//    private Integer likeCount;
+//    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private int status;
 

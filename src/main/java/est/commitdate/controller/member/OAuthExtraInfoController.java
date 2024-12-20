@@ -28,7 +28,7 @@ public class OAuthExtraInfoController {
         memberInfo.setEmail(userDetails.getEmail());
 
         model.addAttribute("memberInfo", memberInfo);
-        return "/view/additional-info";
+        return "/view/member/additional-info";
     }
 
     @PostMapping("/additional-info")
