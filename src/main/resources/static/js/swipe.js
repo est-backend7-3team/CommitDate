@@ -6,9 +6,56 @@ const frontStack = new Stack();
 let currentJson = null;
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    loadPostData();
+    const likeButton = document.getElementById('likeButton');
+    let isClicked = false; // 초기 상태를 false로 설정
+
+    // 좋아요 버튼 클릭 이벤트
+    likeButton.addEventListener('click', () => {
+        toggleLike(likeButton);
+    });
+});
+
+function toggleLike(likeButton) {
+    const postId = document.getElementById('postId').textContent.trim();
+
+    fetch("/swipe/api/toggleLike", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ postId: postId })
+    })
+        .then(response => {
+            if (!response.ok) {
+                // 로그인되지 않은 경우
+                alert("로그인이 필요한 서비스입니다. 로그인 창으로 이동합니다.");
+                window.location.href = "http://localhost:8080/login";
+                throw new Error("Unauthorized");
+            }
+            return response.text(); // 응답을 텍스트로 변환
+        })
+        .then(status => {
+            // 상태에 따라 버튼 스타일 업데이트
+            if (status === "Success") {
+                if (likeButton.classList.contains("liked")) {
+                    likeButton.classList.remove("liked");
+                    likeButton.style.backgroundColor = "";
+                    likeButton.style.color = "";
+                } else {
+                    likeButton.classList.add("liked");
+                    likeButton.style.backgroundColor = "magenta";
+                    likeButton.style.color = "white";
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+}
+
 function loadPostData() {
-
-
     if(currentJson == null || frontStack.isEmpty()){
         fetch('/swipe/jsons')
             .then(response => {
@@ -21,10 +68,12 @@ function loadPostData() {
                 if(currentJson == null){ //최초로 눌렀을 때
                     currentJson = data; //받아온거 currentJson 으로 연결
                     mappingData(currentJson); // 화면에 쏴주기
+                    console.log(JSON.stringify(currentJson, null, 2)); //Json 보기
                 }else{ // frontStack 아무것도 없을 때(계속 앞으로 누를 때)
                     backStack.push(currentJson); //보던 게시글 백으로 보내기
                     currentJson = data; //새로운 게시글 커런트로 옮기기
                     mappingData(currentJson); //화면에 쏴주기
+                    console.log(JSON.stringify(currentJson, null, 2)); //Json 보기
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -33,9 +82,11 @@ function loadPostData() {
         currentJson = frontStack.pop(); //frontStack 의 헤드를 커런트로 옮기기
         mappingData(currentJson); // 화면에 쏴주기
     }
+
+
+
 }
 window.loadPostData = loadPostData;
-
 
 function prePostData(){
 
@@ -45,16 +96,17 @@ function prePostData(){
         frontStack.push(currentJson); //지금 보던거 backStack 으로 보내기.
         currentJson = backStack.pop(); //backStack 의 헤드를 커런트로 옮기기
         mappingData(currentJson); // 화면에 쏴주기
+
     }else{ // backStack 에 아무것도 없을 때(계속 뒤로 누를 때)
         alert("마지막 입니다.")
     }
 }
-window.prePostData = prePostData;
 
+window.prePostData = prePostData;
 
 function mappingData(data){
     // JSON 데이터로 th:text가 적용된 부분 업데이트
-    document.getElementById('postId').textContent = data.postId;
+    document.getElementById('postId').textContent = data.id;
     document.getElementById('title').textContent = data.title;
     document.getElementById('profileImageURL').src = data.profileImageURL;
     document.getElementById('userName').textContent = data.userName;
@@ -62,48 +114,4 @@ function mappingData(data){
     document.getElementById('likeCount').textContent = data.likeCount;
     document.getElementById('comment').textContent = data.comment;
     document.getElementById('sourceCode').textContent = data.sourceCode;
-}
-
-document.addEventListener('DOMContentLoaded', ()=> {
-    const likeButton = document.getElementById('likeButton')
-    let isClicked = false;
-
-
-    //좋아요 버튼 눌렀을 때
-    likeButton.addEventListener('click', ()=> {
-        if (!isClicked) {
-            // 버튼 스타일 적용
-            likeButton.style.backgroundColor = 'magenta';
-            likeButton.style.color = 'white';
-            sendLike();
-
-        } else {
-            // 버튼 스타일 원래대로 되돌리기
-            likeButton.style.backgroundColor = '';
-            likeButton.style.color = '';
-        }
-        isClicked = !isClicked;
-    })
-})
-
-function sendLike(){
-    fetch("/swipe/api/like",{
-        method : "Post",
-        header : {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-
-        })
-    }).then(response => {
-        if (response.ok){
-            alert("일단 좋아요 눌렀음");
-        } else {
-            alert("로그인 해라 임마") //status 401 일 때,
-        }
-
-    })
-    //보여지는 포스트 currentPost의 게시글 Id 받기
-    currentJson.id
-    //fetchAPI 로 Post 보내기
 }

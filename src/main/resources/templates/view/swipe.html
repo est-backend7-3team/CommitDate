@@ -29,10 +29,11 @@
 <!--btn btn-circle btn-ghost absolute left-5 top-1/2 -translate-y-1/2 active:transform-none-->
 <!-- 흰색 카드 영역 -->
 <div class="bg-white p-4 rounded-lg shadow-lg w-96 mx-10">
-  <div id="postId" hidden="hidden" th:text="${swipeDTO.id}"></div>
+<!--포스트 번호-->
+  <div id="postId" hidden="hidden">0</div>
   <!-- 제목 -->
   <div class="flex items-center justify-between mb-4">
-    <h1 id="title" class="font-bold text-lg" th:text="${swipeDTO.title}">Singleton Coders</h1>
+    <h1 id="title" class="font-bold text-lg" >Title</h1>
     <!-- 톱니바퀴 버튼: 클릭 시 드로어 오픈 -->
     <label for="settings-drawer" class="btn btn-sm btn-circle btn-ghost cursor-pointer">⚙️</label>
   </div>
@@ -41,29 +42,29 @@
   <div class="flex items-center mb-4">
     <div class="avatar">
       <div class="w-12 rounded-full">
-        <img id="profileImageURL" th:src="${swipeDTO.profileImageURL}" alt="User Avatar">
+        <img id="profileImageURL" alt="User Avatar">
       </div>
     </div>
     <div class="ml-3">
-      <p id="userName" class="font-semibold" th:text="${swipeDTO.userName}">k User</p>
-      <p id="introduce" class="text-gray-500 text-sm" th:text="${swipeDTO.introduce}">소개글</p>
+      <p id="userName" class="font-semibold" >UserName</p>
+      <p id="introduce" class="text-gray-500 text-sm" >Introduce</p>
     </div>
     <div class="ml-auto flex items-center">
-      <span id="likeCount" class="mr-1 text-lg" th:text="${swipeDTO.likeCount}">8</span>
+      <span id="likeCount" class="mr-1 text-lg" >0</span>
       <span>💓</span>
     </div>
   </div>
 
   <!-- 댓글 -->
   <div class="bg-gray-100 p-3 rounded-lg mb-4">
-    <p id="comment" class="text-gray-700 text-sm" th:text="${swipeDTO.comment}">
-      기본 댓글 텍스트
+    <p id="comment" class="text-gray-700 text-sm">
+      Inline Comment
     </p>
   </div>
 
   <!-- 소스 코드 -->
   <div class="bg-gray-100 p-3 rounded-lg mb-4">
-    <pre id="sourceCode" class="text-gray-700 text-sm">[[|${swipeDTO.sourceCode}|]]</pre>
+    <pre id="sourceCode" class="text-gray-700 text-sm">SourceCode</pre>
   </div>
 
   <!-- 좋아요 버튼 -->
