@@ -95,7 +95,6 @@ class SwipeServiceTest {
                     .title("Random title" + i)
                     .text("Random text" + i)
                     .description("Random description" + i)
-                    .likeCount(0)
                     .build();
 
             postRepository.save(Post.testTransformEntity(postDto,findBoard,findMember));
@@ -107,16 +106,13 @@ class SwipeServiceTest {
     @DisplayName("Make Like Test")
     void likeTest() throws Exception{
 
-        MemberSignUpRequest requestDto;
-        PostDto postDto;
-        BoardDto boardDto;
-        Board findBoard;
         Member findMember;
         Post findPost;
 
         Random r = new Random(System.currentTimeMillis());
 
         for (int i = 0; i < 300; i++) {
+
         findMember = memberRepository.findById(r.nextLong(19)+1)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -133,12 +129,6 @@ class SwipeServiceTest {
             assertThat(likeEntity.getPost()).isEqualTo(findPost);
 
         }
-
-        Like like = likeRepository.findByLikeId(r.nextLong(299)+1).orElseThrow(EntityNotFoundException::new);
-
     }
-
-
-
 }
 

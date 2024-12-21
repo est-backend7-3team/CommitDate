@@ -2,10 +2,7 @@ package est.commitdate.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import java.time.LocalDateTime;
 
@@ -24,10 +21,11 @@ public class Like {
     private Long likeId;
 
     @ManyToOne
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Column(name = "status", nullable = false)
@@ -51,7 +49,20 @@ public class Like {
                 .build();
     }
 
+    public void restore() {
+        this.status = 1;
+    }
+
+    public void delete() {
+        this.status = 0;
+    }
+
+
+
+
 }
+
+
 
 
 
