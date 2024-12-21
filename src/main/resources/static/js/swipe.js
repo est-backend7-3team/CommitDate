@@ -4,18 +4,27 @@ import { Stack } from './stack.js';
 const backStack = new Stack();
 const frontStack = new Stack();
 let currentJson = null;
-
+const leftButton = document.getElementById('leftButton')
+const rightButton = document.getElementById('rightButton')
+const likeButton = document.getElementById('likeButton');
+const likeCount = document.getElementById('likeCount');
+const blockPostButton = document.getElementById('blockPostButton');
 
 document.addEventListener('DOMContentLoaded', () => {
+    //최초 데이터 불러오기
     loadPostData();
-    const likeButton = document.getElementById('likeButton');
-    let isClicked = false; // 초기 상태를 false로 설정
+
+
 
     // 좋아요 버튼 클릭 이벤트
-    likeButton.addEventListener('click', () => {
-        toggleLike(likeButton);
-    });
+    likeButton.addEventListener('click',()=>toggleLike(likeButton));
+    leftButton.addEventListener('click',prePostData);
+    rightButton.addEventListener('click',loadPostData);
+    blockPostButton.addEventListener('click',blockPost);
 });
+
+
+
 
 function toggleLike(likeButton) {
     const postId = document.getElementById('postId').textContent.trim();
@@ -43,10 +52,16 @@ function toggleLike(likeButton) {
                     likeButton.classList.remove("liked");
                     likeButton.style.backgroundColor = "";
                     likeButton.style.color = "";
+                    likeCount.textContent = Number(likeCount.textContent) - 1;
+                    currentJson.isLike = 0;
+                    currentJson.likeCount = Number(currentJson.likeCount) - 1;
                 } else {
                     likeButton.classList.add("liked");
                     likeButton.style.backgroundColor = "magenta";
                     likeButton.style.color = "white";
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                    currentJson.isLike = 1;
+                    currentJson.likeCount = Number(currentJson.likeCount) + 1;
                 }
             }
         })
@@ -82,11 +97,8 @@ function loadPostData() {
         currentJson = frontStack.pop(); //frontStack 의 헤드를 커런트로 옮기기
         mappingData(currentJson); // 화면에 쏴주기
     }
-
-
-
 }
-window.loadPostData = loadPostData;
+
 
 function prePostData(){
 
@@ -102,8 +114,8 @@ function prePostData(){
     }
 }
 
-window.prePostData = prePostData;
 
+//Json 요소를 페이지에 뿌려줌.
 function mappingData(data){
     // JSON 데이터로 th:text가 적용된 부분 업데이트
     document.getElementById('postId').textContent = data.id;
@@ -114,4 +126,23 @@ function mappingData(data){
     document.getElementById('likeCount').textContent = data.likeCount;
     document.getElementById('comment').textContent = data.comment;
     document.getElementById('sourceCode').textContent = data.sourceCode;
+    loadingLike(data.isLike);
+}
+
+
+//페이지에서 멤버와 포스트간 좋아요 표시
+function loadingLike(isLike){
+    if(isLike === 1){
+        likeButton.classList.add("liked");
+        likeButton.style.backgroundColor = "magenta";
+        likeButton.style.color = "white";
+    }else{
+        likeButton.classList.remove("liked");
+        likeButton.style.backgroundColor = "";
+        likeButton.style.color = "";
+    }
+}
+
+function blockPost(){
+
 }

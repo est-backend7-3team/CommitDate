@@ -6,8 +6,6 @@ import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import java.time.LocalDateTime;
 
-
-
 @Entity
 @Getter
 @Table(name = "Post_Like")
