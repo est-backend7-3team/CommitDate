@@ -52,14 +52,13 @@ public class SwipeService {
 
      public String toggleLike(Map<String, Object> postJson, HttpSession session) {
 
-        // 로그인한 사용자 정보 추출
-        Member member;
-        try { //비 로그인자는 여기서 Exception 이 터짐.
-            member = getLoggedInMember(session);
-        } catch (RuntimeException e){
-            log.info(e.getMessage());
+        // 로그인한 사용자 정보 추출 손님이면 여기서 member 가 null 임
+        Member member = getLoggedInMember(session);
+
+        if(member==null){ // 손님이면 권한없음
             return "AccessDenied";
         }
+
 
         // postId 추출 및 변환
         Long postId = Long.valueOf((String) postJson.get("postId"));
