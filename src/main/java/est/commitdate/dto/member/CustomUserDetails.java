@@ -18,23 +18,20 @@ public class CustomUserDetails implements OAuth2User {
     private Long id;
     private String name;
     private String email;
-
     private boolean additionalInfoCompleted;
+    private Map<String, Object> attributes;
 
     @Setter
     private String role;
 
-    private Map<String, Object> attributes;
-
     @Builder
     public CustomUserDetails(String name, String email, String role, boolean additionalInfoCompleted, Map<String, Object> attributes, Long id) {
+
         this.id = id;
         this.name = name;
         this.email = email;
         this.role = role;
-
         this.additionalInfoCompleted = additionalInfoCompleted;
-
         this.attributes = attributes;
 
     }
