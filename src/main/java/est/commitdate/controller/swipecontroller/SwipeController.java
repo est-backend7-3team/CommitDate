@@ -5,6 +5,7 @@ import est.commitdate.dto.swipe.SwipeDto;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.service.SwipeService;
+import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.*;
 public class SwipeController {
 
     private final SwipeService swipeService;
+    private final MemberService memberService;
 
 
     @GetMapping("")
@@ -53,11 +55,8 @@ public class SwipeController {
     public String getChoicePage(Model model, HttpSession session) {
 
         List<ChooseDto> swipeList = swipeService.getDummyChooseDTO(2);
-
         log.info("tmpList = {}", swipeList.toArray().length);
-
         model.addAttribute("swipeList", swipeList);
-
         log.info("chooseDTOList[0] = {}", swipeList.getFirst());
 
         return "view/choose";
@@ -67,7 +66,7 @@ public class SwipeController {
     @GetMapping("/jsons")
     public ResponseEntity<SwipeDto> getSwipeJson(HttpSession session) {
 
-        Member user = swipeService.getLoggedInMember(session);
+        Member user = memberService.getLoggedInMember(session);
         Post randomPost = swipeService.getRandomPost(499);
 
         SwipeDto swipeDto = SwipeDto.from(randomPost);
@@ -75,6 +74,7 @@ public class SwipeController {
         //손님이 아니라면 해당 포스트 좋아요 한 기록찾기
         if(user != null) {
             swipeDto.setIsLike(swipeService.isLike(user , randomPost));
+            swipeDto.setIsBlocked(swipeService.isBlocked(user , randomPost));
         }
 
         log.info("user = {}", user);
@@ -91,11 +91,29 @@ public class SwipeController {
 
         if(result.equals("CancelSuccess") || result.equals("LikeSuccess")){
             return ResponseEntity.ok("Success");
+        }else{
+            return ResponseEntity.status(401).body("AccessDenied.");
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/api/blockPost")
+    public ResponseEntity<String> blockPost(@RequestBody Map<String,Object> payload, HttpSession session) {
+
+        String result = swipeService.blockPost(payload, session);
+
+        log.info("result = {}", result);
+
+        if(result.equals("IgnoreSuccess")){
+            return ResponseEntity.ok("Success");
+        }else if(result.equals("CancelIgnore")) {
+            return ResponseEntity.ok("CancelSuccess");
+        }else {
+            return ResponseEntity.status(401).body("AccessDenied");
         }
 
-        log.info("AccessDenied");
-        return ResponseEntity.status(401).body("권한 없음.");
     }
+
 
 }
 

@@ -24,6 +24,7 @@ public class SwipeDto {
     private String responseCode;
     private Integer likeCount;
     private Integer isLike;
+    private Integer isBlocked;
 
 
     public static SwipeDto from(Post post){

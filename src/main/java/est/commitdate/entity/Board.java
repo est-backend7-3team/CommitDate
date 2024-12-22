@@ -63,7 +63,7 @@ public class Board {
 
 
     @Builder
-    public Board(Integer boardId, int status, String boardName) {
+    private Board(Integer boardId, int status, String boardName) {
         this.boardId = boardId;
         this.status = status;
         this.boardName = boardName;
