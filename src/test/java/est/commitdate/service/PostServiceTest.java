@@ -2,18 +2,18 @@ package est.commitdate.service;
 
 
 import est.commitdate.dto.board.BoardDto;
+import est.commitdate.dto.member.MemberSignUpRequest;
 import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.entity.Post;
+import est.commitdate.service.member.MemberService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -25,8 +25,12 @@ class PostServiceTest {
     private BoardService boardService;
     private BoardDto savedBoard;
 
+    @Autowired
+    private MemberService memberService;
+
     @BeforeEach
     void setUp() {
+      
         // 게시판 생성
         // BoardDto saveReq = new BoardDto(0,"자유게시판", 0);
         BoardDto saveReq = BoardDto.builder().boardName("자유게시판").build();
@@ -38,11 +42,22 @@ class PostServiceTest {
     @DisplayName("게시글생성테스트")
     void 게시글생성() throws Exception {
         //멤버 저장로직 넣어서 수정해야함
+
+        MemberSignUpRequest savedMember=MemberSignUpRequest.builder()
+                .email("test@gmail.com")
+                .username("test")
+                .password("12345678")
+                .nickname("11")
+                .phoneNumber("010-5398-4755")
+                .build();
+        memberService.signUp(savedMember);
+
+
         PostDto postSaveReq = PostDto.builder()
                 .boardId(savedBoard.getBoardId())
                 .title("1번 게시판의 게시글")
                 .description("1번째 게시글 입니다.")
-                .author("작성자")
+                .author("11")
                 .build();
 
         assertThat(postSaveReq.getPostId()).isEqualTo(null);
@@ -61,7 +76,10 @@ class PostServiceTest {
                 .boardId(savedBoard.getBoardId())
                 .title("1번 게시판의 게시글")
                 .description("1번째 게시글 입니다.")
+                .author("11")
                 .build();
+
+
 
         PostDto savedPost = postService.save(postSaveReq);
 
@@ -87,6 +105,7 @@ class PostServiceTest {
                 .boardId(savedBoard.getBoardId())
                 .title("1번 게시판의 게시글")
                 .description("1번째 게시글 입니다.")
+                .author("11")
                 .build();
         PostDto savedPost = postService.save(postSaveReq);
         Post findPost = postService.getPostById(savedPost.getPostId());

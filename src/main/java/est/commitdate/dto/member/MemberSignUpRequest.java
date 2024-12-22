@@ -1,6 +1,7 @@
 package est.commitdate.dto.member;
 
 import est.commitdate.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class MemberSignUpRequest {
     private final String nickname;
     private final String phoneNumber;
 
+    @Builder
     public MemberSignUpRequest(String email, String username, String password, String nickname, String phoneNumber) {
         this.email = email;
         this.username = username;
@@ -29,7 +31,7 @@ public class MemberSignUpRequest {
         return new Member(
                 email,
                 null,
-                "USER",
+                "ADMIN", //
                 username,
                 nickname,
                 phoneNumber,
