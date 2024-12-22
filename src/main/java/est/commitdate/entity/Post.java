@@ -70,7 +70,6 @@ public class Post {
         post.text = dto.getText();
         post.member = member;
         post.description = dto.getDescription();
-        post.member = member;
         return post;
     }
 
