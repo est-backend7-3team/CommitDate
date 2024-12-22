@@ -30,18 +30,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SwipeServiceTest {
 
     @Autowired
-    private SwipeService swipeService;
+    private MemberRepository memberRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private LikeRepository likeRepository;
+
     @Autowired
     private PostRepository postRepository;
-    @Autowired
-    private BoardRepository boardRepository;
+
 
 
     @BeforeAll
@@ -129,6 +125,7 @@ class SwipeServiceTest {
             assertThat(likeEntity.getPost()).isEqualTo(findPost);
 
         }
+
     }
 }
 
