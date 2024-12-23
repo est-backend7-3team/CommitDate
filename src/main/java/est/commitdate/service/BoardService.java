@@ -19,6 +19,7 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
 
+
     // 컨트롤러로 돌려주는 dto 값이 return type , 유저로 부터 받는 값이 인자값
     public BoardDto save(BoardDto boardDto) {
         //저장하는 것 뿐만 아니라 저장하고 dto로 반환하기
@@ -78,6 +79,7 @@ public class BoardService {
         }
         return boardDtos;
     }
+
 
 
 }
