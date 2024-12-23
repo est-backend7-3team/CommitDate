@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>간단한 Thymeleaf 예시</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<!-- Header 부분을 가져옴 -->
+<header th:replace="view/post/fragment/header :: header"></header>
+<body>
+    <aside>
+
+    </aside>
+    <!-- Content 부분을 가져옴 -->
+    <section class="content" th:replace="~{view/post/fragment/posts :: postList}"></section>
+
+    <!-- Footer 부분을 가져옴 -->
+    <footer th:replace="view/post/fragment/footer :: footer"></footer>
+</body>
+</html>
