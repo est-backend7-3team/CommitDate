@@ -1,7 +1,7 @@
 package est.commitdate.entity;
 
 
-import est.commitdate.dto.post.PostDto;
+import est.commitdate.dto.comment.CommentUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,6 +35,9 @@ public class Comment {
     @Column(name="created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name="update_at")
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
     @Column(name = "status", nullable = false)
     private int status = 1;
 
@@ -46,6 +48,19 @@ public class Comment {
         newComment.post = post;
         newComment.member = writer;
         return newComment;
+    }
+
+    public void update(CommentUpdateDto comment) {
+        content = comment.getContent();
+        updatedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.status = 0;
+    }
+
+    public void restore() {
+        this.status = 1;
     }
 
 }
