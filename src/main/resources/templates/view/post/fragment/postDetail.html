@@ -21,6 +21,9 @@
     <div class="post-detail">
         <!-- 게시글 제목 -->
         <h1 th:text="${postDetail.title}">Post Title</h1>
+        <a th:href="@{/choose/{id}(id=${postDetail.postId})}">
+            <li>간택하기</li>
+        </a>
 
         <!-- 게시글 작성자 및 작성 시간 -->
         <div class="post-info">
