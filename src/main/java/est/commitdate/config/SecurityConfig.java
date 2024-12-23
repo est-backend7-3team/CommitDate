@@ -34,7 +34,6 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/swipe", true)
                         .permitAll()
                 )
-                .userDetailsService(formUserDetailsService)
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/") // 로그아웃 후 루트 경로로 리디렉션
@@ -46,8 +45,9 @@ public class SecurityConfig {
                         auth ->
                                 auth
                                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                                        .requestMatchers("/login", "/sign-up", "/oauth2/additional-info").permitAll()
+                                        .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "update").permitAll()
                                         .requestMatchers("/member/**").permitAll() // 중복 확인 관련 API 허용
+                                        .requestMatchers("/member/profile").authenticated()
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")
                                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                         .requestMatchers("/board/**").permitAll()
@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService(memberRepository)))
                         .successHandler(successHandler))
+                .userDetailsService(formUserDetailsService)
                 .build();
     }
 
