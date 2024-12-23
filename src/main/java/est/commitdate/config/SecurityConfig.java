@@ -22,6 +22,7 @@ public class SecurityConfig {
 
     private final OAuth2SuccessHandler successHandler;
     private final FormUserDetailsService formUserDetailsService;
+    private final TempPasswordChangeHandler tempPasswordChangeHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MemberRepository memberRepository) throws Exception {
@@ -31,7 +32,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/process-login")
-                        .defaultSuccessUrl("/swipe", true)
+                        .successHandler(tempPasswordChangeHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -46,6 +47,7 @@ public class SecurityConfig {
                                 auth
                                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                                         .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "update").permitAll()
+                                        .requestMatchers("/member/forgot-password").permitAll()
                                         .requestMatchers("/member/**").permitAll() // 중복 확인 관련 API 허용
                                         .requestMatchers("/member/profile").authenticated()
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")

@@ -46,4 +46,5 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
     }
+
 }

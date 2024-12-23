@@ -124,7 +124,7 @@ public class MemberService {
 
         //이메일 발송
         String subject = "Commitdate 임시 비밀번호 안내";
-        String text = "임시비밀번호 : " + tempPassword;
+        String text = "임시비밀번호 : " + tempPassword + "\n임시비밀번호는 즉시 변경해주시기 바랍니다.";
         memberMailingService.sendMail(email, subject, text);
 
     }
