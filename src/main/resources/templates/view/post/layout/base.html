@@ -25,15 +25,7 @@
 </head>
 
 <body>
-<header>
-    <div class="logo">Fusion Platform</div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Explore</a>
-        <a href="#">Profile</a>
-    </nav>
-</header>
-
+<header th:replace="view/post/fragment/header :: header"></header>
 <main>
     <div>
         <form action="/board/saveView">

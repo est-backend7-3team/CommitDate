@@ -52,6 +52,7 @@ public class SecurityConfig {
                                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                                         .requestMatchers("/board/**").permitAll()
                                         .requestMatchers("/post/**").permitAll()
+                                        .requestMatchers("/post/test").permitAll()
                                         .requestMatchers("/swipe/**").permitAll()
                                         .anyRequest().authenticated()
                 )
