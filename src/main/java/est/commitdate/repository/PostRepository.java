@@ -12,10 +12,12 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-
     Optional<Post> findByPostId(Long id);
 
     List<Post> findByBoard(Board board);
+
+    //Swipe 에서만 쓰는 것.
+    Optional<Post> findByBoardBoardIdAndPostId(Integer boardId, Long postId);
 
     @Query(value = "SELECT * FROM Post WHERE status = 0" ,nativeQuery = true)
     Optional<Post> findDeletedPosts();
