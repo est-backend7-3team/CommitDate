@@ -24,10 +24,10 @@ public class FormUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username+"은 회원이 아닙니다."));
 
         return FormUserDetails.builder()
+                .id(member.getId())
                 .email(member.getEmail())
                 .password(member.getPassword())
                 .role(member.getRole())
-                .id(member.getId())
                 .build();
     }
 

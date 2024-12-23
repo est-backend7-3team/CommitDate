@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okky + Reddit + Instagram</title>
+    <!-- 스타일시트 연결 -->
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* 코드블럭 스타일 */
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        pre:empty {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="logo">Fusion Platform</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Explore</a>
+        <a href="#">Profile</a>
+    </nav>
+</header>
+
+<main>
+    <div>
+        <form action="/board/saveView">
+            <button>게시판생성</button>
+        </form>
+        <form action="/board/updateView/">
+            <button>게시판이름변경</button>
+        </form>
+        <form action="">
+            <button>게시판삭제</button>
+        </form>
+        <form action="/post/saveView">
+            <button>게시글생성</button>
+        </form>
+    </div>
+
+    <aside class="sidebar">
+        <h3>게시판 목록</h3>
+        <ul th:if="${#lists.isEmpty(boards)}">
+            <li>게시판이 비어있습니다.</li>
+            <li>게시판을 생성해 주세요</li>
+        </ul>
+        <ul th:unless="${#lists.isEmpty(boards)}" th:each="board : ${boards}">
+            <a th:href="@{/post/{id}(id=${board.boardId})}">
+                <li th:text="${board.boardName}">Board title</li>
+            </a>
+        </ul>
+    </aside>
+
+    <!-- 동적 콘텐츠 삽입 -->
+
+    <section class="content" th:replace="~{view/post/fragment/posts :: postList}"></section>
+</main>
+
+<footer>
+    &copy; 2024 Fusion Platform. All rights reserved.
+</footer>
+</body>
+</html>
+

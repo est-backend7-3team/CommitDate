@@ -7,12 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     Optional<Post> findByPostId(Long id);
+
+    List<Post> findByBoard(Board board);
 
     @Query(value = "SELECT * FROM Post WHERE status = 0" ,nativeQuery = true)
     Optional<Post> findDeletedPosts();
