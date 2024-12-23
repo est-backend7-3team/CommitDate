@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/COMMIT_DATE
-    username:
-    password:
+    username: root
+    password: 0114
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
@@ -16,7 +16,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: commitdate@gmail.com
-    password: ekflal7979!!
+    password: xfiw qthi aqnj owmo
     properties:
       mail:
         smtp:

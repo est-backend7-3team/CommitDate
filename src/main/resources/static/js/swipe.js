@@ -1,6 +1,5 @@
 import { Stack } from './stack.js';
 
-
 const backStack = new Stack();
 const frontStack = new Stack();
 let currentJson = null;
@@ -10,19 +9,16 @@ const likeButton = document.getElementById('likeButton');
 const likeCount = document.getElementById('likeCount');
 const blockPostButton = document.getElementById('blockPostButton');
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
     //최초 데이터 불러오기
     loadPostData();
-
 
     // 좋아요 버튼 클릭 이벤트
     likeButton.addEventListener('click',()=>toggleLike(likeButton));
     leftButton.addEventListener('click',prePostData);
     rightButton.addEventListener('click',loadPostData);
     blockPostButton.addEventListener('click',blockPost);
-});
+    });
 
 function blockPost(){
     const postId = document.getElementById('postId').textContent.trim();

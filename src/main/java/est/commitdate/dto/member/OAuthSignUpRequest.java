@@ -40,6 +40,7 @@ public class OAuthSignUpRequest {
                 LocalDateTime.now(),
                 1
         );
+
     }
 
 }

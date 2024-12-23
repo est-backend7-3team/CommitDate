@@ -38,5 +38,9 @@ public class MemberProfileRequest {
                     this.comment,
                     this.introduce
             );
+            // 비밀번호가 실제로 변경된 경우에만 isTempPassword 해제
+            if (encryptedPassword != null && !encryptedPassword.isBlank()) {
+                member.clearTempPassword();
+            }
         }
 }

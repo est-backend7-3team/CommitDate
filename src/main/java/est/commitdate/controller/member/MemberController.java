@@ -31,38 +31,41 @@ public class MemberController {
     public String showProfile(HttpSession session,
                               Model model) {
         Member member = memberService.getLoggedInMember(session);
-//        log.info(memberId.toString());
-//        // id를 가져오지 못하면 로그인되지 않은것이므로 로그인페이지 반환
-//        if (memberId == null) {
-//            return "redirect:/login";
-//        }
+
         // DB에서 회원 정보 조회 후 DTO 생성
         MemberProfileRequest profileRequest = memberService.getProfile(member.getId());
         model.addAttribute("memberProfileRequest", profileRequest);
 
+        model.addAttribute("originalNickname", member.getNickname());
+        model.addAttribute("originalPhoneNumber", member.getPhoneNumber());
+
         return "view/member/profile";
     }
-
-    /*
-    이부분이 어째서 Null 값으로 있는건지 확인이 필요함
-    @PostMapping("/profile")
-    public String updateProfile(@AuthenticationPrincipal Object principal,
-                                @ModelAttribute("memberProfileForm") MemberProfileRequest form) {
-        Long memberId = getMemberIdFromPrincipal(principal);
-     */
 
     @PostMapping("/profile")
     public String updateProfile(HttpSession session,
                                 @ModelAttribute("memberProfileRequest") MemberProfileRequest form) {
         Member member = memberService.getLoggedInMember(session);
-        // id를 가져오지 못하면 로그인되지 않은것이므로 로그인페이지 반환
-//        if (memberId == null) {
-//            return "redirect:/login";
-//        }
+
         memberService.updateProfile(member.getId(), form);
 
         return "redirect:/member/profile";
     }
+
+    @GetMapping("/forgot-password")
+    public String findForgotPassword() {
+        return "view/member/forgot-password";
+    }
+
+    // deprecated!!! RestController 로 대체했음.
+//    @PostMapping("/forgot-password")
+//    public String processForgotPassword(@RequestParam("email") String email) {
+//        // email이 존재하는 계정인지 확인 후 임시비밀번호 발송
+//        memberService.sendTemporaryPassword(email);
+//
+//        // 실행 후 로그인 페이지로 이동
+//        return "redirect:/login";
+//    }
 
 }
 
