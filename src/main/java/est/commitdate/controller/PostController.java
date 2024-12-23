@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Map;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -33,13 +35,31 @@ public class PostController {
         model.addAttribute("postDetail" , PostDetailDto.from(postService.getPostById(id)));
         return "view/post/fragment/postDetail";
     }
+
     // 전체 게시판 보기
     @GetMapping("")
-    public String postView(Model model) {
+    public String postView(Model model, HttpSession session) {
+        Map<String, String> loginInfo = memberService.getLoginInfo(session);
+        model.addAttribute("nickname" , loginInfo.get("nickname"));
+        model.addAttribute("role" , loginInfo.get("role"));
+
         model.addAttribute("post", postService.PostList());
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "Fusion Platform - Main Page");
-        return "view/post/base";
+        return "/view/post/layout/base";
+    }
+
+    @GetMapping("/test")
+    public String postTestView(Model model , HttpSession session) {
+        Map<String, String> loginInfo = memberService.getLoginInfo(session);
+
+        model.addAttribute("nickname" , loginInfo.get("nickname"));
+        model.addAttribute("role" , loginInfo.get("role"));
+
+        model.addAttribute("post", postService.PostList());
+        model.addAttribute("boards", boardService.BoardList());
+        model.addAttribute("pageTitle", "Fusion Platform - Main Page");
+        return "/view/post/layout/test";
     }
     // 해당하는 게시판의 게시글 목록 부르기
     @GetMapping("/{id}" )
@@ -47,7 +67,7 @@ public class PostController {
         model.addAttribute("post", postService.getPostsByBoardId(id));
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "Fusion Platform - Main Page");
-        return "view/post/base";
+        return "/view/post/layout/base";
     }
     //게시글 생성창
     @GetMapping("/saveView")
@@ -73,7 +93,6 @@ public class PostController {
         } else {
             return "redirect:/post";
         }
-
     }
     // 게시글 업데이트 요청
     @PostMapping("/update")
@@ -99,6 +118,5 @@ public class PostController {
         }
         return "redirect:/post";
     }
-
 
 }

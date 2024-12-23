@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -143,7 +146,9 @@ public class MemberService {
     public Member getLoggedInMember(HttpSession session) {
         // 시큐리티 컨텍스트에서 사용자 정보 추출
         SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
-
+        if(securityContext == null) {
+            log.info("비어있는거 맞음");
+        }
         //시큐리티에 머 있으면 즉, 로그인을 한 것이라면
         if (securityContext != null) {
             Object principal = securityContext.getAuthentication().getPrincipal();
@@ -156,9 +161,10 @@ public class MemberService {
             }else{//로그인은 했는데 이상한것. RuntimeException 터트림.
                 throw new RuntimeException("Unauthorized: Unable to identify the user");
             }
+        } else {
+            //손님 유저
+            return null;
         }
-        //손님 유저
-        return null;
     }
 
     // 해당 계정의 정보가 ADMIN인지, MEMBER인지 반환
@@ -170,6 +176,20 @@ public class MemberService {
         } else {
             return false;
         }
+    }
+
+    // 로그인 되어있는 사용자의 닉네임과, 권한 반환
+    public Map<String, String> getLoginInfo(HttpSession session) {
+        Member findmember = getLoggedInMember(session);
+        Map<String, String> loginInfo = new HashMap<>();
+        if (findmember == null) {
+            loginInfo.put("nickname", null);
+            loginInfo.put("role", null);
+        } else {
+            loginInfo.put("nickname", findmember.getNickname());
+            loginInfo.put("role", findmember.getRole());
+        }
+        return loginInfo;
     }
 
 }
