@@ -30,7 +30,7 @@ public class PostService {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
 
         Member findMember = memberService.getMemberByNickname(postDto.getAuthor());
-        log.info("찾은사람" + findBoard.toString());
+        log.info("찾은사람" + findMember.getNickname());
         return PostDto.from(postRepository.save(Post.of(postDto, findBoard, findMember))) ;
     }
 

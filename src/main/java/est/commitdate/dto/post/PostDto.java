@@ -35,7 +35,7 @@ public class PostDto {
                 .description(post.getDescription())
 //                .author(post.getMember().getUsername())
                 .author("11")
-                .likeCount(post.getLikeCount())
+                .likeCount(post.updateLikeCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .status(post.getStatus())
