@@ -27,7 +27,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "post_id" , nullable = false)
     private Long postId;
 
     @ManyToOne
@@ -59,8 +59,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
 
-//    @Column(name = "like_count" , nullable = false)
-//    private Integer likeCount = 0;
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 
 
     @Builder//Test 짤 때 필요
@@ -88,8 +89,6 @@ public class Post {
         post.title = dto.getTitle();
         post.text = dto.getText();
         post.description = dto.getDescription();
-//        post.likeCount = dto.getLikeCount();
-
         return post;
     }
 
@@ -105,6 +104,10 @@ public class Post {
 
     public void restore() {
         this.status = 1;
+    }
+
+    public Integer commentCount() {
+        return this.comments.size();
     }
 
 

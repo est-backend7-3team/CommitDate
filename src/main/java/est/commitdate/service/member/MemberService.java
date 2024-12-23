@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -57,11 +58,19 @@ public class MemberService {
 
         String encryptedPassword = passwordEncoder.encode(request.getPassword());
 
-        // MemberSignUpRequest 에서 엔티티 생성
-        Member member = request.toEntity(encryptedPassword);
+        // 만약 닉네임이 admin이라면 admin계정생성
+        if (request.getNickname().equals("ADMIN")) {
+            log.info("관리자 계정 생성");
+            Member admin = request.toAdminEntity(encryptedPassword);
+            memberRepository.save(admin);
+        } else {
+            // MemberSignUpRequest 에서 엔티티 생성
+            Member member = request.toEntity(encryptedPassword);
+            log.info("일반 회원 계정 생성");
+            memberRepository.save(member);
+        }
 
-        memberRepository.save(member);
-        System.out.println(" 회원가입 완료! : " + member.toString());
+//        System.out.println(" 회원가입 완료! : " + member.toString());
     }
 
     @Transactional
@@ -115,10 +124,19 @@ public class MemberService {
             }
         }
         //손님 유저
-        log.info("Anonymous");
         return null;
     }
 
 
+    // 해당 계정의 정보가 ADMIN인지, MEMBER인지 반환
+    public Boolean AuthorizationCheck(HttpSession session) {
+        Member LoginMember = getLoggedInMember(session);
+        String role = LoginMember.getRole(); //admin, member
+        if (role.equals("ADMIN")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
