@@ -1,29 +1,20 @@
 package est.commitdate.controller.swipecontroller;
 
-import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
+import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
-import est.commitdate.repository.PostRepository;
 import est.commitdate.service.SwipeService;
-import jakarta.persistence.EntityNotFoundException;
+import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
-import java.security.Principal;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @Controller
@@ -32,36 +23,40 @@ import java.util.Random;
 public class SwipeController {
 
     private final SwipeService swipeService;
-    private final PostRepository postRepository;
-
+    private final MemberService memberService;
 
 
     @GetMapping("")
-    public String getSwipePage(Model model) {
+    public String getSwipePage() {
 
-        Random r = new Random(System.currentTimeMillis());
+//        //이용 유저 정보, 랜더링할 Entity Post 객체 준비.
+//        Member user = swipeService.getLoggedInMember(session);
+//        Post randomPost = swipeService.getRandomPost(499);
 
-        Post findPost = postRepository.findByPostId(r.nextLong(60)+1).orElseThrow(
-                () -> new EntityNotFoundException("Post not found")
-        );
+//        //View 랜더링 준비
+//        SwipeDto swipeDto = SwipeDto.from(randomPost);
 
-        SwipeDto swipeDto = SwipeDto.from(findPost);
+//        //손님이 아니라면 해당 포스트 좋아요 한 기록찾기
+//        if(user != null) {
+//            swipeDto.setIsLike(swipeService.isLike(user , randomPost));
+//        }
+//
+//        log.info("user = {}", user);
+//        log.info("swipeDto = {}", swipeDto);
+//        model.addAttribute("swipeDTO", swipeDto);
 
-        model.addAttribute("swipeDTO", swipeDto);
+
 
         return "view/swipe";
     }
 
 
     @GetMapping("/choose")
-    public String getChoicePage(Model model) {
+    public String getChoicePage(Model model, HttpSession session) {
 
         List<ChooseDto> swipeList = swipeService.getDummyChooseDTO(2);
-
         log.info("tmpList = {}", swipeList.toArray().length);
-
         model.addAttribute("swipeList", swipeList);
-
         log.info("chooseDTOList[0] = {}", swipeList.getFirst());
 
         return "view/choose";
@@ -69,43 +64,57 @@ public class SwipeController {
 
     @ResponseBody
     @GetMapping("/jsons")
-    public ResponseEntity<SwipeDto> getSwipeJson() {
+    public ResponseEntity<SwipeDto> getSwipeJson(HttpSession session) {
 
-        Random r = new Random(System.currentTimeMillis());
+        Member user = memberService.getLoggedInMember(session);
+        Post randomPost = swipeService.getRandomPost(499);
 
-        Post findPost = postRepository.findByPostId(r.nextLong(59)+1).orElseThrow(
-                () -> new EntityNotFoundException("Post not found")
-        );
-        SwipeDto swipeDto = SwipeDto.from(findPost);
+        SwipeDto swipeDto = SwipeDto.from(randomPost);
+
+        //손님이 아니라면 해당 포스트 좋아요 한 기록찾기
+        if(user != null) {
+            swipeDto.setIsLike(swipeService.isLike(user , randomPost));
+            swipeDto.setIsBlocked(swipeService.isBlocked(user , randomPost));
+        }
+
+        log.info("user = {}", user);
+        log.info("swipeDto = {}", swipeDto);
 
         return ResponseEntity.ok(swipeDto);
     }
 
     @ResponseBody
-    @PostMapping("/api/like")
-    public ResponseEntity<String> sendLike(@RequestBody String postId, HttpSession session) {
+    @PostMapping("/api/toggleLike")
+    public ResponseEntity<String> toggleLike(@RequestBody Map<String,Object> payload, HttpSession session) {
 
-        // 세션에서 SPRING_SECURITY_CONTEXT 속성 가져오기
-        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String result = swipeService.toggleLike(payload, session);
 
+        if(result.equals("CancelSuccess") || result.equals("LikeSuccess")){
+            return ResponseEntity.ok("Success");
+        }else{
+            return ResponseEntity.status(401).body("AccessDenied.");
+        }
+    }
 
-        log.info("postId = {}", postId);
+    @ResponseBody
+    @PostMapping("/api/blockPost")
+    public ResponseEntity<String> blockPost(@RequestBody Map<String,Object> payload, HttpSession session) {
 
-        if(securityContext != null){
-            CustomUserDetails UserDetails = (CustomUserDetails) securityContext.getAuthentication().getPrincipal();
-            log.info("UserDetails.getEmail() = {}", UserDetails.getEmail());
+        String result = swipeService.blockPost(payload, session);
+
+        log.info("result = {}", result);
+
+        if(result.equals("IgnoreSuccess")){
+            return ResponseEntity.ok("Success");
+        }else if(result.equals("CancelIgnore")) {
+            return ResponseEntity.ok("CancelSuccess");
+        }else {
+            return ResponseEntity.status(401).body("AccessDenied");
         }
 
-//        if (authentication == null) {
-//            log.info("user is null");
-//            return ResponseEntity.status(401).body("로그인이 필요합니다.");
-//        }
-
-
-
-        return ResponseEntity.ok("test Ok");
-
     }
+
+
 }
 
 

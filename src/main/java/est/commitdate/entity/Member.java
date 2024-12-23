@@ -70,7 +70,8 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Like> likes;
 
-
+    @OneToMany(mappedBy = "member")
+    private List<Ignore> ignores;
 
 
     public Member(String email,

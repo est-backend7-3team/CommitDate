@@ -13,9 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -32,25 +30,28 @@ class PostServiceTest {
 
     @BeforeEach
     void setUp() {
+      
         // 게시판 생성
         // BoardDto saveReq = new BoardDto(0,"자유게시판", 0);
         BoardDto saveReq = BoardDto.builder().boardName("자유게시판").build();
         savedBoard = boardService.save(saveReq);
+
     }
 
     @Test
     @DisplayName("게시글생성테스트")
     void 게시글생성() throws Exception {
         //멤버 저장로직 넣어서 수정해야함
+
         MemberSignUpRequest savedMember=MemberSignUpRequest.builder()
                 .email("test@gmail.com")
                 .username("test")
                 .password("12345678")
                 .nickname("11")
                 .phoneNumber("010-5398-4755")
-
                 .build();
         memberService.signUp(savedMember);
+
 
         PostDto postSaveReq = PostDto.builder()
                 .boardId(savedBoard.getBoardId())
@@ -77,6 +78,7 @@ class PostServiceTest {
                 .description("1번째 게시글 입니다.")
                 .author("11")
                 .build();
+
 
 
         PostDto savedPost = postService.save(postSaveReq);

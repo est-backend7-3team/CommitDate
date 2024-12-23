@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -125,6 +126,7 @@ public class MemberService {
         //손님 유저
         return null;
     }
+
 
     // 해당 계정의 정보가 ADMIN인지, MEMBER인지 반환
     public Boolean AuthorizationCheck(HttpSession session) {
