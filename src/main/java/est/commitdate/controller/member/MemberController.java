@@ -30,7 +30,7 @@ public class MemberController {
     @GetMapping("/profile")
     public String showProfile(HttpSession session,
                               Model model) {
-        Member member = swipeService.getLoggedInMember(session);
+        Member member = memberService.getLoggedInMember(session);
 //        log.info(memberId.toString());
 //        // id를 가져오지 못하면 로그인되지 않은것이므로 로그인페이지 반환
 //        if (memberId == null) {
@@ -54,7 +54,7 @@ public class MemberController {
     @PostMapping("/profile")
     public String updateProfile(HttpSession session,
                                 @ModelAttribute("memberProfileRequest") MemberProfileRequest form) {
-        Member member = swipeService.getLoggedInMember(session);
+        Member member = memberService.getLoggedInMember(session);
         // id를 가져오지 못하면 로그인되지 않은것이므로 로그인페이지 반환
 //        if (memberId == null) {
 //            return "redirect:/login";
