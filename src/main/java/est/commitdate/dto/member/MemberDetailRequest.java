@@ -1,11 +1,15 @@
 package est.commitdate.dto.member;
 
 import est.commitdate.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberDetailRequest {
 
     private String email;

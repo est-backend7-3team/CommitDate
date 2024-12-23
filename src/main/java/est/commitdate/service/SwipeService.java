@@ -1,6 +1,5 @@
 package est.commitdate.service;
 
-
 import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.member.FormUserDetails;
 import est.commitdate.dto.post.PostDto;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.*;
 
 @Slf4j
@@ -27,16 +25,11 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SwipeService {
 
-
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
     private final IgnoreRepository ignoreRepository;
     private final MemberService memberService;
-
-
-
-
 
     //좋아요 버튼 토글기능
     public String toggleLike(Map<String, Object> postJson, HttpSession session) {
@@ -53,12 +46,8 @@ public class SwipeService {
         // postId 추출 및 변환
         Long postId = Long.valueOf((String) postJson.get("postId"));
 
-
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
-
-
 
         // 해당 정보의 status 가 1인 로우가 있다면, 좋아요를 취소
         // (Member = LoggedMember, Post = NowPost, Status = 1) 조회
@@ -205,4 +194,5 @@ public class SwipeService {
 
         return chooseDTOList;
     }
+
 }
