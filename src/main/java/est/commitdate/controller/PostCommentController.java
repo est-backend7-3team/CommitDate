@@ -1,6 +1,9 @@
 package est.commitdate.controller;
 
 
+import est.commitdate.dto.comment.CommentUpdateDto;
+import est.commitdate.dto.post.PostUpdateDto;
+import est.commitdate.entity.Comment;
 import est.commitdate.entity.Member;
 import est.commitdate.service.CommentService;
 import est.commitdate.service.PostService;
@@ -34,5 +37,16 @@ public class PostCommentController {
         return "redirect:/post/view/"+id;
     }
 
+    @PostMapping("/comment/update")
+    public String CommentUpdate(PostUpdateDto dto) {
+        return "redirect:/post";
+
+    }
+
+    @PostMapping("/comment/{postId}/delete/{id}")
+    public String deleteComment(@PathVariable Long postId,@PathVariable Long id) {
+        commentService.delete(id);
+        return "redirect:/post/view/"+postId;
+    }
 
 }
