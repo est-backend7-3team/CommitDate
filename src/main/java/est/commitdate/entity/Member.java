@@ -72,6 +72,7 @@ public class Member {
 
 
 
+
     public Member(String email,
                   String provider,
                   String role,

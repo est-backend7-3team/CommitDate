@@ -1,11 +1,13 @@
 package est.commitdate.dto.post;
 
+import est.commitdate.entity.Comment;
 import est.commitdate.entity.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,6 +19,7 @@ public class PostDetailDto {
     private String text;
     private String author;
     private LocalDateTime createdAt;
+    private List<Comment> comments;
     private Integer likeCount;
 
 
@@ -29,6 +32,7 @@ public class PostDetailDto {
                 .description(post.getDescription())
                 .author(post.getMember().getUsername())
                 .createdAt(post.getCreatedAt())
+                .comments(post.getComments())
                 .build();
     }
 }

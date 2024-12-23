@@ -31,6 +31,23 @@ public class MemberSignUpRequest {
         return new Member(
                 email,
                 null,
+                "MEMBER", //
+                username,
+                nickname,
+                phoneNumber,
+                encryptedPassword,
+                true, // 폼유저 기본값
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                1
+        );
+    }
+
+    // Admin 엔티티 생성 메서드
+    public Member toAdminEntity(String encryptedPassword) {
+        return new Member(
+                email,
+                null,
                 "ADMIN", //
                 username,
                 nickname,
