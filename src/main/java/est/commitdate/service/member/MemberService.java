@@ -1,5 +1,6 @@
 package est.commitdate.service.member;
 
+import est.commitdate.dto.member.MemberProfileRequest;
 import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.member.FormUserDetails;
 import est.commitdate.dto.member.MemberDetailRequest;
@@ -15,8 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import java.util.Random;
 
 
 @Service
@@ -26,6 +26,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MemberMailingService memberMailingService;
 
     public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElseThrow(
@@ -74,35 +75,68 @@ public class MemberService {
     }
 
     @Transactional
-    public Member login(String email, String rawPassword) {
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
-
-        if (!passwordEncoder.matches(rawPassword, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
-        return member;
-    }
-
-    @Transactional
-    public void updateMemberDetails(Long memberId, MemberDetailRequest request) {
-        Member member = getMemberById(memberId);
-
-        // 비밀번호 변경 여부 확인
-        String encryptedPassword = null;
-        if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            encryptedPassword = passwordEncoder.encode(request.getPassword());
-        }
-
-        // DTO에서 엔티티로 값 적용
-        request.applyToMember(member, encryptedPassword);
-    }
-
-    @Transactional
     public void delete(Long id) {
         Member findMember = getMemberById(id);
         findMember.delete();
         System.out.println("탈퇴 완료." + findMember.getStatus()+ " " + findMember.getUsername());
+    }
+
+    @Transactional
+    public MemberProfileRequest getProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("해당 회원을 찾을 수 없습니다. ID=" + memberId));
+
+        return MemberProfileRequest.fromMember(member);
+    }
+
+    @Transactional
+    public void updateProfile(Long memberId, MemberProfileRequest form) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException("해당 회원을 찾을 수 없습니다. ID=" + memberId));
+
+        // 새 비밀번호가 입력되었을 때만 암호화
+        String encryptedPassword = null;
+        if (form.getPassword() != null && !form.getPassword().isBlank()) {
+            encryptedPassword = passwordEncoder.encode(form.getPassword());
+        }
+
+        form.applyToMember(member, encryptedPassword);
+    }
+
+    //비밀번호 찾기(임시비밀번호발급)
+    public void sendTemporaryPassword(String email) {
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("해당 이메일이 존재하지 않습니다."));
+
+        // 임시비밀번호 생성
+        String tempPassword = generateRandomPassword();
+
+        // 생성된 임시 비밀번호로 해당 계정의 비밀번호 변경
+        String encodedPassword = passwordEncoder.encode(tempPassword);
+        member.changeTempPassword(encodedPassword);
+
+        // DB에 반영
+        memberRepository.save(member);
+
+        //이메일 발송
+        String subject = "Commitdate 임시 비밀번호 안내";
+        String text = "임시비밀번호 : " + tempPassword;
+        memberMailingService.sendMail(email, subject, text);
+
+    }
+
+    //랜덤한 임시비밀번호 발급메서드 (10자리/대소문자+숫자+특수문자)
+    private String generateRandomPassword() {
+
+        int length = 10;
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            sb.append(chars.charAt(random.nextInt(chars.length())));
+        }
+        return sb.toString();
     }
 
     //세션의 로그인 정보 추출
@@ -126,7 +160,6 @@ public class MemberService {
         //손님 유저
         return null;
     }
-
 
     // 해당 계정의 정보가 ADMIN인지, MEMBER인지 반환
     public Boolean AuthorizationCheck(HttpSession session) {

@@ -64,6 +64,8 @@ public class Member {
     @Column(nullable = false)
     private boolean additionalInfoCompleted = false;
 
+    private boolean isTempPassword = false;
+
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
 
@@ -72,7 +74,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Ignore> ignores;
-
 
     public Member(String email,
                   String provider,
@@ -114,6 +115,15 @@ public class Member {
         this.comment = comment;
         this.introduce = introduce;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public void changeTempPassword(String encodedPassword) {
+        this.password = encodedPassword;
+        this.isTempPassword = true;
+    }
+
+    public void clearTempPassword() {
+        this.isTempPassword = false;
     }
 
     // 다음의 정보들은 회원가입 시 기본값으로 적용시킴
