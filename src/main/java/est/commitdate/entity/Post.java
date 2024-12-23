@@ -57,7 +57,7 @@ public class Post {
     private int status = 1;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes;
+    private List<Like> likes = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "post")
@@ -71,6 +71,7 @@ public class Post {
         post.title = dto.getTitle();
         post.text = dto.getText();
         post.description = dto.getDescription();
+        post.member = member;
         return post;
     }
 

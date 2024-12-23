@@ -30,7 +30,7 @@ public class PostDetailDto {
                 .title(post.getTitle())
                 .text(post.getText())
                 .description(post.getDescription())
-                .author(post.getMember().getUsername())
+                .author(post.getMember().getNickname())
                 .createdAt(post.getCreatedAt())
                 .comments(post.getComments())
                 .build();
