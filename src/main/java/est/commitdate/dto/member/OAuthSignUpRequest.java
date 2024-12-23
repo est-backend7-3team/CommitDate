@@ -30,7 +30,7 @@ public class OAuthSignUpRequest {
         return new Member(
                 email,
                 provider,
-                "USER",
+                "MEMBER",
                 "Pending",
                 "Pending",
                 "Pending",

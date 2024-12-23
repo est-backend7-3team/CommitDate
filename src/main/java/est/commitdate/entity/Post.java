@@ -13,6 +13,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "post_id" , nullable = false)
     private Long postId;
 
     @ManyToOne
@@ -46,9 +47,6 @@ public class Post {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "like_count" , nullable = false)
-    private Integer likeCount = 0;
-
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -58,8 +56,12 @@ public class Post {
     @Column(name = "status", nullable = false )
     private int status = 1;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
+
+
     @OneToMany(mappedBy = "post")
-    private List<Like> likes;
+    private List<Comment> comments;
 
 
     @Builder//Test 짤 때 필요
@@ -68,7 +70,6 @@ public class Post {
         post.board = board;
         post.title = dto.getTitle();
         post.text = dto.getText();
-        post.member = member;
         post.description = dto.getDescription();
         post.member = member;
         return post;
@@ -89,18 +90,12 @@ public class Post {
         post.title = dto.getTitle();
         post.text = dto.getText();
         post.description = dto.getDescription();
-        post.likeCount = dto.getLikeCount();
-
-
-        /*
-        private Member member;
-        private String title;
-        private String text;
-        private String description;
-        */
-
-
         return post;
+    }
+
+//     동적으로 likeCount 업데이트
+    public Integer updateLikeCount() {
+        return likes.size();
     }
 
 
@@ -111,6 +106,12 @@ public class Post {
     public void restore() {
         this.status = 1;
     }
+
+    public Integer commentCount() {
+        return this.comments.size();
+    }
+
+
 
 
 }

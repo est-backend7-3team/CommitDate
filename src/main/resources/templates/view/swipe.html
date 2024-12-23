@@ -6,14 +6,14 @@
   <title>커밋데이트</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script th:src="@{/js/swipe.js}" type="module" defer></script>
+  <script src="/js/swipe.js" type="module" defer></script>
   <style>
   </style>
 </head>
 <body class="bg-green-300 min-h-screen flex justify-center items-center relative">
 
 <!-- 왼쪽 버튼 (흰색 카드 외부, 녹색 배경 위) -->
-<button onclick="prePostData()" class="btn btn-circle btn-ghost absolute left-5 top-3/5">
+<button id = 'leftButton' class="btn btn-circle btn-ghost absolute left-5 top-3/5">
   <svg xmlns="http://www.w3.org/2000/svg"
        class="h-10 w-10"
        fill="none"
@@ -29,10 +29,11 @@
 <!--btn btn-circle btn-ghost absolute left-5 top-1/2 -translate-y-1/2 active:transform-none-->
 <!-- 흰색 카드 영역 -->
 <div class="bg-white p-4 rounded-lg shadow-lg w-96 mx-10">
-  <div id="postId" hidden="hidden" th:text="${swipeDTO.id}"></div>
+<!--포스트 번호-->
+  <div id="postId" hidden="hidden">0</div>
   <!-- 제목 -->
   <div class="flex items-center justify-between mb-4">
-    <h1 id="title" class="font-bold text-lg" th:text="${swipeDTO.title}">Singleton Coders</h1>
+    <h1 id="title" class="font-bold text-lg" >Title</h1>
     <!-- 톱니바퀴 버튼: 클릭 시 드로어 오픈 -->
     <label for="settings-drawer" class="btn btn-sm btn-circle btn-ghost cursor-pointer">⚙️</label>
   </div>
@@ -41,29 +42,29 @@
   <div class="flex items-center mb-4">
     <div class="avatar">
       <div class="w-12 rounded-full">
-        <img id="profileImageURL" th:src="${swipeDTO.profileImageURL}" alt="User Avatar">
+        <img id="profileImageURL" alt="User Avatar">
       </div>
     </div>
     <div class="ml-3">
-      <p id="userName" class="font-semibold" th:text="${swipeDTO.userName}">k User</p>
-      <p id="introduce" class="text-gray-500 text-sm" th:text="${swipeDTO.introduce}">소개글</p>
+      <p id="userName" class="font-semibold" >UserName</p>
+      <p id="introduce" class="text-gray-500 text-sm" >Introduce</p>
     </div>
     <div class="ml-auto flex items-center">
-      <span id="likeCount" class="mr-1 text-lg" th:text="${swipeDTO.likeCount}">8</span>
+      <span id="likeCount" class="mr-1 text-lg" >0</span>
       <span>💓</span>
     </div>
   </div>
 
   <!-- 댓글 -->
   <div class="bg-gray-100 p-3 rounded-lg mb-4">
-    <p id="comment" class="text-gray-700 text-sm" th:text="${swipeDTO.comment}">
-      기본 댓글 텍스트
+    <p id="comment" class="text-gray-700 text-sm">
+      Inline Comment
     </p>
   </div>
 
   <!-- 소스 코드 -->
   <div class="bg-gray-100 p-3 rounded-lg mb-4">
-    <pre id="sourceCode" class="text-gray-700 text-sm">[[|${swipeDTO.sourceCode}|]]</pre>
+    <pre id="sourceCode" class="text-gray-700 text-sm">SourceCode</pre>
   </div>
 
   <!-- 좋아요 버튼 -->
@@ -75,7 +76,7 @@
 </div>
 
 <!-- 오른쪽 버튼 (흰색 카드 외부, 녹색 배경 위) -->
-<button onclick="loadPostData()" class="btn btn-circle btn-ghost absolute right-5 top-3/5">
+<button id = "rightButton" class="btn btn-circle btn-ghost absolute right-5 top-3/5">
   <svg xmlns="http://www.w3.org/2000/svg"
        class="h-10 w-10"
        fill="none"
@@ -95,7 +96,7 @@
   <label for="settings-drawer" class="drawer-overlay"></label>
   <ul class="menu p-4 w-80 bg-base-100 text-base-content">
     <li><a>해당 게시글 보기</a></li>
-    <li><a>해당 게시글 차단</a></li>
+    <li><a id = "blockPostButton">해당 게시글 차단</a></li>
     <li><a>로그인</a></li>
   </ul>
 </div>

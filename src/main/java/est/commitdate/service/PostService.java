@@ -8,6 +8,7 @@ import est.commitdate.entity.Post;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.PostRepository;
 import est.commitdate.service.member.MemberService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +30,16 @@ public class PostService {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
 
         Member findMember = memberService.getMemberByNickname(postDto.getAuthor());
-        log.info("찾은사람" + findBoard.toString());
+        log.info("찾은사람" + findMember.getNickname());
         return PostDto.from(postRepository.save(Post.of(postDto, findBoard, findMember))) ;
     }
 
-    // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
+    // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void update(PostUpdateDto postUpdateDto) {
         Post findPost = getPostById(postUpdateDto.getPostId());
         findPost.update(postUpdateDto);
     }
-    // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
+    // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void delete(Long id) {
         Post findPost = getPostById(id);
         findPost.delete();
@@ -62,7 +63,7 @@ public class PostService {
                 );
     }
 
-
+    // 모든 게시판의 글들을 불러오기
     public List<PostDto> PostList() {
         List<Post> posts = postRepository.findAll();
         List<PostDto> postDtos = new ArrayList<>();
@@ -72,5 +73,31 @@ public class PostService {
         }
         return postDtos;
     }
+    // 게시판에 해당되는 글들만 불러오기
+    public List<PostDto> getPostsByBoardId(Integer boardId) {
+        log.info("boardId = " + boardId);
+        Board findBoard = boardService.getBoardById(boardId);
+        List<Post> BoardPosts = postRepository.findByBoard(findBoard);
+        List<PostDto> postDtos = new ArrayList<>();
+        for (Post post : BoardPosts) {
+            PostDto findDTO = PostDto.from(post);
+            postDtos.add(findDTO);
+        }
+        return postDtos;
+    }
+
+    // post의 작성자를 찾고 현재 로그인 되어있는 사용자와 비교하여 일치하면 true
+    public Boolean postAuthorizationCheck(Long id, HttpSession session) {
+        String PostWriter = getPostById(id).getMember().getNickname();
+        String loginMemberNickname = memberService.getLoggedInMember(session).getNickname();
+        if(PostWriter.equals(loginMemberNickname)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
 
 }

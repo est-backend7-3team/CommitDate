@@ -19,10 +19,12 @@ public class SwipeDto {
     private String profileImageURL;
     private String userName;
     private String introduce;
-    private Integer likeCount;
     private String comment;
     private String sourceCode;
     private String responseCode;
+    private Integer likeCount;
+    private Integer isLike;
+    private Integer isBlocked;
 
 
     public static SwipeDto from(Post post){
@@ -32,11 +34,12 @@ public class SwipeDto {
                 .profileImageURL(post.getMember().getProfileImage())
                 .userName(post.getMember().getUsername())
                 .introduce(post.getMember().getIntroduce())
-                .likeCount(post.getLikeCount())
+                .likeCount(post.updateLikeCount())
                 .comment(post.getMember().getComment())
                 .sourceCode(post.getText())
                 .build();
     }
+
 
 
 

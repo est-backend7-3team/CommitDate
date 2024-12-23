@@ -1,6 +1,7 @@
 package est.commitdate.dto.member;
 
 import est.commitdate.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class MemberSignUpRequest {
     private final String nickname;
     private final String phoneNumber;
 
+    @Builder
     public MemberSignUpRequest(String email, String username, String password, String nickname, String phoneNumber) {
         this.email = email;
         this.username = username;
@@ -29,7 +31,24 @@ public class MemberSignUpRequest {
         return new Member(
                 email,
                 null,
-                "USER",
+                "MEMBER", //
+                username,
+                nickname,
+                phoneNumber,
+                encryptedPassword,
+                true, // 폼유저 기본값
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                1
+        );
+    }
+
+    // Admin 엔티티 생성 메서드
+    public Member toAdminEntity(String encryptedPassword) {
+        return new Member(
+                email,
+                null,
+                "ADMIN", //
                 username,
                 nickname,
                 phoneNumber,

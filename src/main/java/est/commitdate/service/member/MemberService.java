@@ -1,18 +1,27 @@
 package est.commitdate.service.member;
 
 import est.commitdate.dto.member.MemberProfileRequest;
+import est.commitdate.dto.member.CustomUserDetails;
+import est.commitdate.dto.member.FormUserDetails;
+import est.commitdate.dto.member.MemberDetailRequest;
 import est.commitdate.dto.member.MemberSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.exception.*;
 import est.commitdate.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Random;
 
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -50,11 +59,19 @@ public class MemberService {
 
         String encryptedPassword = passwordEncoder.encode(request.getPassword());
 
-        // MemberSignUpRequest 에서 엔티티 생성
-        Member member = request.toEntity(encryptedPassword);
+        // 만약 닉네임이 admin이라면 admin계정생성
+        if (request.getNickname().equals("ADMIN")) {
+            log.info("관리자 계정 생성");
+            Member admin = request.toAdminEntity(encryptedPassword);
+            memberRepository.save(admin);
+        } else {
+            // MemberSignUpRequest 에서 엔티티 생성
+            Member member = request.toEntity(encryptedPassword);
+            log.info("일반 회원 계정 생성");
+            memberRepository.save(member);
+        }
 
-        memberRepository.save(member);
-        System.out.println(" 회원가입 완료! : " + member.toString());
+//        System.out.println(" 회원가입 완료! : " + member.toString());
     }
 
     @Transactional
@@ -122,7 +139,37 @@ public class MemberService {
         return sb.toString();
     }
 
+    //세션의 로그인 정보 추출
+    public Member getLoggedInMember(HttpSession session) {
+        // 시큐리티 컨텍스트에서 사용자 정보 추출
+        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
 
+        //시큐리티에 머 있으면 즉, 로그인을 한 것이라면
+        if (securityContext != null) {
+            Object principal = securityContext.getAuthentication().getPrincipal();
+            if (principal instanceof CustomUserDetails customUser) {
+                return memberRepository.findById(customUser.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+            } else if (principal instanceof FormUserDetails formUser) {
+                return memberRepository.findById(formUser.getId())
+                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+            }else{//로그인은 했는데 이상한것. RuntimeException 터트림.
+                throw new RuntimeException("Unauthorized: Unable to identify the user");
+            }
+        }
+        //손님 유저
+        return null;
+    }
 
+    // 해당 계정의 정보가 ADMIN인지, MEMBER인지 반환
+    public Boolean AuthorizationCheck(HttpSession session) {
+        Member LoginMember = getLoggedInMember(session);
+        String role = LoginMember.getRole(); //admin, member
+        if (role.equals("ADMIN")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
