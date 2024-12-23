@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>내 정보 수정</title>
+</head>
+<body>
+<h1>내 정보 수정</h1>
+<form th:object="${memberProfileRequest}" th:action="@{/member/profile}" method="post">
+
+  <!-- 이메일은 읽기 전용 -->
+  <label for="email">이메일</label>
+  <input type="email" id="email" th:field="*{email}" readonly />
+  <br/>
+  <!-- 비밀번호: 변경 시에만 입력 -->
+  <label for="password">새 비밀번호</label>
+  <input type="password" id="password" th:field="*{password}" />
+  <br/>
+
+  <label for="nickname">닉네임</label>
+  <input type="text" id="nickname" th:field="*{nickname}" />
+  <br/>
+
+  <label for="phoneNumber">전화번호</label>
+  <input type="text" id="phoneNumber" th:field="*{phoneNumber}" />
+  <br/>
+
+  <label for="profileImage">프로필 이미지 URL</label>
+  <input type="text" id="profileImage" th:field="*{profileImage}" />
+  <br/>
+
+  <label for="comment">한 줄 소개</label>
+  <input type="text" id="comment" th:field="*{comment}" />
+  <br/>
+
+  <label for="introduce">자기소개</label>
+  <textarea id="introduce" th:field="*{introduce}" rows="5" cols="50"></textarea>
+  <br/>
+
+  <button type="submit">수정하기</button>
+</form>
+</body>
+</html>

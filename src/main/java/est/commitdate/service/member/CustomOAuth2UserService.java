@@ -41,6 +41,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // CustomUserDetails로 반환
         return new CustomUserDetails(
+                member.getId(),
                 member.getUsername(),
                 member.getEmail(),
                 member.getRole(),

@@ -24,5 +24,5 @@ public class MemberSignUpController {
         memberService.signUp(request);
         return "redirect:/login";// 회원가입 후 인덱스 페이지로 리디렉션
     }
-
+    
 }
