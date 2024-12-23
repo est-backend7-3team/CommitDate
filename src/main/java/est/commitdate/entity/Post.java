@@ -26,7 +26,7 @@ public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "post_id" , nullable = false)
     private Long postId;
 
     @ManyToOne
@@ -61,7 +61,7 @@ public class Post {
     @OneToMany(mappedBy = "post")
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
 
@@ -92,16 +92,12 @@ public class Post {
         post.text = dto.getText();
         post.description = dto.getDescription();
         post.likeCount = dto.getLikeCount();
-
-
         /*
         private Member member;
         private String title;
         private String text;
         private String description;
         */
-
-
         return post;
     }
 
@@ -112,6 +108,10 @@ public class Post {
 
     public void restore() {
         this.status = 1;
+    }
+
+    public Integer commentCount() {
+        return this.comments.size();
     }
 
 

@@ -114,8 +114,6 @@ class PostServiceTest {
         postService.restore(savedPost.getPostId());
         System.out.println("복구 " + findPost);
         assertThat(findPost.getStatus()).isEqualTo(1);
-
-
     }
 
 

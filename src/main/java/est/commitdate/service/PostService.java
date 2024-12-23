@@ -8,6 +8,7 @@ import est.commitdate.entity.Post;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.PostRepository;
 import est.commitdate.service.member.MemberService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,12 @@ public class PostService {
         return PostDto.from(postRepository.save(Post.of(postDto, findBoard, findMember))) ;
     }
 
-    // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
+    // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void update(PostUpdateDto postUpdateDto) {
         Post findPost = getPostById(postUpdateDto.getPostId());
         findPost.update(postUpdateDto);
     }
-    // 현제 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
+    // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void delete(Long id) {
         Post findPost = getPostById(id);
         findPost.delete();
@@ -85,6 +86,16 @@ public class PostService {
         return postDtos;
     }
 
+    // post의 작성자를 찾고 현재 로그인 되어있는 사용자와 비교하여 일치하면 true
+    public Boolean postAuthorizationCheck(Long id, HttpSession session) {
+        String PostWriter = getPostById(id).getMember().getNickname();
+        String loginMemberNickname = memberService.getLoggedInMember(session).getNickname();
+        if(PostWriter.equals(loginMemberNickname)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

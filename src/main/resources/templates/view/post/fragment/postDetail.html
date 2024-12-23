@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 상세보기</title>
     <link rel="stylesheet" href="/css/postDetail.css">
+    <link rel="stylesheet" href="/css/comment.css">
 </head>
 <body>
 <header>
@@ -44,30 +45,26 @@
 
         <!-- 댓글 입력 폼 -->
         <div class="comment-form">
-            <h3>댓글 작성</h3>
-            <form th:action="@{/post/{postId}/comment}" method="post">
-                <textarea name="content" placeholder="댓글을 작성하세요..." rows="4" cols="50"></textarea>
-                <button type="submit">댓글 달기</button>
+            <form th:action="@{/post/comment/{id}(id=${postDetail.postId})}" method="post">
+                <textarea name="content" placeholder="Add a Comment" required></textarea>
+                <button type="submit">댓글 등록</button>
             </form>
         </div>
 
         <!-- 댓글 목록 -->
         <div class="comment-list">
-            <h3>댓글</h3>
+            <h2>댓글 목록</h2>
+            <ul>
+                <!-- 댓글이 있는 경우 출력 -->
+                <li th:each="comment : ${postDetail.comments}" th:if="${postDetail.comments.size() > 0}">
+                    <div class="comment-item">
+                        <p class="comment-author" th:text="${comment.member.nickname}">작성자</p>
+                        <p class="comment-content" th:text="${comment.content}">댓글 내용</p>
+                        <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성 시간</p>
+                    </div>
+                </li>
+            </ul>
 
-<!--            &lt;!&ndash; 댓글 목록이 있을 때 표시 &ndash;&gt;-->
-<!--            <div th:if="postDetail.comment" th:each="comment : ${postDetail.comment}">-->
-<!--                <div class="comment">-->
-<!--                    <span th:text="${comment.author}">댓글 작성자</span>-->
-<!--                    <p th:text="${comment.content}">댓글 내용</p>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            &lt;!&ndash; 댓글이 없을 때는 빈 공간만 표시 &ndash;&gt;-->
-<!--            <div th:if="${#lists.isEmpty(postDetail.comment)}">-->
-<!--                &lt;!&ndash; 빈 공간 (댓글이 없으면 아무것도 표시되지 않음) &ndash;&gt;-->
-<!--                <div class="no-comments-space"></div>-->
-<!--            </div>-->
         </div>
     </div>
 </main>

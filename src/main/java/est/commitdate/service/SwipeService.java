@@ -1,5 +1,8 @@
 package est.commitdate.service;
 
+
+import est.commitdate.dto.member.CustomUserDetails;
+import est.commitdate.dto.member.FormUserDetails;
 import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
@@ -10,8 +13,10 @@ import est.commitdate.repository.BoardRepository;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,5 +51,28 @@ public class SwipeService {
 
         return chooseDTOList;
     }
+
+//    //세션의 로그인 정보 추출
+//    public Member getLoggedInMember(HttpSession session) {
+//        // 시큐리티 컨텍스트에서 사용자 정보 추출
+//        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
+//
+//        //시큐리티에 머 있으면 즉, 로그인을 한 것이라면
+//        if (securityContext != null) {
+//            Object principal = securityContext.getAuthentication().getPrincipal();
+//            if (principal instanceof CustomUserDetails customUser) {
+//                return memberRepository.findById(customUser.getId())
+//                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+//            } else if (principal instanceof FormUserDetails formUser) {
+//                return memberRepository.findById(formUser.getId())
+//                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+//            }else{//로그인은 했는데 이상한것. RuntimeException 터트림.
+//                throw new RuntimeException("Unauthorized: Unable to identify the user");
+//            }
+//        }
+//        //손님 유저
+//        log.info("Anonymous");
+//        return null;
+//    }
 
 }
