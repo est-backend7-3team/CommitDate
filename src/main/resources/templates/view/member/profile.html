@@ -3,26 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>내 정보 수정</title>
+  <script defer src="/js/profileValidation.js"></script>
 </head>
 <body>
 <h1>내 정보 수정</h1>
-<form th:object="${memberProfileRequest}" th:action="@{/member/profile}" method="post">
-
+<form id="profileForm"
+      th:object="${memberProfileRequest}"
+      th:action="@{/member/profile}"
+      method="post"
+      novalidate>
+  <input type="hidden" id="originalNickname" th:value="${originalNickname}" />
+  <input type="hidden" id="originalPhoneNumber" th:value="${originalPhoneNumber}" />
   <!-- 이메일은 읽기 전용 -->
   <label for="email">이메일</label>
   <input type="email" id="email" th:field="*{email}" readonly />
   <br/>
+
   <!-- 비밀번호: 변경 시에만 입력 -->
   <label for="password">새 비밀번호</label>
   <input type="password" id="password" th:field="*{password}" />
+  <small class="errorMessage" id="passwordError"></small>
+  <br/>
+
+  <!-- 조건: 비밀번호 입력 시만 검사 -->
+  <div id="confirmPasswordWrapper" style="display:none;">
+    <label for="confirmPassword">비밀번호 확인</label>
+    <input type="password" id="confirmPassword" placeholder="비밀번호 확인" />
+    <small class="errorMessage" id="confirmPasswordError"></small>
+  </div>
   <br/>
 
   <label for="nickname">닉네임</label>
   <input type="text" id="nickname" th:field="*{nickname}" />
+  <small class="errorMessage" id="nicknameError"></small>
   <br/>
 
   <label for="phoneNumber">전화번호</label>
   <input type="text" id="phoneNumber" th:field="*{phoneNumber}" />
+  <small class="errorMessage" id="phoneNumberError"></small>
   <br/>
 
   <label for="profileImage">프로필 이미지 URL</label>
@@ -37,7 +55,7 @@
   <textarea id="introduce" th:field="*{introduce}" rows="5" cols="50"></textarea>
   <br/>
 
-  <button type="submit">수정하기</button>
+  <button type="submit" id="profileSubmitBtn" disabled>수정하기</button>
 </form>
 </body>
 </html>

@@ -2,18 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
-    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- [추가/수정] JS 로드 방식: 'defer' 또는 body 끝에 배치 등 -->
     <script defer src="/js/signupValidation.js"></script>
+    <!--
+      기존에 <script defer src="/js/signupValidation.js"></script>가
+      제대로 안 들어온다면, 경로나 파일명이 맞는지 확인하세요.
+      또한, 스프링 부트 환경이라면,
+      "src/main/resources/static/js/signupValidation.js" 위치로 맞추어야
+      /js/signupValidation.js 라는 URL로 로드가 됩니다.
+    -->
+
+    <!-- 필요하다면 CSS 로드 -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- [추가/수정] data-page-type="signup" 로 세팅 (JS에서 pageType 확인) -->
 </head>
 <body data-page-type="signup">
 <div class="container">
     <h1>회원가입</h1>
-    <form id="signup-form" method="post" enctype="application/x-www-form-urlencoded" novalidate>
+    <!-- [추가/수정] form 태그에 th:action, method 설정 -->
+    <form id="signup-form" th:action="@{/sign-up}" method="post" enctype="application/x-www-form-urlencoded" novalidate>
         <div class="signup-container">
 
-            <!-- OAuth 회원가입 버튼 -->
+            <!-- 소셜 회원가입 버튼 (기존) -->
             <div class="oauth-buttons">
                 <h2>소셜 계정으로 회원가입</h2>
                 <a th:href="@{/oauth2/authorization/google}" class="btn btn-google">Google 계정으로 가입</a>
@@ -26,27 +39,42 @@
                 <input type="email" id="email" name="email" placeholder="이메일 입력" required>
                 <small class="errorMessage" id="emailError"></small>
             </div>
+
             <div class="form-group">
                 <label for="username">사용자명</label>
                 <input type="text" id="username" name="username" placeholder="사용자명 입력" required minlength="2" maxlength="30">
                 <small class="errorMessage" id="usernameError"></small>
             </div>
+
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" placeholder="비밀번호 입력" required minlength="8" maxlength="100">
+                <!-- [추가/수정] 8~12자 유효성 검증은 JS에서 -->
+                <input type="password" id="password" name="password" placeholder="비밀번호 입력" required minlength="8" maxlength="12">
                 <small class="errorMessage" id="passwordError"></small>
             </div>
+
+            <!-- [추가] 비밀번호 확인 -->
+            <div class="form-group">
+                <label for="confirmPassword">비밀번호 확인</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호 확인" required minlength="8" maxlength="12">
+                <small class="errorMessage" id="confirmPasswordError"></small>
+            </div>
+
             <div class="form-group">
                 <label for="nickname">닉네임</label>
                 <input type="text" id="nickname" name="nickname" placeholder="닉네임 입력" required minlength="2" maxlength="15">
                 <small class="errorMessage" id="nicknameError"></small>
             </div>
+
             <div class="form-group">
                 <label for="phoneNumber">전화번호</label>
+                <!-- [추가/수정] JS에서 하이픈 자동 포맷 -->
                 <input type="text" id="phoneNumber" name="phoneNumber" placeholder="전화번호 입력" required>
                 <small class="errorMessage" id="phoneNumberError"></small>
             </div>
+
             <div class="form-group">
+                <!-- [추가/수정] 회원가입 submit 버튼 -->
                 <button type="submit" class="btnSubmit" disabled>회원가입</button>
             </div>
         </div>
