@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,10 +34,16 @@ class SwipeServiceTest {
     private MemberRepository memberRepository;
 
     @Autowired
-    private LikeRepository likeRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    private PostRepository postRepository;
+    private BoardRepository boardRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
 
 

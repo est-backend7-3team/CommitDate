@@ -48,6 +48,8 @@ public class SwipeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
+        log.info("postId = {}, memberId = {}", postId, member.getId());
+
         // 해당 정보의 status 가 1인 로우가 있다면, 좋아요를 취소
         // (Member = LoggedMember, Post = NowPost, Status = 1) 조회
         Optional<Like> byMemberIdAndPostPostId = likeRepository.findByMemberIdAndPostPostId(member.getId(), postId);
