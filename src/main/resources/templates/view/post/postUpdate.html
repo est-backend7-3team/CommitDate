@@ -1,24 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <title>게시글 수정</title>
 </head>
-<body>
-<h1>게시글 수정</h1>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="container w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
+  <h1 class="text-2xl font-bold mb-6 text-center">게시글 수정</h1>
+  <form th:action="@{/post/update}" method="post" th:object="${postUpdateDto}" class="space-y-4">
 
-<form th:action="@{/post/update}" method="post" th:object="${postUpdateDto}">
-  <label for="postTitle">제목 :</label>
-  <input id="postTitle" type="text" th:value="*{title}" name="title" required><br>
+    <!-- 제목 -->
+    <div class="form-group">
+      <label for="postTitle" class="block text-gray-700 font-medium">제목</label>
+      <input
+              id="postTitle"
+              type="text"
+              th:value="*{title}"
+              name="title"
+              placeholder="제목을 입력하세요"
+              required
+              class="input input-bordered w-full bg-white" />
+    </div>
 
-  <label for="postDescription">내용 :</label>
-  <textarea id="postDescription"  th:text="*{description}" name="description" required></textarea><br>
+    <!-- 내용 -->
+    <div class="form-group">
+      <label for="postDescription" class="block text-gray-700 font-medium">내용</label>
+      <textarea
+              id="postDescription"
+              th:text="*{description}"
+              name="description"
+              rows="6"
+              required
+              class="textarea textarea-bordered w-full bg-white"
+              placeholder="내용을 입력하세요"></textarea>
+    </div>
 
-  <input type="hidden" th:value="*{postId}" name="postId"/>
-  <input type="hidden" th:value="*{updatedAt}" name="updateAt"/>
-  <button type="submit">수정 저장</button>
-</form>
+    <!-- 숨겨진 필드 -->
+    <input type="hidden" th:value="*{postId}" name="postId" />
+    <input type="hidden" th:value="*{updatedAt}" name="updatedAt" />
 
+    <!-- 수정 버튼 -->
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary w-full">수정</button>
+    </div>
+  </form>
+</div>
 </body>
 </html>

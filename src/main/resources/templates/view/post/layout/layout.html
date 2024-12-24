@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html data-theme="light" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Commitdate Layout</title>
+    <link rel="stylesheet" th:href="@{/css/tailwind.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white">
+<div class="drawer drawer-mobile drawer-open">
+    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" checked />
+
+    <!-- 메인영역(헤더 + 컨텐츠) -->
+    <div class="drawer-content flex flex-col">
+        <header class="navbar bg-white border-b px-4 flex items-center justify-between">
+            <!-- 로고, 사이트명 -->
+            <div class="flex items-center">
+                <a th:href="@{/}" class="flex items-center">
+                    <img th:src="@{/images/logo.png}" alt="Logo" class="h-8 mr-2" />
+                    <span class="text-xl font-bold">Commitdate</span>
+                </a>
+            </div>
+
+            <!-- 오른쪽: 로그인/로그아웃 버튼 -->
+            <div class="flex items-center space-x-2">
+                <button class="btn btn-primary btn-sm"
+                        th:if="${not #httpServletRequest.remoteUser}"
+                        th:onclick="|location.href='@{/login}'|">
+                    Login
+                </button>
+                <button class="btn btn-ghost btn-sm"
+                        th:if="${#httpServletRequest.remoteUser}"
+                        th:onclick="|location.href='@{/logout}'|">
+                    Logout
+                </button>
+            </div>
+
+            <!-- 모바일 햄버거 버튼 (데스크톱에는 숨김처리) -->
+            <div class="lg:hidden">
+                <label for="sidebar-drawer" class="btn btn-square btn-ghost">
+                    <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="w-6 h-6">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </label>
+            </div>
+        </header>
+
+        <main class="p-4 bg-white">
+            <!-- 자식 템플릿에서 content로 정의된 부분 삽입 -->
+            <div th:fragment="content">
+            </div>
+        </main>
+    </div>
+
+    <!-- 사이드바 영역 -->
+    <div class="drawer-side">
+        <label for="sidebar-drawer" class="drawer-overlay"></label>
+        <ul class="menu p-4 w-64 bg-white border-r text-base-content">
+            <li class="mb-1">
+                <a class="rounded-md hover:bg-gray-100" th:href="@{/}">
+                    <span class="text-sm">Swipe게시판</span>
+                </a>
+            </li>
+            <li class="mb-1">
+                <a class="rounded-md hover:bg-gray-100" th:href="@{/}">
+                    <span class="text-sm">공지게시판</span>
+                </a>
+            </li>
+            <li class="mb-1">
+                <a class="rounded-md hover:bg-gray-100" th:href="@{/}">
+                    <span class="text-sm">모임게시판</span>
+                </a>
+            </li>
+            <li class="mb-1">
+                <a class="rounded-md hover:bg-gray-100" th:href="@{/}">
+                    <span class="text-sm">등등</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
