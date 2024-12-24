@@ -28,9 +28,15 @@ public class PostController {
     private final PostService postService;
     private final BoardService boardService;
     private final MemberService memberService;
+
+
     // 게시글 자세히 보기
     @GetMapping("/view/{id}")
-    public String postDetailView(@PathVariable Long id, Model model) {
+    public String postDetailView(@PathVariable Long id, Model model, HttpSession session) {
+        Map<String, String> loginInfo = memberService.getLoginInfo(session);
+        model.addAttribute("nickname" , loginInfo.get("nickname"));
+        model.addAttribute("role" , loginInfo.get("role"));
+
         PostDetailDto post = PostDetailDto.from(postService.getPostById(id));
         model.addAttribute("postDetail" , PostDetailDto.from(postService.getPostById(id)));
         return "view/post/fragment/postDetail";
