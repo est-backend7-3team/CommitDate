@@ -3,19 +3,26 @@ package est.commitdate.service;
 import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.entity.Board;
+import est.commitdate.entity.Comment;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.exception.PostNotFoundException;
+import est.commitdate.repository.CommentRepository;
+import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
 import est.commitdate.service.member.MemberService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -25,6 +32,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final BoardService boardService;
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final CommentRepository commentRepository;
 
     public PostDto save(PostDto postDto) {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
@@ -95,6 +104,66 @@ public class PostService {
         } else {
             return false;
         }
+    }
+
+
+    public String postCommentRemove(@RequestBody Map<String,Object> removeJson, HttpSession session){
+
+        //정보 파싱.
+        Long commentId = Long.valueOf((String) removeJson.get("commentId"));
+
+        //DB 조회
+        Member LoggedInMember = memberService.getLoggedInMember(session);
+
+        //로그인 안되어있으면 바로 리턴
+        if(LoggedInMember == null){
+            return "accessDenied_로그인필요";
+        }
+        log.info("commentId = {}", commentId);
+        log.info("LoggedInMember.getEmail() = {}", LoggedInMember.getEmail());
+        Member commentWriteMember = commentRepository.findByCommentId(commentId)
+                .map(Comment::getMember)
+                .orElseThrow(EntityNotFoundException::new);
+
+
+        log.info("commentWriteMember.getEmail() = {}", commentWriteMember.getEmail());
+
+        // 로그인된 사람과 코멘트를 작성한 사람이 일치하면
+        if(LoggedInMember.equals(commentWriteMember)) {
+            //해당 코멘트 삭제
+            commentRepository.deleteById(commentId);
+            return "success";
+        }
+        return "accessDenied_작성자불일치";
+    }
+
+
+    public String postCommentEdit(@RequestBody Map<String,Object> editJson, HttpSession session){
+
+        //정보 파싱.
+        Long commentId = Long.valueOf((String) editJson.get("commentId"));
+
+        //DB 조회
+        Member LoggedInMember = memberService.getLoggedInMember(session);
+
+        //로그인 안되어있으면 바로 리턴
+        if(LoggedInMember == null){
+            return "accessDenied_로그인필요";
+        }
+
+        Comment targetComment = commentRepository.findByCommentId(commentId).orElseThrow(EntityNotFoundException::new) ;
+        Member commentWriteMember = commentRepository.findByCommentId(commentId)
+                .map(Comment::getMember)
+                .orElseThrow(EntityNotFoundException::new);
+
+        // 로그인된 사람과 코멘트를 작성한 사람이 일치하면
+        if(LoggedInMember.equals(commentWriteMember)) {
+            //해당 코멘트 삭제
+            targetComment.update(editJson.get("editText").toString());
+            return "success";
+        }
+
+        return "accessDenied_작성자불일치";
     }
 
 

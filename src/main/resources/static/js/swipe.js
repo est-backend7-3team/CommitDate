@@ -1,5 +1,5 @@
 import { Stack } from './stack.js';
-import { likeFetch } from './like.js';
+import { likeFetch } from './Fetch.js';
 
 const backStack = new Stack();
 const frontStack = new Stack();
