@@ -4,58 +4,91 @@
   <meta charset="UTF-8">
   <title>내 정보 수정</title>
   <script defer src="/js/profileValidation.js"></script>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>내 정보 수정</h1>
-<form id="profileForm"
-      th:object="${memberProfileRequest}"
-      th:action="@{/member/profile}"
-      method="post"
-      novalidate>
-  <input type="hidden" id="originalNickname" th:value="${originalNickname}" />
-  <input type="hidden" id="originalPhoneNumber" th:value="${originalPhoneNumber}" />
-  <!-- 이메일은 읽기 전용 -->
-  <label for="email">이메일</label>
-  <input type="email" id="email" th:field="*{email}" readonly />
-  <br/>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="container w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
+  <h1 class="text-2xl font-bold mb-6 text-center">내 정보 수정</h1>
+  <form id="profileForm"
+        th:object="${memberProfileRequest}"
+        th:action="@{/member/profile}"
+        method="post"
+        novalidate
+        class="space-y-4">
 
-  <!-- 비밀번호: 변경 시에만 입력 -->
-  <label for="password">새 비밀번호</label>
-  <input type="password" id="password" th:field="*{password}" />
-  <small class="errorMessage" id="passwordError"></small>
-  <br/>
+    <input type="hidden" id="originalNickname" th:value="${originalNickname}" />
+    <input type="hidden" id="originalPhoneNumber" th:value="${originalPhoneNumber}" />
 
-  <!-- 조건: 비밀번호 입력 시만 검사 -->
-  <div id="confirmPasswordWrapper" style="display:none;">
-    <label for="confirmPassword">비밀번호 확인</label>
-    <input type="password" id="confirmPassword" placeholder="비밀번호 확인" />
-    <small class="errorMessage" id="confirmPasswordError"></small>
-  </div>
-  <br/>
+    <!-- 이메일 -->
+    <div class="form-group">
+      <label for="email" class="block text-gray-700 font-medium">이메일</label>
+      <input type="email" id="email" th:field="*{email}" readonly
+             class="input input-bordered w-full bg-gray-100" />
+    </div>
 
-  <label for="nickname">닉네임</label>
-  <input type="text" id="nickname" th:field="*{nickname}" />
-  <small class="errorMessage" id="nicknameError"></small>
-  <br/>
+    <!-- 비밀번호 -->
+    <div class="form-group">
+      <label for="password" class="block text-gray-700 font-medium">새 비밀번호</label>
+      <input type="password" id="password" th:field="*{password}" placeholder="새 비밀번호 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="passwordError"></small>
+    </div>
 
-  <label for="phoneNumber">전화번호</label>
-  <input type="text" id="phoneNumber" th:field="*{phoneNumber}" />
-  <small class="errorMessage" id="phoneNumberError"></small>
-  <br/>
+    <!-- 비밀번호 확인 -->
+    <div class="form-group" id="confirmPasswordWrapper" style="display:none;">
+      <label for="confirmPassword" class="block text-gray-700 font-medium">비밀번호 확인</label>
+      <input type="password" id="confirmPassword" placeholder="비밀번호 확인"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="confirmPasswordError"></small>
+    </div>
 
-  <label for="profileImage">프로필 이미지 URL</label>
-  <input type="text" id="profileImage" th:field="*{profileImage}" />
-  <br/>
+    <!-- 닉네임 -->
+    <div class="form-group">
+      <label for="nickname" class="block text-gray-700 font-medium">닉네임</label>
+      <input type="text" id="nickname" th:field="*{nickname}" placeholder="닉네임 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="nicknameError"></small>
+    </div>
 
-  <label for="comment">한 줄 소개</label>
-  <input type="text" id="comment" th:field="*{comment}" />
-  <br/>
+    <!-- 전화번호 -->
+    <div class="form-group">
+      <label for="phoneNumber" class="block text-gray-700 font-medium">전화번호</label>
+      <input type="text" id="phoneNumber" th:field="*{phoneNumber}" placeholder="전화번호 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="phoneNumberError"></small>
+    </div>
 
-  <label for="introduce">자기소개</label>
-  <textarea id="introduce" th:field="*{introduce}" rows="5" cols="50"></textarea>
-  <br/>
+    <!-- 프로필 이미지 URL -->
+    <div class="form-group">
+      <label for="profileImage" class="block text-gray-700 font-medium">프로필 이미지 URL</label>
+      <input type="text" id="profileImage" th:field="*{profileImage}" placeholder="프로필 이미지 URL 입력"
+             class="input input-bordered w-full bg-white" />
+    </div>
 
-  <button type="submit" id="profileSubmitBtn" disabled>수정하기</button>
-</form>
+    <!-- 한 줄 소개 -->
+    <div class="form-group">
+      <label for="comment" class="block text-gray-700 font-medium">한 줄 소개</label>
+      <input type="text" id="comment" th:field="*{comment}" placeholder="한 줄 소개 입력"
+             class="input input-bordered w-full bg-white" />
+    </div>
+
+    <!-- 자기소개 -->
+    <div class="form-group">
+      <label for="introduce" class="block text-gray-700 font-medium">자기소개</label>
+      <textarea id="introduce" th:field="*{introduce}" rows="5"
+                class="textarea textarea-bordered w-full bg-white h-32"
+                placeholder="자기소개를 입력해주세요"></textarea>
+    </div>
+
+    <!-- 수정하기 버튼 -->
+    <div class="form-group">
+      <button type="submit" id="profileSubmitBtn" class="btn btn-primary w-full btn-disabled" disabled>
+        수정하기
+      </button>
+    </div>
+  </form>
+</div>
 </body>
 </html>
