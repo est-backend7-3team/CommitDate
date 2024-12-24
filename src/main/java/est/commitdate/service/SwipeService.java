@@ -25,13 +25,12 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SwipeService {
 
-    private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
     private final IgnoreRepository ignoreRepository;
     private final MemberService memberService;
 
-    //좋아요 버튼 토글기능
+    //좋아요 토글기능
     public String toggleLike(Map<String, Object> postJson, HttpSession session) {
 
         // 로그인한 사용자 정보 추출 손님이면 여기서 member 가 null 임
@@ -71,10 +70,11 @@ public class SwipeService {
         return "LikeSuccess";
     }
 
+    //차단 토글기능
     public String blockPost(Map<String, Object> postJson, HttpSession session){
         // 로그인한 사용자 정보 추출 손님이면 여기서 member 가 null 임
         Member member = memberService.getLoggedInMember(session);
-        log.info("post = {}", member.getId());
+
         // 손님이면 권한없음 반환.
         if(member==null){
             return "AccessDenied";
@@ -113,42 +113,14 @@ public class SwipeService {
         return "IgnoreSuccess";
     }
 
-
-
-    /*MemberService로 이동*/
-//    //세션의 로그인 정보 추출
-//    public Member getLoggedInMember(HttpSession session) {
-//        // 시큐리티 컨텍스트에서 사용자 정보 추출
-//        SecurityContext securityContext = (SecurityContext) session.getAttribute("SPRING_SECURITY_CONTEXT");
-//
-//        //시큐리티에 머 있으면 즉, 로그인을 한 것이라면
-//        if (securityContext != null) {
-//            Object principal = securityContext.getAuthentication().getPrincipal();
-//            if (principal instanceof CustomUserDetails customUser) {
-//                return memberRepository.findById(customUser.getId())
-//                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-//            } else if (principal instanceof FormUserDetails formUser) {
-//                return memberRepository.findById(formUser.getId())
-//                        .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-//            }else{//로그인은 했는데 이상한것. RuntimeException 터트림.
-//                throw new RuntimeException("Unauthorized: Unable to identify the user");
-//            }
-//        }
-//        //손님 유저
-//        log.info("Anonymous");
-//        return null;
-//    }
-
     //랜덤 포스트 추출
     public Post getRandomPost(int range) {
         range--;
         Random r = new Random(System.currentTimeMillis());
 
-        Post post =  postRepository.findByPostId(r.nextLong(range)+1).orElseThrow(
+        return postRepository.findByBoardBoardIdAndPostId(1,r.nextLong(range)+1).orElseThrow(
                 () -> new EntityNotFoundException("Post not found")
         );
-
-        return post;
     }
 
     //유저가 해당 포스트를 좋아요했는지 검사하는 메서드
@@ -165,6 +137,7 @@ public class SwipeService {
         return 0;
     }
 
+    //블락이 되었는지 확인하는 메서드
     public Integer isBlocked(Member member, Post post) {
         //찾기
         Optional<Ignore> byMemberIdAndPostPostId = ignoreRepository.findByMemberIdAndPostPostId(member.getId(), post.getPostId());
@@ -176,23 +149,6 @@ public class SwipeService {
         }
         //없을 때
         return 0;
-    }
-
-    //ChooseHTML 테스트를 위한 임시메서드
-    public List<ChooseDto> getDummyChooseDTO(int volume){
-        List<ChooseDto> chooseDTOList = new ArrayList<>();
-
-        for (int i = 0; i < volume; i++) {
-            chooseDTOList.add(ChooseDto.builder()
-                    .userName("username"+i)
-                    .comment("comment"+i)
-                    .profileImageURL("https://via.placeholder.com/48")
-                    .timestamp(1)
-                    .build()
-            );
-        }
-
-        return chooseDTOList;
     }
 
 }

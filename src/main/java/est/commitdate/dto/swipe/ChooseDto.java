@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 public class ChooseDto {
 
     // Choose 에서만 쓰는 Dto
+    private String userId;
     private String userName;
     private String comment;
     private String profileImageURL;
-    private int timestamp;
+    private String timestamp;
+
 }
 

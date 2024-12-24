@@ -125,7 +125,25 @@ class SwipeServiceTest {
             assertThat(likeEntity.getPost()).isEqualTo(findPost);
 
         }
-
     }
+
+//    @Test
+//    @DisplayName("Make to Target User Like")
+//    void makeLike() throws Exception {
+//
+//        Member findMember;
+//        Post findPost = postRepository.findByPostId(500L) //내가 쓴 게시물 id = 500번.
+//                .orElseThrow(EntityNotFoundException::new);
+//
+//        Random r = new Random(System.currentTimeMillis());
+//
+//
+//        for (int i = 0; i < 300; i++) {
+//            findMember = memberRepository.findById(r.nextLong(19) + 1)
+//                    .orElseThrow(EntityNotFoundException::new);
+//
+//        }
+//
+//    }
 }
 
