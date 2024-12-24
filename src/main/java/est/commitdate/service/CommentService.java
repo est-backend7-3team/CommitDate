@@ -27,10 +27,6 @@ public class CommentService {
         commentRepository.save(newComment);
         return newComment;
     }
-    public void update(CommentUpdateDto commentUpdateDto) {
-        Comment findComment = getCommentById(commentUpdateDto.getId());
-        findComment.update(commentUpdateDto);
-    }
 
     public void delete(Long id) {
          Comment findComment = getCommentById(id);

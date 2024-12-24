@@ -11,12 +11,10 @@ import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -42,10 +40,10 @@ public class PostController {
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname" , loginInfo.get("nickname"));
         model.addAttribute("role" , loginInfo.get("role"));
-
         model.addAttribute("post", postService.PostList());
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "Fusion Platform - Main Page");
+
         return "/view/post/layout/base";
     }
 
@@ -117,6 +115,22 @@ public class PostController {
             return "redirect:/post";
         }
         return "redirect:/post";
+    }
+
+    @ResponseBody
+    @PostMapping("/api/commentDelete")
+    public ResponseEntity<String> postCommentDelete(@RequestBody Map<String,Object> removeJson, HttpSession session) {
+
+        return ResponseEntity.ok(postService.postCommentRemove(removeJson, session));
+
+    }
+
+    @ResponseBody
+    @PostMapping("/api/commentEdit")
+    public ResponseEntity<String> postCommentEdit(@RequestBody Map<String,Object> removeJson, HttpSession session) {
+
+        return ResponseEntity.ok(postService.postCommentEdit(removeJson, session));
+
     }
 
 }
