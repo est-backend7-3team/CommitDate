@@ -33,6 +33,7 @@ public class PostDetailDto {
                 .author(post.getMember().getNickname())
                 .createdAt(post.getCreatedAt())
                 .comments(post.getComments())
+                .likeCount(post.updateLikeCount())
                 .build();
     }
 }

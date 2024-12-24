@@ -8,8 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -50,8 +52,8 @@ public class Comment {
         return newComment;
     }
 
-    public void update(CommentUpdateDto comment) {
-        content = comment.getContent();
+    public void update(String text) {
+        content = text;
         updatedAt = LocalDateTime.now();
     }
 

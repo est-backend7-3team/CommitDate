@@ -59,9 +59,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "post",  cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
 
     @Builder//Test 짤 때 필요
@@ -93,11 +92,15 @@ public class Post {
         return post;
     }
 
-//     동적으로 likeCount 업데이트
+    //동적으로 likeCount 업데이트
     public Integer updateLikeCount() {
         return likes.size();
     }
 
+    //동적으로 likeCount 업데이트
+    public Integer updateCommentCount() {
+        return comments.size();
+    }
 
     public void delete() {
         this.status = 0;
