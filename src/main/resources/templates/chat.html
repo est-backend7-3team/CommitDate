@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Application</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .chat-container { width: 500px; margin: auto; }
+    .message-box { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
+    .input-box { margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="chat-container">
+  <h2>Chat Room</h2>
+  <div id="messageBox" class="message-box"></div>
+  <div class="input-box">
+    <input type="text" id="username" th:value="${username}" readonly />
+    <input type="text" id="message" placeholder="Message" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  let stompClient = null;
+
+  function connect() {
+    const socket = new SockJS('/ws'); // WebSocket 연결 엔드포인트
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+      console.log('Connected: ' + frame);
+      // 구독 ChatController에 정의된 경로임
+      stompClient.subscribe('/topic/public', function (messageOutput) {
+        showMessage(JSON.parse(messageOutput.body));
+      });
+    });
+  }
+
+  function sendMessage() {
+    const username = document.getElementById("username").value;
+    const messageContent = document.getElementById("message").value;
+    const message = {
+      sender: username,
+      content: messageContent
+    };
+    // 메시지 발행
+    stompClient.send("/app/send", {}, JSON.stringify(message)); //'{"sender":"USERNAME","content":"MESSAGE"}'
+  }
+
+  function showMessage(message) {
+    const messageBox = document.getElementById("messageBox");
+    const messageElement = document.createElement('div');
+    messageElement.textContent = `${message.sender}: ${message.content}`;
+    messageBox.appendChild(messageElement);
+  }
+
+  connect();
+</script>
+</body>
+</html>

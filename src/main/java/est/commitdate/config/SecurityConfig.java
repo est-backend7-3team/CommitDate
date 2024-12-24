@@ -56,6 +56,7 @@ public class SecurityConfig {
                                         .requestMatchers("/post/**").permitAll()
                                         .requestMatchers("/post/test").permitAll()
                                         .requestMatchers("/swipe/**").permitAll()
+                                        .requestMatchers("/chat/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
