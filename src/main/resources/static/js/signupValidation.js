@@ -1,10 +1,7 @@
-/* signupValidation.js */
 document.addEventListener("DOMContentLoaded", () => {
-    // [추가/수정] 폼 가져오기
     const form = document.getElementById("signup-form");
     const pageType = document.body.getAttribute("data-page-type");
 
-    // 유효성 검증 필드를 동적으로 구성
     function createField(elementId, validateFn, errorMessage, url = null) {
         const element = document.getElementById(elementId);
         if (!element) return null;
@@ -19,29 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const fields = {};
+
+    // 페이지 타입에 따라 다르게 필드 구성
     if (pageType === "signup") {
+        // 일반 회원가입 페이지의 필드
         Object.assign(fields, {
             email: createField(
                 "email",
                 (value) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value),
                 "유효한 이메일 주소를 입력해주세요.",
-                "/member/check-email"  // [추가/수정] 이메일 중복검사 API
+                "/member/check-email"
             ),
             username: createField(
                 "username",
                 (value) => value.length >= 2 && value.length <= 30,
-                "사용자명은 2자 이상 30자 이하로 입력해주세요."
+                "이름은 2자 이상 30자 이하로 입력해주세요."
             ),
             password: createField(
                 "password",
                 (value) => value.length >= 8 && value.length <= 12,
                 "비밀번호는 8자 이상 12자 이하로 입력해주세요."
             ),
-            /* [추가] confirmPassword */
             confirmPassword: createField(
                 "confirmPassword",
                 (value) => {
-                    // password 값과 동일해야
                     const pwdVal = document.getElementById("password").value.trim();
                     if (pwdVal.length < 8 || pwdVal.length > 12) return false;
                     return (value === pwdVal);
@@ -52,24 +50,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 "nickname",
                 (value) => value.length >= 2 && value.length <= 15,
                 "닉네임은 2자 이상 15자 이하로 입력해주세요.",
-                "/member/check-nickname" // 닉네임 중복검사 API
+                "/member/check-nickname"
             ),
             phoneNumber: createField(
                 "phoneNumber",
-                // 10~11자리 숫자만
                 (value) => /^[0-9]{10,11}$/.test(value.replace(/-/g, "")),
                 "전화번호는 10~11자리 숫자만 입력 가능합니다.",
-                "/member/check-phone-number" // 전화번호 중복검사 API
+                "/member/check-phone-number"
+            )
+        });
+    } else if (pageType === "oauth") {
+        // OAuth 추가정보 입력 페이지의 필드
+        Object.assign(fields, {
+            username: createField(
+                "username",
+                (value) => value.length >= 2 && value.length <= 30,
+                "이름은 2자 이상 30자 이하로 입력해주세요."
+            ),
+            nickname: createField(
+                "nickname",
+                (value) => value.length >= 2 && value.length <= 15,
+                "닉네임은 2자 이상 15자 이하로 입력해주세요.",
+                "/member/check-nickname"
+            ),
+            phoneNumber: createField(
+                "phoneNumber",
+                (value) => /^[0-9]{10,11}$/.test(value.replace(/-/g, "")),
+                "전화번호는 10~11자리 숫자만 입력 가능합니다.",
+                "/member/check-phone-number"
             )
         });
     }
 
-    // validateField: 공통 유효성 검사
+    // 공통 유효성 검사 (기본 유효성 검사만 수행)
     async function validateField(field) {
-        const { element, validate, error, errorMessage, url } = field;
+        const { element, validate, error, errorMessage } = field;
         let value = element.value.trim();
 
-        // 전화번호일 경우 하이픈 제거 후 포맷
         if (element.id === "phoneNumber") {
             value = value.replace(/-/g, "");
             element.value = formatPhoneNumber(value);
@@ -78,30 +95,36 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!validate(value)) {
             field.isValid = false;
             error.textContent = errorMessage;
-            element.classList.add("invalid");
+            element.classList.add("input-error");
         } else {
             error.textContent = "";
-            element.classList.remove("invalid");
+            element.classList.remove("input-error");
             field.isValid = true;
-
-            // [추가/수정] url이 있으면 중복검사
-            if (url) {
-                await checkDuplicate(url, value.replace(/-/g, ""), error, element, field);
-            }
         }
 
-        // [추가/수정] 비밀번호/확인 서로 연동
-        if (element.id === "password" || element.id === "confirmPassword") {
+        // 비밀번호/확인 서로 연동 (회원가입 페이지일 때만)
+        if (pageType === "signup" && (element.id === "password" || element.id === "confirmPassword")) {
             const confirmField = fields.confirmPassword;
             const pwdField = fields.password;
             if (confirmField && pwdField) {
-                // confirmPassword도 재검증
                 if (element.id === "password") {
                     await validateField(confirmField);
-                } else {
-                    await validateField(pwdField);
                 }
             }
+        }
+    }
+
+    // 중복검사를 포함한 전체 유효성 검사
+    async function validateFieldWithDuplication(field) {
+        const { element, url } = field;
+
+        // 먼저 기본 유효성 검사 수행
+        await validateField(field);
+
+        // 기본 유효성 검사를 통과하고 중복검사가 필요한 필드인 경우에만 중복검사 수행
+        if (field.isValid && url) {
+            const value = element.value.trim().replace(/-/g, "");
+            await checkDuplicate(url, value, field.error, element, field);
         }
     }
 
@@ -115,33 +138,40 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (data.exists) {
-                errorField.textContent = "이미 가입된 사용자입니다.";
-                inputElement.classList.add("invalid");
+                errorField.textContent = "이미 사용중인 값입니다.";
+                inputElement.classList.add("input-error");
                 field.isValid = false;
             } else {
                 errorField.textContent = "";
-                inputElement.classList.remove("invalid");
+                inputElement.classList.remove("input-error");
                 field.isValid = true;
             }
         } catch (err) {
             console.error("중복 확인 요청 실패:", err);
             errorField.textContent = "서버와의 통신에 문제가 발생했습니다.";
-            inputElement.classList.add("invalid");
+            inputElement.classList.add("input-error");
             field.isValid = false;
         }
     }
 
     function validateForm() {
-        // 모든 필드가 isValid == true 여야 통과
         return Object.values(fields).every((field) => field.isValid);
     }
 
     function updateSubmitButtonState() {
         const submitButton = form.querySelector("button[type='submit']");
-        submitButton.disabled = !validateForm();
+        const isValid = validateForm();
+
+        if (isValid) {
+            submitButton.removeAttribute('disabled');
+            submitButton.classList.remove('btn-disabled');
+        } else {
+            submitButton.setAttribute('disabled', 'true');
+            submitButton.classList.add('btn-disabled');
+        }
     }
 
-    // 전화번호 포맷
+    // 전화번호 포매팅
     function formatPhoneNumber(value) {
         const numbers = value.replace(/\D/g, "");
         if (numbers.length === 11) {
@@ -152,22 +182,32 @@ document.addEventListener("DOMContentLoaded", () => {
         return numbers;
     }
 
-    // 각 필드 input 이벤트
+
     Object.values(fields).forEach((field) => {
         if (!field) return;
+
+        // 기본 유효성 검사만 수행
         field.element.addEventListener("input", async () => {
             await validateField(field);
             updateSubmitButtonState();
         });
+
+        // 중복검사를 포함한 전체 유효성 검사 수행
+        if (field.url) {  // 중복검사가 필요한 필드만
+            field.element.addEventListener("blur", async () => {
+                await validateFieldWithDuplication(field);
+                updateSubmitButtonState();
+            });
+        }
     });
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
         if (!validateForm()) {
             e.preventDefault();
             console.log("폼 제출 차단: 유효성 검사 실패");
         } else {
             console.log("폼 제출 허용: 유효성 검사 통과");
-            // [추가] 최종 제출 시, phoneNumber의 하이픈을 제거해서 서버로 전송
+            // 최종 제출 시, 전화번호의 - 제거 후 전송
             const phoneField = fields.phoneNumber?.element;
             if (phoneField) {
                 phoneField.value = phoneField.value.replace(/-/g, "");
@@ -175,6 +215,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 초기 업데이트
     updateSubmitButtonState();
 });
