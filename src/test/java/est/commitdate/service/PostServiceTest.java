@@ -19,10 +19,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PostServiceTest {
+
     @Autowired
     private PostService postService;
+
     @Autowired
     private BoardService boardService;
+
     private BoardDto savedBoard;
 
     @Autowired

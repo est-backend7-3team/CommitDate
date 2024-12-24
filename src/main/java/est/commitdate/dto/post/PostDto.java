@@ -24,6 +24,7 @@ public class PostDto {
     private Integer likeCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer commentCount;
     private int status;
 
     public static PostDto from(Post post) {
@@ -36,6 +37,7 @@ public class PostDto {
 //                .author(post.getMember().getUsername())
                 .author("11")
                 .likeCount(post.updateLikeCount())
+                .commentCount(post.updateCommentCount())
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .status(post.getStatus())

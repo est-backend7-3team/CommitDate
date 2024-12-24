@@ -35,8 +35,8 @@
 
             <!-- 좋아요 및 액션 버튼 -->
             <div class="actions">
-                <button>👍 <span th:text="${post.likeCount}">0</span></button>
-                <button>💬 Comment</button>
+                <button>👍 <span th:text="${post.likeCount}"></span></button>
+                <button>💬 <span th:text="${post.commentCount}"></span></button>
                 <button>🔗 Share</button>
             </div>
         </a>
