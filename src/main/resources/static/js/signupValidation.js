@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
 
             if (data.exists) {
-                errorField.textContent = "이미 사용중인 값입니다.";
+                errorField.textContent = "이미 가입된 계정입니다.";
                 inputElement.classList.add("input-error");
                 field.isValid = false;
             } else {
