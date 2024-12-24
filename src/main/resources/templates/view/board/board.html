@@ -1,66 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>게시판 목록</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        a, button {
-            margin-right: 10px;
-        }
-    </style>
-<!--    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>게시판 관리</h1>
-<table>
-    <thead>
-    <tr>
-        <th>게시판 이름</th>
-        <th>액션</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- boards는 모델에서 전달받은 게시판 목록 -->
-    <th:block th:each="board : ${boards}">
-        <tr>
-            <td th:text="${board.boardName}"></td>
-            <td>
-                <!-- 게시판 업데이트 버튼 -->
-                <form th:action="@{'/board/updateView/'+ ${board.boardId}}" method="get" style="display: inline;">
-                    <button type="submit">게시판 업데이트</button>
-                </form>
-                <!-- 게시판 삭제 버튼 -->
-                <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" style="display: inline;">
-                    <button type="submit" onclick="return confirm('이 게시판을 삭제하시겠습니까?')">게시판 삭제</button>
-                </form>
-<!--                <form th:action="@{'/board/restore/' + ${board.boardId}}" method="post" style="display: inline;">-->
-<!--                    <button type="submit" onclick="return confirm('이 게시판을 복구 하시겠습니까?')">게시판 복구</button>-->
-<!--                </form>-->
-            </td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
-<!-- 게시판 생성 버튼 -->
-<form action="/board/saveView" method="get" style="margin-top: 20px;">
-    <button type="submit">게시판 생성</button>
-</form>
-
-<form action="/post" method="get" style="margin-top: 20px;">
-    <button type="submit">목록</button>
-</form>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="container w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center">게시판 관리</h1>
+    <div class="overflow-x-auto">
+        <table class="table w-full border-collapse border border-gray-200 divide-y divide-gray-300">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="p-4 text-left text-gray-700">게시판 이름</th>
+                <th class="p-4 text-left text-gray-700">기능</th>
+            </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-300">
+            <form action="/board/saveView" method="get" class="inline">
+                <button type="submit" class="btn btn-primary btn-sm mr-2">게시판 생성</button>
+            </form>
+            <!-- boards는 모델에서 전달받은 게시판 목록 -->
+            <th:block th:each="board : ${boards}">
+                <!-- 게시판 생성 버튼 -->
+                <tr>
+                    <td th:text="${board.boardName}" class="p-4"></td>
+                    <td class="p-4">
+                        <!-- 게시판 업데이트 버튼 -->
+                        <form th:action="@{'/board/updateView/'+ ${board.boardId}}" method="get" class="inline">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">게시판 수정</button>
+                        </form>
+                        <!-- 게시판 삭제 버튼 -->
+                        <form th:action="@{'/board/delete/' + ${board.boardId}}" method="post" class="inline">
+                            <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('이 게시판을 삭제하시겠습니까?')">게시판 삭제</button>
+                        </form>
+                        <!--                <form th:action="@{'/board/restore/' + ${board.boardId}}" method="post" style="display: inline;">-->
+                        <!--                    <button type="submit" onclick="return confirm('이 게시판을 복구 하시겠습니까?')">게시판 복구</button>-->
+                        <!--                </form>-->
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+    <div class="flex w-full flex-col p-1">
+        <div class="divider"></div>
+    </div>
+    <form action="/post" method="get" class="mt-6">
+        <button type="submit" class="btn btn-primary w-full">목록</button>
+    </form>
+</div>
 </body>
 </html>
