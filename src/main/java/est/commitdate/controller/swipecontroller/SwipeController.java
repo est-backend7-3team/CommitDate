@@ -1,24 +1,22 @@
 package est.commitdate.controller.swipecontroller;
 
-import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.service.SwipeService;
 import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 
 @Slf4j
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/swipe")
 public class SwipeController {
 
@@ -51,16 +49,7 @@ public class SwipeController {
     }
 
 
-    @GetMapping("/choose")
-    public String getChoicePage(Model model, HttpSession session) {
 
-        List<ChooseDto> swipeList = swipeService.getDummyChooseDTO(2);
-        log.info("tmpList = {}", swipeList.toArray().length);
-        model.addAttribute("swipeList", swipeList);
-        log.info("chooseDTOList[0] = {}", swipeList.getFirst());
-
-        return "view/choose";
-    }
 
     @ResponseBody
     @GetMapping("/jsons")
@@ -106,8 +95,8 @@ public class SwipeController {
 
         if(result.equals("IgnoreSuccess")){
             return ResponseEntity.ok("Success");
-        }else if(result.equals("CancelIgnore")) {
-            return ResponseEntity.ok("CancelSuccess");
+//        }else if(result.equals("CancelIgnore")) {
+//            return ResponseEntity.ok("CancelSuccess");
         }else {
             return ResponseEntity.status(401).body("AccessDenied");
         }
