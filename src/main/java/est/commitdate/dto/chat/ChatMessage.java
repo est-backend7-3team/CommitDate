@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class ChatMessage {
     private String sender;
     private String content;
+    private String roomId;
 
     public enum MessageType {
         CHAT,
