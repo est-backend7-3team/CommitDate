@@ -34,18 +34,13 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 
-
-
-
-
-
 function createItem(chooseDto){
 
    const itemDiv = document.createElement("div");
    itemDiv.className = "flex items-center bg-white shadow-md rounded-lg p-4";
 
    itemDiv.innerHTML = `
-    <form action="/chatting" method="post">
+
 
 <!--         <input type="hidden" th:value="*{updatedAt}" name="updatedAt" />-->
         <div class="avatar">
@@ -60,11 +55,13 @@ function createItem(chooseDto){
           </p>
           <p id="suitorComment" class="text-gray-600 text-sm">${chooseDto.comment}</p>
         </div>
-
-        <button class="btn btn-primary bg-pink-500 border-none rounded-full text-white" data-suitor-id="${chooseDto.userId}">
-          수락
-        </button>
-    </form>
+        <form action="/chat" method="post">
+            <input type="hidden" name="likeId" value="${chooseDto.likeId}"></input>
+            <button class="btn btn-primary bg-pink-500 border-none rounded-full text-white" type="submit">
+              수락
+            </button>
+        </form>
+        
   `;
 
    // 알림 리스트에 추가

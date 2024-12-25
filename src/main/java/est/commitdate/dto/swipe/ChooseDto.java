@@ -17,6 +17,7 @@ public class ChooseDto {
     private String comment;
     private String profileImageURL;
     private String timestamp;
+    private Long likeId;
 
 }
 

@@ -62,6 +62,7 @@ public class ChooseService {
                 chooseDto.setComment(member.getComment());
                 chooseDto.setProfileImageURL(member.getProfileImage());
                 chooseDto.setTimestamp(like.getLikeDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                chooseDto.setLikeId(like.getLikeId());
 
                 chooseDtos.add(chooseDto);
             });

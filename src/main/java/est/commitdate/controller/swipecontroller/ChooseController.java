@@ -27,6 +27,10 @@ public class ChooseController {
 
     @GetMapping("/{id}")//최초들어오는 부분
     public String getChoicePage(Model model, @PathVariable String id, HttpSession session) {
+        if ("null".equals(id) || id == null || id.isBlank()) {
+            return null;
+        }
+
 
         log.info("Received id: {}",id);
         model.addAttribute("id", Long.valueOf(id));
