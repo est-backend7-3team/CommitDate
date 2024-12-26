@@ -182,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return numbers;
     }
 
-
     Object.values(fields).forEach((field) => {
         if (!field) return;
 

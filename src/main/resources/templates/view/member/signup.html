@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{view/layout/layout}">
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <th:block layout:fragment="script">
     <script defer src="/js/signupValidation.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    </th:block>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen" data-page-type="signup">
+<body data-page-type="signup">
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
 <div class="container w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold mb-6 text-center">회원가입</h1>
     <form id="signup-form" th:action="@{/sign-up}" method="post" enctype="application/x-www-form-urlencoded" novalidate class="space-y-4">
@@ -88,6 +89,7 @@
             </div>
         </div>
     </form>
+</div>
 </div>
 </body>
 </html>
