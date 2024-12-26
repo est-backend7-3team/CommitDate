@@ -39,13 +39,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 function createItem(chooseDto){
 
    const itemDiv = document.createElement("div");
-   itemDiv.className = "flex items-center bg-white shadow-md rounded-lg p-4";
+   itemDiv.className = "flex items-center bg-white shadow-md rounded-lg p-4 border";
 
    itemDiv.innerHTML = `
     <div id="suitorId" hidden="hidden">${chooseDto.userId}</div>
     <div class="avatar">
-      <div class="w-12 rounded-full">
-        <img id="profileImageURL" src="${chooseDto.profileImageURL}" alt="User Avatar">
+      <div class="avatar">
+        <div class="w-12 rounded-full" >
+            <img id="profileImageURL" src = "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+<!--             src="{chooseDto.profileImageURL}"-->
+             
+              
+        </div>
       </div>
     </div>
     <div class="ml-4 flex-1">
@@ -55,7 +60,7 @@ function createItem(chooseDto){
       </p>
       <p id="suitorComment" class="text-gray-600 text-sm">${chooseDto.comment}</p>
     </div>
-    <button class="btn btn-primary bg-pink-500 border-none rounded-full text-white" data-suitor-id="${chooseDto.userId}">
+    <button class="btn btn-primary shadow-lg bg-pink-500 border-none rounded-full text-white" data-suitor-id="${chooseDto.userId}">
       수락
     </button>
   `;

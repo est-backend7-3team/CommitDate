@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/postSave.js" type="module" defer></script>
     <title>게시글 작성</title>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -38,6 +39,20 @@
                     placeholder="제목을 입력하세요"
                     required
                     class="input input-bordered w-full bg-white" />
+        </div>
+
+        <!-- 소스코드 입력폼 -->
+        <div id="additionalInputContainer" style="display: none;" class="mt-4">
+            <div class="form-group">
+                <label for="sourceCode" class="block text-gray-700 font-medium">소스코드</label>
+                <textarea
+                        id="sourceCode"
+                        name="sourceCode"
+                        th:field="*{sourceCode}"
+                        rows="6"
+                        class="textarea textarea-bordered w-full bg-white"
+                        placeholder="소스코드를 입력해주세요"></textarea>
+            </div>
         </div>
 
         <!-- 본문 입력 -->
