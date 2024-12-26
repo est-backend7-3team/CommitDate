@@ -83,6 +83,7 @@ public class PostController {
     // 게시글 저장요칭
     @PostMapping("/save")
     public String postSavePost(PostDto postDto, HttpSession session) {
+
         Member LoginMember = memberService.getLoggedInMember(session);
         postDto.setAuthor(LoginMember.getNickname());
         postService.save(postDto);
