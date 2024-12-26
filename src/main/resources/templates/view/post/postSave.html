@@ -57,7 +57,7 @@
 
         <!-- 본문 입력 -->
         <div class="form-group">
-            <label for="description" class="block text-gray-700 font-medium">본문</label>
+            <label for="description" class="block text-gray-700 font-medium">코드</label>
             <textarea
                     id="description"
                     name="description"
@@ -67,6 +67,21 @@
                     class="textarea textarea-bordered w-full bg-white"
                     placeholder="본문을 입력하세요"></textarea>
         </div>
+
+        <!-- 본문 입력 -->
+        <div class="form-group">
+            <label for="text" class="block text-gray-700 font-medium">본문</label>
+            <textarea
+                    id="text"
+                    name="text"
+                    th:field="*{description}"
+                    rows="6"
+                    required
+                    class="textarea textarea-bordered w-full bg-white"
+                    placeholder="본문을 입력하세요"></textarea>
+        </div>
+
+
 
         <!-- 숨겨진 필드 -->
         <input type="hidden" th:value="*{author}" name="author" />
