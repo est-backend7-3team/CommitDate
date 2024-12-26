@@ -26,29 +26,8 @@ public class SwipeController {
 
     @GetMapping("")
     public String getSwipePage() {
-
-//        //이용 유저 정보, 랜더링할 Entity Post 객체 준비.
-//        Member user = swipeService.getLoggedInMember(session);
-//        Post randomPost = swipeService.getRandomPost(499);
-
-//        //View 랜더링 준비
-//        SwipeDto swipeDto = SwipeDto.from(randomPost);
-
-//        //손님이 아니라면 해당 포스트 좋아요 한 기록찾기
-//        if(user != null) {
-//            swipeDto.setIsLike(swipeService.isLike(user , randomPost));
-//        }
-//
-//        log.info("user = {}", user);
-//        log.info("swipeDto = {}", swipeDto);
-//        model.addAttribute("swipeDTO", swipeDto);
-
-
-
         return "view/swipe";
     }
-
-
 
 
     @ResponseBody
