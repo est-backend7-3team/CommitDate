@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Chat Application</title>
+  <title>Chat Room</title>
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
   <style>
@@ -17,7 +17,7 @@
   <h2>Chat Room</h2>
   <div id="messageBox" class="message-box"></div>
   <div class="input-box">
-    <input type="text" id="username" th:value="${username}" readonly />
+    <input type="text" id="username" readonly value="${username}" />
     <input type="text" id="message" placeholder="Message" />
     <button onclick="sendMessage()">Send</button>
   </div>
@@ -25,15 +25,24 @@
 
 <script>
   let stompClient = null;
+  const roomId = "userRoom";  // 사용자의 고유 채팅방 ID (예: username 기반)
 
   function connect() {
     const socket = new SockJS('/ws'); // WebSocket 연결 엔드포인트
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
       console.log('Connected: ' + frame);
-      // 구독 ChatController에 정의된 경로임
-      stompClient.subscribe('/topic/public', function (messageOutput) {
-        showMessage(JSON.parse(messageOutput.body));
+
+      // 채팅방에 입장 메시지 전송
+      stompClient.send(`/app/chat.join`, {}, JSON.stringify({
+        sender: document.getElementById("username").value,
+        content: `${document.getElementById("username").value} 님이 입장하였습니다.`,
+        roomId: roomId
+      }));
+
+      // 채팅방 메시지 구독
+      stompClient.subscribe(`/topic/${roomId}`, function (message) {
+        showMessage(JSON.parse(message.body)); // 메시지를 화면에 표시
       });
     });
   }
@@ -43,10 +52,12 @@
     const messageContent = document.getElementById("message").value;
     const message = {
       sender: username,
-      content: messageContent
+      content: messageContent,
+      roomId: roomId
     };
+
     // 메시지 발행
-    stompClient.send("/app/send", {}, JSON.stringify(message)); //'{"sender":"USERNAME","content":"MESSAGE"}'
+    stompClient.send("/app/chat.send", {}, JSON.stringify(message));
   }
 
   function showMessage(message) {
@@ -54,6 +65,11 @@
     const messageElement = document.createElement('div');
     messageElement.textContent = `${message.sender}: ${message.content}`;
     messageBox.appendChild(messageElement);
+  }
+
+
+  function chatExit() {
+
   }
 
   connect();

@@ -14,6 +14,7 @@ import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,11 +81,17 @@ class SwipeServiceTest {
             memberRepository.save(member);
         }
 
-            //보드 찾기
-            findBoard = boardRepository.findByBoardId(1)
-                    .orElseThrow(BoardNotFoundException::new);
+        //보드 찾기
+        findBoard = boardRepository.findByBoardId(1)
+                .orElseThrow(BoardNotFoundException::new);
+
+
+        Faker faker = new Faker();
+
 
         for (int i = 1; i < 500 ; i++) {
+            //임의의 문자열 생성
+            String paragraph = faker.lorem().paragraph();
 
             //임의의 사용자 찾기.
             Random r = new Random(System.currentTimeMillis());
@@ -93,10 +100,10 @@ class SwipeServiceTest {
 
             //Post1000개 저장
             postDto = PostDto.builder()
-//                    .boardId(findBoard.getBoardId())
-//                    .author(findMember.getNickname())
+                    .boardId(findBoard.getBoardId())
+                    .author(findMember.getNickname())
                     .title("Random title" + i)
-                    .text("Random text" + i)
+                    .sourceCode(paragraph + i)
                     .description("Random description" + i)
                     .build();
 
