@@ -32,8 +32,13 @@ public class Like {
     @Column(name = "status", nullable = false)
     private Integer status = 1;
 
-    @Column(name = "creadted_at")
+    @Column(name = "matching_result", nullable = false)
+    private Integer matchingResult = 0;
+
+    @Column(name = "created_at")
     private LocalDateTime likeDate;
+
+
 
     @Builder
     private Like(Member member, Post post, LocalDateTime likeDate) {
@@ -58,6 +63,9 @@ public class Like {
         this.status = 0;
     }
 
+    public void update() {
+        this.matchingResult = 1;
+    }
 
 
 

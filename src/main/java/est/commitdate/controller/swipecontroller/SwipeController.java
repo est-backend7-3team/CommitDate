@@ -1,5 +1,6 @@
 package est.commitdate.controller.swipecontroller;
 
+import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
@@ -81,6 +82,13 @@ public class SwipeController {
         }
 
     }
+
+    @ResponseBody
+    @PostMapping("/api/requestMatchingResult")
+    public ResponseEntity<String> requestMatchingResult(@RequestBody ChooseDto chooseDto, HttpSession session) {
+        return ResponseEntity.ok(swipeService.toggle(chooseDto, session));
+    }
+
 
 
 }

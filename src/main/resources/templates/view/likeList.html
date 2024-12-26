@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>간택의 시간</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/likeList.js" type="module" defer></script>
+  <link href="/css/output.css" rel="stylesheet">
+</head>
+<body class="flex bg-gray-100 items-center justify-center relative h-screen border">
+
+
+<div class="flex flex-col bg-white p-8 rounded-lg shadow-lg w-1/2 h-4/5 min-h-0 min-w-0">
+<!-- 제목 -->
+  <h1 class="text-6xl font-retro text-center mb-6 text-gray-800 ">발탁의 시간</h1>
+
+
+  <!-- 반복되는 알림 카드 스크롤 기능 -->
+  <div id = "list" class="space-y-4 flex-grow overflow-y-auto p-1">
+    <div id="userId" hidden="hidden" th:text="${id}"></div>
+
+
+  </div>
+</div>
+</body>
+</html>
+ㅡ
