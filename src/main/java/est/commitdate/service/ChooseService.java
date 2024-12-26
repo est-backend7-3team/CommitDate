@@ -1,10 +1,10 @@
 package est.commitdate.service;
 
+import est.commitdate.dto.like.LikeDto;
 import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.entity.Like;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
-import est.commitdate.repository.IgnoreRepository;
 import est.commitdate.repository.LikeRepository;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -63,6 +62,7 @@ public class ChooseService {
                 chooseDto.setProfileImageURL(member.getProfileImage());
                 chooseDto.setTimestamp(like.getLikeDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 chooseDto.setLikeId(like.getLikeId());
+                chooseDto.setMatchingResult(like.getMatchingResult());
 
                 chooseDtos.add(chooseDto);
             });
@@ -96,4 +96,27 @@ public class ChooseService {
 
     }
 
+    public List<LikeDto> getLikeDtos(Map<String, Object> payload, HttpSession session) {
+
+        List<LikeDto> likeDtos = new ArrayList<>();
+        log.info("[getLikeDtos] userId 파싱준비. 값={}", payload.get("userId"));
+        Long userId = Long.valueOf((String) payload.get("userId"));
+        log.info("[getLikeDtos] userId 파싱완료. 값={}", userId);
+        Member loggedInMember = memberService.getLoggedInMember(session);
+
+        if (loggedInMember == null) {
+            return null; //anonymous 의 요청
+        }
+
+        Member findMember = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        if (!findMember.equals(loggedInMember)) {
+            return null; //수상한 세션: 불일치
+        }
+
+        loggedInMember.getLikes().forEach(like -> {
+            likeDtos.add(LikeDto.from(like));
+        });
+
+        return likeDtos;
+    }
 }
