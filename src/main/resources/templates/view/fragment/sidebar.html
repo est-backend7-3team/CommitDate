@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="sidebarFrag"
+       class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-white border-r p-4">
+    <nav class="menu">
+        <ul>
+            <li><a class="rounded-md hover:bg-gray-100" th:href="@{/}">공지게시판</a></li>
+            <li><a class="rounded-md hover:bg-gray-100" th:href="@{/}">모임게시판</a></li>
+            <li><a class="rounded-md hover:bg-gray-100" th:href="@{/}">등등</a></li>
+        </ul>
+    </nav>
+</aside>
+</body>
+</html>
