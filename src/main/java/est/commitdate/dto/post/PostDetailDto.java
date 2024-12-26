@@ -28,7 +28,7 @@ public class PostDetailDto {
         return PostDetailDto.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
-                .text(post.getText())
+                .text(post.getSourceCode())
                 .description(post.getDescription())
                 .author(post.getMember().getNickname())
                 .createdAt(post.getCreatedAt())
