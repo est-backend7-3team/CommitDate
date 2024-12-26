@@ -7,7 +7,7 @@
         class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b px-4 flex items-center justify-between z-50">
 
   <div class="flex items-center">
-    <a th:href="@{/}" class="flex items-center">
+    <a th:href="@{/login}" class="flex items-center">
       <img th:src="@{/images/logo.png}" alt="Logo" class="h-8 mr-2" />
       <span class="text-xl font-bold">Commitdate</span>
     </a>
@@ -50,7 +50,7 @@
           <a>회원정보</a>
         </li>
         <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
-          <a>내게시물</a>
+          <a>내 게시물</a>
         </li>
         <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
           <a>채팅</a>
@@ -59,7 +59,8 @@
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>
         </li>
-        <li sec:authorize="isAuthenticated()"><a>내게시물</a></li>
+        <li sec:authorize="isAuthenticated()"><a>내 게시물</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a></li>
         <li sec:authorize="isAuthenticated()"><a>채팅</a></li>
       </ul>
     </div>
