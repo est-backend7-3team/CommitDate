@@ -12,6 +12,8 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
 
     Optional<Like> findByMemberIdAndPostPostId(Long memberId, Long postId);
 
+    Optional<Like> findByMemberId(Long memberId);
+
     @Query(value = "SELECT * FROM post_like WHERE member_id = :memberId AND post_id = :postId AND status = 0", nativeQuery = true)
     Optional<Like> findByMemberIdAndPostPostIdAndStatus(Long memberId, Long postId);
 
