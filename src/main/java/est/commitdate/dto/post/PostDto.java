@@ -19,6 +19,7 @@ public class PostDto {
     private Integer boardId;
     private String title;
     private String text;
+    private String sourceCode;
     private String description;
     private String author;
     private Integer likeCount;
@@ -32,7 +33,7 @@ public class PostDto {
                 .postId(post.getPostId())
                 .boardId(post.getBoard().getBoardId())
                 .title(post.getTitle())
-                .text(post.getText())
+                .sourceCode(post.getSourceCode())
                 .description(post.getDescription())
 //                .author(post.getMember().getUsername())
                 .author("11")
@@ -41,6 +42,7 @@ public class PostDto {
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
                 .status(post.getStatus())
+                .text(post.getText())
                 .build();
     }
 

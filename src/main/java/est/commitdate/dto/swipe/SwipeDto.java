@@ -35,14 +35,10 @@ public class SwipeDto {
                 .userName(post.getMember().getUsername())
                 .introduce(post.getMember().getIntroduce())
                 .likeCount(post.updateLikeCount())
-                .comment(post.getMember().getComment())
-                .sourceCode(post.getText())
+                .comment(post.getDescription())
+                .sourceCode(post.getSourceCode())
                 .build();
     }
-
-
-
-
 }
 
 

@@ -37,17 +37,16 @@ document.addEventListener('DOMContentLoaded',()=>{
 function createItem(chooseDto){
 
    const itemDiv = document.createElement("div");
-   itemDiv.className = "flex items-center bg-white shadow-md rounded-lg p-4";
+   itemDiv.className = "flex items-center bg-white shadow-md rounded-lg p-4 border";
 
    itemDiv.innerHTML = `
-
-
 <!--         <input type="hidden" th:value="*{updatedAt}" name="updatedAt" />-->
-        <div class="avatar">
-          <div class="w-12 rounded-full">
-            <img id="profileImageURL" src="${chooseDto.profileImageURL}" alt="User Avatar">
-          </div>
+             <div class="avatar">
+              <div class="w-12 rounded-full" >
+                <img id="profileImageURL" src = "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+<!--src="{chooseDto.profileImageURL}"-->
         </div>
+      </div>
         <div class="ml-4 flex-1">
           <p id="suitorTime" class="text-sm text-gray-500 mb-1">${chooseDto.timestamp}</p>
           <p class="text-gray-800 font-semibold mb-1">
@@ -61,9 +60,7 @@ function createItem(chooseDto){
               수락
             </button>
         </form>
-        
   `;
-
    // 알림 리스트에 추가
    list.appendChild(itemDiv);
 }
