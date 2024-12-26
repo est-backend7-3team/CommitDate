@@ -17,4 +17,5 @@ document.getElementById('boardId').addEventListener('change', function () {
         sourcecode.textContent ="";
         console.log(" 초기화 완료");
     }
+
 });
