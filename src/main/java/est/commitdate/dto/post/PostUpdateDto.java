@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class PostUpdateDto {
     private Long postId;
     private String title;
+    private String sourceCode;
     private String text;
     private String description;
     private String author;
@@ -27,7 +28,7 @@ public class PostUpdateDto {
         return PostUpdateDto.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
-                .text(post.getText())
+                .sourceCode(post.getSourceCode())
                 .description(post.getDescription())
 //                .author(post.getMember().getUsername())
                 .updatedAt(post.getUpdatedAt())

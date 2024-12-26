@@ -44,6 +44,10 @@ public class Post {
     @Column(name = "text")
     private String text;
 
+    @Lob
+    @Column(name = "sourcecode", columnDefinition = "TEXT")
+    private String sourceCode;
+
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -68,6 +72,7 @@ public class Post {
         Post post = new Post();
         post.board = board;
         post.title = dto.getTitle();
+        post.sourceCode = dto.getSourceCode();
         post.text = dto.getText();
         post.description = dto.getDescription();
         post.member = member;
@@ -76,6 +81,7 @@ public class Post {
 
     public void update(PostUpdateDto dto) {
         this.title = dto.getTitle();
+        this.sourceCode = dto.getSourceCode();
         this.text = dto.getText();
         this.description = dto.getDescription();
 //        this.likeCount = dto.getLikeCount();
@@ -88,6 +94,7 @@ public class Post {
         post.member = member;
         post.title = dto.getTitle();
         post.text = dto.getText();
+        post.sourceCode = dto.getSourceCode();
         post.description = dto.getDescription();
         return post;
     }
