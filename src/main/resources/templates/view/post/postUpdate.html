@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{view/layout/layout}">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
   <title>게시글 수정</title>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
 <div class="container w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
   <h1 class="text-2xl font-bold mb-6 text-center">게시글 수정</h1>
   <form th:action="@{/post/update}" method="post" th:object="${postUpdateDto}" class="space-y-4">
