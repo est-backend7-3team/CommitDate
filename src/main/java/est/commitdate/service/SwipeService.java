@@ -165,19 +165,14 @@ public class SwipeService {
 
             log.info("matching Success!");
             return "Success";
-
-
         }
-
         if(member == null){
             log.info("Need to Login!");
             return "로그인이 필요합니다.";
         }
-
     log.info("What the Hell was that");
     log.info(String.valueOf(chooseDto.getMatchingResult()));
     return "문제가 있습니다.";
-
     }
 
 

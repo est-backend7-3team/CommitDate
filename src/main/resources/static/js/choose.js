@@ -45,12 +45,10 @@ function createItemHTML(chooseDto) {
         <p class="text-gray-600 text-sm">${chooseDto.comment}</p>
       </div>
       <div class="buttonSection">
-      <form>
-      <input type="hidden" name="likeId" value="${chooseDto.likeId}" />
+        <input type="hidden" name="likeId" value="${chooseDto.postId}" />
         <button id="acceptButton" class="btn btn-primary bg-pink-500 border-none rounded-full text-white">
           수락
         </button>
-      </form>  
       </div>
     `;
     } else {
@@ -70,7 +68,7 @@ function createItemHTML(chooseDto) {
       </div>
       <div class="buttonSection flex flex-content ">
       
-        <form action="/chat" method="post">
+        <form action="/chatting/${chooseDto.postId}" method="get">
           <input type="hidden" name="likeId" value="${chooseDto.likeId}" />
           <button class="w-16 btn btn-primary bg-pink-500 border-none rounded-full text-white" type="submit">
             입장
@@ -109,22 +107,22 @@ function createItem(chooseDto) {
             // fetch('/choose/accept', {...}) 등으로 DB에 반영할 수도 있음
             // 여기서는 단순히 'UI만' 바뀐다고 가정
             chooseDto.matchingResult = 1;
-            fetch('/swipe/api/requestMatchingResult', {
+            fetch('/chatroom/api/requestMatchingResult', {
                 method: "POST",
                 headers:{
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(chooseDto)
             }).then(response =>{
-               if(!response.ok){
-                   alert("예기치 못한 에러!")
-               }
-               return response;
+                if(!response.ok){
+                    alert("예기치 못한 에러!")
+                }
+                return response.text();
             }).then(message => {
                 if(message === "Success"){
                     console.log("Success")
-                }else if(message => "로그인이 필요합니다."){
-                    window.location.href('/login')
+                }else if(message === "로그인이 필요합니다."){
+                    window.location.href = "http://localhost:8080/login";
                 }else{
                     alert("문제가 생겼습니다.")
                 }
