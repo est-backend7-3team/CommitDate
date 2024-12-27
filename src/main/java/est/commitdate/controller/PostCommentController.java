@@ -39,7 +39,6 @@ public class PostCommentController {
 
     @PostMapping("/comment/update")
     public String CommentUpdate(PostUpdateDto dto) {
-
         return "redirect:/post";
     }
 
