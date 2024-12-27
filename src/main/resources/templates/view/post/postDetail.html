@@ -1,27 +1,53 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{view/layout/layout}">
 <head>
+    <meta charset="UTF-8">
     <title>게시글 상세보기</title>
     <th:block layout:fragment="script">
         <script src="/js/postDetail.js" type="module" defer></script>
     </th:block>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-<div layout:fragment="content" class="container w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-    <main>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen">
+<div layout:fragment="content" class="container max-w-screen-lg mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
         <div class="post-detail">
             <!-- 게시글 ID (숨김 처리) -->
             <div id="postId" hidden="hidden" th:text="${postDetail.postId}">0</div>
 
             <!-- 게시글 제목 -->
             <h1 th:text="${postDetail.title}" class="text-3xl font-bold mb-4">Post Title</h1>
-            <a th:href="@{/choose/{id}(id=${postDetail.postId})}" class="btn btn-secondary btn-sm mb-6">
-                간택하기
-            </a>
+<!--            <a th:href="@{/choose/{id}(id=${postDetail.postId})}" class="btn btn-secondary btn-sm mb-6">-->
+<!--                간택하기-->
+<!--            </a>-->
+
+            <!-- 삼점 버튼 - 작성자나 ADMIN만 볼 수 있도록 설정 -->
+            <div th:if="${(role != null and role == 'ADMIN') or (nickname != null and nickname == postDetail.author)}"
+                 class="dropdown dropdown-end">
+                <button tabindex="0" class="btn btn-ghost btn-circle">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
+                        </path>
+                    </svg>
+                </button>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li th:if="${nickname != null and nickname == postDetail.author}">
+                        <form th:action="@{/choose/{id}(id=${postDetail.postId})}" method="get">
+                            <button class="w-full text-left">간택하기</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form th:action="@{'/post/updateView/'+${postDetail.postId}}" method="get">
+                            <button class="w-full text-left">게시글 수정</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form th:action="@{'/post/delete/'+${postDetail.postId}}" method="post">
+                            <button class="w-full text-left text-error">게시글 삭제</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
 
             <!-- 게시글 작성자 및 작성 시간 -->
             <div class="post-info flex items-center text-gray-600 mb-6">
@@ -31,12 +57,12 @@
 
             <!-- 게시글 내용 -->
             <div class="post-content mb-6">
-                <p th:text="${postDetail.text}" class="text-gray-700 leading-relaxed">본문 내용</p>
+                <p th:text="${postDetail.text}" class="text-gray-700 leading-relaxed break-words">본문 내용</p>
             </div>
 
             <!-- 게시글 설명 -->
             <div class="post-description mb-6">
-                <p th:text="${postDetail.description}" class="text-gray-600 italic">설명 내용</p>
+                <p th:text="${postDetail.description}" class="text-gray-600 break-words">설명 내용</p>
             </div>
 
             <!-- 액션 버튼들 -->
@@ -81,7 +107,6 @@
                 </ul>
             </div>
         </div>
-    </main>
 </div>
 </body>
 </html>
