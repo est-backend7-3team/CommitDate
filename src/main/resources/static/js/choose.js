@@ -63,4 +63,6 @@ function createItem(chooseDto){
   `;
    // 알림 리스트에 추가
    list.appendChild(itemDiv);
+
 }
+
