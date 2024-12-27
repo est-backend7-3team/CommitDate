@@ -19,10 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -74,25 +72,19 @@ public class PostService {
 
     // 모든 게시판의 글들을 불러오기
     public List<PostDto> PostList() {
-        List<Post> posts = postRepository.findAll();
-        List<PostDto> postDtos = new ArrayList<>();
-        for (Post post : posts) {
-            PostDto findDTO = PostDto.from(post);
-            postDtos.add(findDTO);
-        }
-        return postDtos;
+        List<Post> posts = postRepository.findAllPostsOrderedByCreatedAtDesc();
+        return posts.stream().map(PostDto::from).toList();
     }
+
     // 게시판에 해당되는 글들만 불러오기
     public List<PostDto> getPostsByBoardId(Integer boardId) {
         log.info("boardId = " + boardId);
         Board findBoard = boardService.getBoardById(boardId);
-        List<Post> BoardPosts = postRepository.findByBoard(findBoard);
-        List<PostDto> postDtos = new ArrayList<>();
-        for (Post post : BoardPosts) {
-            PostDto findDTO = PostDto.from(post);
-            postDtos.add(findDTO);
-        }
-        return postDtos;
+        List<Post> BoardPosts = postRepository.findByBoard(findBoard)
+                .stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .toList();
+        return BoardPosts.stream().map(PostDto::from).toList();
     }
 
     // post의 작성자를 찾고 현재 로그인 되어있는 사용자와 비교하여 일치하면 true

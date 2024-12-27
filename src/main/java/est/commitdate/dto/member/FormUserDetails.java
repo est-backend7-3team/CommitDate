@@ -29,7 +29,7 @@ public class FormUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("Role_"+this.role));
+        return List.of(new SimpleGrantedAuthority(this.role));
     }
 
     @Override
