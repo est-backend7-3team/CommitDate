@@ -114,23 +114,15 @@ function createItem(chooseDto) {
                 },
                 body: JSON.stringify(chooseDto)
             }).then(response =>{
-               if(!response.ok){
-                   alert("예기치 못한 에러!")
-               }
-               return response;
+                if(!response.ok){
+                    alert("예기치 못한 에러!")
+                }
+                return response.text();
             }).then(message => {
-
-                console.log(message);
-
-                if(message.body === "Success"){
+                if(message === "Success"){
                     console.log("Success")
                 }else if(message === "로그인이 필요합니다."){
-                    const result = confirm("로그인이 필요합니다.");
-                    if (result) {
-                        window.location.href = "http://localhost:8080/login";
-                    }
-                    throw new Error("Unauthorized");
-
+                    window.location.href = "http://localhost:8080/login";
                 }else{
                     alert("문제가 생겼습니다.")
                 }
