@@ -83,6 +83,7 @@ function createItemHTML(chooseDto) {
             나가기
           </button>
         </form>
+
         
       </div>
     `;
@@ -136,5 +137,6 @@ function createItem(chooseDto) {
 
     // 완성된 요소를 #list에 붙인다.
     list.appendChild(itemDiv);
+
 }
 

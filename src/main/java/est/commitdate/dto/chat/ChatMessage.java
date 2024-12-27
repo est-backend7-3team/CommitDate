@@ -1,18 +1,22 @@
 package est.commitdate.dto.chat;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Getter
 public class ChatMessage {
-    private String sender;  // 메시지 보낸 사람
-    private String content; // 메시지 내용
-    private String roomId;  // 채팅방 ID
-    private LocalDateTime sendTime; // 메시지 보낸 시간
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long roomId;
+    private String sender;
+    private String content;
+
+    private LocalDateTime timestamp; // 추가: 메시지 생성 시간을 저장하는 필드
+
+
 }
