@@ -35,6 +35,7 @@ public class ChatService {
     public void ChatRoom(Long roomId) {
         chatRoomRepository.save(ChatRoom.of(roomId));
     }
+
     // 생성된 채팅방 찾기
     public ChatRoom getChatRoom(Long roomId) {
         return chatRoomRepository.findByRoomId(roomId)

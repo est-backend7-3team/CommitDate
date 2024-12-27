@@ -7,9 +7,11 @@ import est.commitdate.dto.chat.ChatMessage;
 
 import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.entity.ChatRoom;
+import est.commitdate.entity.Member;
 import est.commitdate.repository.ChatMessageRepository;
 import est.commitdate.service.ChatService;
 import est.commitdate.service.SwipeService;
+import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,15 +34,14 @@ import java.util.List;
 public class ChatController {
     private final SwipeService swipeService;
     private final ChatService chatService;  // 메시지 저장소를 추
+    private final MemberService memberService;
 
     @GetMapping("/chatting/{roomId}")
-    public String chat(Model model, @PathVariable Long roomId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        model.addAttribute("username", username);
+    public String chat(Model model, @PathVariable Long roomId, HttpSession session) {
+        Member loggedInMember = memberService.getLoggedInMember(session);
+        model.addAttribute("username", loggedInMember.getNickname());
         model.addAttribute("roomId", roomId);  // roomId도 모델에 추가
-        model.addAttribute("previousMessages",  chatService.previousMessages(roomId)); // 이전 메시지를 모델에 추가
+        model.addAttribute("previousMessages", chatService.previousMessages(roomId)); // 이전 메시지를 모델에 추가
         return "chat";
     }
 
@@ -61,8 +62,8 @@ public class ChatController {
     @ResponseBody
     @PostMapping("/chatroom/api/requestMatchingResult")
     public ResponseEntity<String> ChattingRoomMatching(@RequestBody ChooseDto chooseDto, HttpSession session) {
-        log.info("너 타는 거임?");
         chatService.ChatRoom(chooseDto.getPostId());
+        log.info("채팅방 생성 호출 됨");
         return ResponseEntity.ok(swipeService.toggle(chooseDto, session));
     }
 
