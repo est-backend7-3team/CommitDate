@@ -19,6 +19,7 @@ public class ChooseDto {
     private String timestamp;
     private Long likeId;
     private int matchingResult;
+    private Long postId;
 
 }
 
