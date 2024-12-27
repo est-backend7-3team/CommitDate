@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
     // 특정 채팅방의 메시지 조회
-    List<ChatMessage> findByRoomIdOrderByTimestampAsc(Long roomId);
+    List<ChatMessage> findByChatRoomRoomIdOrderByTimestampAsc(Long roomId);
 }

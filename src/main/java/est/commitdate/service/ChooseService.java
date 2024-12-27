@@ -63,6 +63,7 @@ public class ChooseService {
                 chooseDto.setTimestamp(like.getLikeDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 chooseDto.setLikeId(like.getLikeId());
                 chooseDto.setMatchingResult(like.getMatchingResult());
+                chooseDto.setPostId(like.getPost().getPostId());
 
                 chooseDtos.add(chooseDto);
             });

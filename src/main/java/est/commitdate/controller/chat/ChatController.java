@@ -5,9 +5,15 @@ package est.commitdate.controller.chat;
 
 import est.commitdate.dto.chat.ChatMessage;
 
+import est.commitdate.dto.swipe.ChooseDto;
+import est.commitdate.entity.ChatRoom;
 import est.commitdate.repository.ChatMessageRepository;
+import est.commitdate.service.ChatService;
+import est.commitdate.service.SwipeService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -24,18 +30,17 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
-
-    private final ChatMessageRepository chatMessageRepository;  // 메시지 저장소를 추
+    private final SwipeService swipeService;
+    private final ChatService chatService;  // 메시지 저장소를 추
 
     @GetMapping("/chatting/{roomId}")
     public String chat(Model model, @PathVariable Long roomId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        List<ChatMessage> previousMessages = chatMessageRepository.findByRoomIdOrderByTimestampAsc(roomId);
         model.addAttribute("username", username);
         model.addAttribute("roomId", roomId);  // roomId도 모델에 추가
-        model.addAttribute("previousMessages", previousMessages); // 이전 메시지를 모델에 추가
+        model.addAttribute("previousMessages",  chatService.previousMessages(roomId)); // 이전 메시지를 모델에 추가
         return "chat";
     }
 
@@ -44,12 +49,21 @@ public class ChatController {
     @SendTo("/topic/{roomId}")  // 응답 메시지가 /topic/roomId로 발송
     public ChatMessage sendMessage(ChatMessage message, @DestinationVariable Long roomId) {
         log.info("chatMessage = " + message.toString());
-        chatMessageRepository.save(message); // 메시지 저장
+        ChatRoom findchatRoom = chatService.getChatRoom(roomId);
+        // 메시지 저장
+//        chatService.Chatting(message);
+        chatService.Chatting(findchatRoom, message);
         return message;
     }
 
 
-
-
+    //
+    @ResponseBody
+    @PostMapping("/chatroom/api/requestMatchingResult")
+    public ResponseEntity<String> ChattingRoomMatching(@RequestBody ChooseDto chooseDto, HttpSession session) {
+        log.info("너 타는 거임?");
+        chatService.ChatRoom(chooseDto.getPostId());
+        return ResponseEntity.ok(swipeService.toggle(chooseDto, session));
+    }
 
 }
