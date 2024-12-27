@@ -14,6 +14,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,5 +153,32 @@ public class SwipeService {
         //없을 때
         return 0;
     }
+
+    public String toggle(ChooseDto chooseDto, HttpSession session) {
+
+        Member member = memberService.getLoggedInMember(session);
+
+        if(chooseDto.getMatchingResult() == 1) {
+
+            Like like = likeRepository.findByLikeId(chooseDto.getLikeId()).orElseThrow(EntityNotFoundException::new);
+            like.update();
+
+            log.info("matching Success!");
+            return "Success";
+
+
+        }
+
+        if(member == null){
+            log.info("Need to Login!");
+            return "로그인이 필요합니다.";
+        }
+
+    log.info("What the Hell was that");
+    log.info(String.valueOf(chooseDto.getMatchingResult()));
+    return "문제가 있습니다.";
+
+    }
+
 
 }

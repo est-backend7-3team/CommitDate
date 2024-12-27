@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{view/layout/layout}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/js/postSave.js" type="module" defer></script>
+    <th:block layout:fragment="script">
+    <script defer src="/js/postSave.js" type="module"></script>
+    </th:block>
     <title>게시글 작성</title>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body>
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
 <div class="container w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold mb-6 text-center">게시글 작성</h1>
     <form th:action="@{/post/save}" method="post" th:object="${postDto}" class="space-y-4">
@@ -57,19 +58,6 @@
 
         <!-- 본문 입력 -->
         <div class="form-group">
-            <label for="description" class="block text-gray-700 font-medium">코드</label>
-            <textarea
-                    id="description"
-                    name="description"
-                    th:field="*{description}"
-                    rows="6"
-                    required
-                    class="textarea textarea-bordered w-full bg-white"
-                    placeholder="본문을 입력하세요"></textarea>
-        </div>
-
-        <!-- 본문 입력 -->
-        <div class="form-group">
             <label for="text" class="block text-gray-700 font-medium">본문</label>
             <textarea
                     id="text"
@@ -81,8 +69,6 @@
                     placeholder="본문을 입력하세요"></textarea>
         </div>
 
-
-
         <!-- 숨겨진 필드 -->
         <input type="hidden" th:value="*{author}" name="author" />
 
@@ -92,5 +78,6 @@
         </div>
     </form>
 </div>
+</body>
 </body>
 </html>
