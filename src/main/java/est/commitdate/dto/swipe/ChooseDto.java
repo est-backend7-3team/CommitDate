@@ -18,6 +18,7 @@ public class ChooseDto {
     private String profileImageURL;
     private String timestamp;
     private Long likeId;
+    private int matchingResult;
 
 }
 

@@ -9,87 +9,9 @@
     <th:block layout:fragment="script"></th:block>
     <th:block layout:fragment="style"></th:block>
 </head>
-<body class="bg-white">
-<!--<div th:replace="~{fragment/header :: headerFrag}"></div>-->
-<!--<div th:replace="~{fragment/sidebar :: sidebarFrag}"></div>-->
-<header class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b px-4 flex items-center justify-between z-50">
-    <div class="flex items-center">
-        <a th:href="@{/static}" class="flex items-center">
-            <img th:src="@{/images/logo.png}" alt="Logo" class="h-8 mr-2" />
-            <span class="text-xl font-bold">Commitdate</span>
-        </a>
-    </div>
-
-    <div class="flex items-center space-x-4">
-        <button
-                class="btn btn-primary btn-sm"
-                sec:authorize="isAnonymous()"
-                th:onclick="|location.href='@{/login}'|">
-            Login
-        </button>
-        <button
-                class="btn btn-primary btn-sm"
-                sec:authorize="isAuthenticated()"
-                th:onclick="|location.href='@{/logout}'|">
-            Logout
-        </button>
-
-        <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn btn-square btn-ghost">
-                <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2"
-                        stroke="currentColor"
-                        class="w-6 h-6">
-                    <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M3.75 5.25h16.5m-16.5 6.75h16.5m-16.5 6.75h16.5"/>
-                </svg>
-            </label>
-
-            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li sec:authorize="isAnonymous()"
-                    th:onclick="|location.href='@{/login}'|"><a>회원정보</a></li>
-                <li sec:authorize="isAnonymous()"
-                    th:onclick="|location.href='@{/login}'|"><a>내게시물</a></li>
-                <li sec:authorize="isAnonymous()"
-                    th:onclick="|location.href='@{/login}'|"><a>채팅</a></li>
-
-                <li sec:authorize="isAuthenticated()"
-                    th:onclick="|location.href='@{/member/profile}'|"><a>회원정보</a></li>
-                <li sec:authorize="isAuthenticated()"><a>내게시물</a></li>
-                <li sec:authorize="isAuthenticated()"><a>채팅</a></li>
-            </ul>
-        </div>
-    </div>
-</header>
-
-<aside class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-white border-r p-4">
-    <nav class="menu">
-        <ul>
-            <li>
-                <a class="rounded-md hover:bg-gray-100" th:href="@{/static}">공지게시판</a>
-            </li>
-            <li>
-                <a class="rounded-md hover:bg-gray-100" th:href="@{/static}">모임게시판</a>
-            </li>
-            <li>
-                <a class="rounded-md hover:bg-gray-100" th:href="@{/static}">등등</a>
-            </li>
-        </ul>
-    </nav>
-</aside>
-
-<main class="pt-16 ml-64 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4">
-        <div layout:fragment="content">
-            <h1 class="text-3xl font-bold mb-4">메인 컨텐츠 영역</h1>
-        </div>
-    </div>
-</main>
-
+<body class="bg-gray-100">
+<div th:replace="~{view/fragment/header :: headerFrag}"></div>
+<div th:replace="~{view/fragment/sidebar :: sidebarFrag}"></div>
+<div th:replace="~{view/fragment/content :: contentFrag}"></div>
 </body>
 </html>
