@@ -48,7 +48,7 @@ public class Post {
     @Column(name = "sourcecode", columnDefinition = "TEXT")
     private String sourceCode;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "created_at", nullable = false)

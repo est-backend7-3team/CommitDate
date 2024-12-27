@@ -30,7 +30,7 @@ public class PostUpdateDto {
                 .title(post.getTitle())
                 .sourceCode(post.getSourceCode())
                 .description(post.getDescription())
-//                .author(post.getMember().getUsername())
+                .author(post.getMember().getUsername())
                 .updatedAt(post.getUpdatedAt())
                 .build();
     }
