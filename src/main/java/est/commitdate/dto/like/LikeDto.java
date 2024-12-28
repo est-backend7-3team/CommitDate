@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -23,6 +21,7 @@ public class LikeDto {
     private String timestamp;
     private Integer matchingResult;
     private Long postId;
+    private String profileImageUrl;
 // 타임스탬프찍힌 시간.
 
     public static LikeDto from(Like like){
@@ -33,6 +32,7 @@ public class LikeDto {
                 .matchingResult(like.getMatchingResult())
                 .timestamp(like.getLikeDate().format(DateTimeFormatter.ofPattern("yy-MM-dd HH:mm")))
                 .postId(like.getPost().getPostId())
+                .profileImageUrl(like.getPost().getMember().getProfileImage())
                 .build();
     }
 }
