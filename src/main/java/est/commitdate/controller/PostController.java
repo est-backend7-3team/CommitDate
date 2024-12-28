@@ -90,6 +90,7 @@ public class PostController {
         }
         return "redirect:/post";
     }
+
     @ResponseBody
     @PostMapping("/api/commentDelete")
     public ResponseEntity<String> postCommentDelete(@RequestBody Map<String,Object> removeJson, HttpSession session) {

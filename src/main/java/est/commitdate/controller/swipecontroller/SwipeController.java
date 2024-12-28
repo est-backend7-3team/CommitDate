@@ -4,6 +4,7 @@ import est.commitdate.dto.swipe.ChooseDto;
 import est.commitdate.dto.swipe.SwipeDto;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
+import est.commitdate.service.ChatService;
 import est.commitdate.service.SwipeService;
 import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -81,12 +82,6 @@ public class SwipeController {
             return ResponseEntity.status(401).body("AccessDenied");
         }
 
-    }
-
-    @ResponseBody
-    @PostMapping("/api/requestMatchingResult")
-    public ResponseEntity<String> requestMatchingResult(@RequestBody ChooseDto chooseDto, HttpSession session) {
-        return ResponseEntity.ok(swipeService.toggle(chooseDto, session));
     }
 }
 
