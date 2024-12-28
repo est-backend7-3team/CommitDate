@@ -1,77 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Chat Room</title>
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    .chat-container { width: 500px; margin: auto; }
-    .message-box { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
-    .input-box { margin-top: 10px; }
-  </style>
+  <title>Spring WebSocket Chat</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 <body>
-<div class="chat-container">
-  <h2>Chat Room</h2>
-  <div id="messageBox" class="message-box"></div>
-  <div class="input-box">
-    <input type="text" id="username" readonly value="${username}" />
-    <input type="text" id="message" placeholder="Message" />
-    <button onclick="sendMessage()">Send</button>
-  </div>
+<h2>Chat Room</h2>
+
+<div id="chat-box"></div>
+<div th:if="${#lists.isEmpty(previousMessages)}">
 </div>
+<div th:each="message : ${previousMessages}" th:if="${!#lists.isEmpty(previousMessages)}">
+  <p th:text="${message.sender} + ': ' + ${message.content}"></p>
+</div>
+<input type="text" id="username" th:value="${username}" disabled placeholder="Username" />
+<input type="hidden" id="roomId" th:value="${roomId}" />
+<input type="text" id="message" placeholder="Enter message" />
+<button onclick="sendMessage()">Send</button>
 
-<script>
+<script type="text/javascript">
   let stompClient = null;
-  const roomId = "userRoom";  // 사용자의 고유 채팅방 ID (예: username 기반)
+  let roomId = document.getElementById('roomId').value;
 
+  // 연결 설정
   function connect() {
-    const socket = new SockJS('/ws'); // WebSocket 연결 엔드포인트
+    let socket = new SockJS('/chat');
     stompClient = Stomp.over(socket);
+
     stompClient.connect({}, function (frame) {
       console.log('Connected: ' + frame);
-
-      // 채팅방에 입장 메시지 전송
-      stompClient.send(`/app/chat.join`, {}, JSON.stringify({
-        sender: document.getElementById("username").value,
-        content: `${document.getElementById("username").value} 님이 입장하였습니다.`,
-        roomId: roomId
-      }));
-
-      // 채팅방 메시지 구독
-      stompClient.subscribe(`/topic/${roomId}`, function (message) {
-        showMessage(JSON.parse(message.body)); // 메시지를 화면에 표시
+      stompClient.subscribe('/topic/'+roomId, function (messageOutput) {
+        showMessage(JSON.parse(messageOutput.body));
       });
     });
   }
 
+  // 메시지 전송
   function sendMessage() {
-    const username = document.getElementById("username").value;
-    const messageContent = document.getElementById("message").value;
-    const message = {
-      sender: username,
-      content: messageContent,
-      roomId: roomId
-    };
-
-    // 메시지 발행
-    stompClient.send("/app/chat.send", {}, JSON.stringify(message));
+    var username = document.getElementById('username').value;
+    var content = document.getElementById('message').value;
+    stompClient.send("/app/sendMessage/" + roomId, {}, JSON.stringify({'sender': username, 'content': content , 'roomId': roomId}));
+    document.getElementById('message').value = '';
   }
 
+  // 메시지 출력
   function showMessage(message) {
-    const messageBox = document.getElementById("messageBox");
-    const messageElement = document.createElement('div');
-    messageElement.textContent = `${message.sender}: ${message.content}`;
-    messageBox.appendChild(messageElement);
+    var chatBox = document.getElementById('chat-box');
+    var messageElement = document.createElement('div');
+    messageElement.textContent = message.sender + ": " + message.content;
+    chatBox.appendChild(messageElement);
   }
 
-
-  function chatExit() {
-
-  }
-
+  // 페이지 로드 시 연결 시작
   connect();
 </script>
 </body>

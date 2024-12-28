@@ -38,7 +38,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "title", nullable = false, length = 50)
+    @Column(name = "title", nullable = false, columnDefinition = "TEXT")
     private String title;
 
     @Column(name = "text")
@@ -48,7 +48,7 @@ public class Post {
     @Column(name = "sourcecode", columnDefinition = "TEXT")
     private String sourceCode;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "created_at", nullable = false)
