@@ -34,7 +34,7 @@ function createItemHTML(chooseDto) {
         return `
       <div class="avatar">
         <div class="w-12 rounded-full">
-          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+          <img src="${chooseDto.profileImageURL}" alt="User Avatar"/>
         </div>
       </div>
       <div class="ml-4 flex-1">
@@ -58,7 +58,7 @@ function createItemHTML(chooseDto) {
         return `
       <div class="avatar">
         <div class="w-12 rounded-full">
-          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+          <img src="${chooseDto.profileImageURL}" alt="User Avatar"/>
         </div>
       </div>
       <div class="ml-4 flex-1">
@@ -118,12 +118,13 @@ function createItem(chooseDto) {
                if(!response.ok){
                    alert("예기치 못한 에러!")
                }
-               return response;
+               return response.text();
             }).then(message => {
+                
                 if(message === "Success"){
                     console.log("Success")
-                }else if(message => "로그인이 필요합니다."){
-                    window.location.href('/login')
+                }else if(message === "로그인이 필요합니다."){
+                    window.location.href= '/login'
                 }else{
                     alert("문제가 생겼습니다.")
                 }

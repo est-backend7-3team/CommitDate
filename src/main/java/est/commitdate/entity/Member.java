@@ -95,6 +95,7 @@ public class Member {
         this.additionalInfoCompleted = additionalInfoCompleted;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.profileImage = "/image/profiles/Default.jpg";
         this.status = 1;
     }
 
@@ -106,12 +107,11 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void updateMemberDetails(String email, String encryptedPassword, String nickname, String phoneNumber, String profileImage, String comment, String introduce) {
+    public void updateMemberDetails(String email, String encryptedPassword, String nickname, String phoneNumber, String comment, String introduce) {
         this.email = email;
         this.password = encryptedPassword;
         this.nickname = nickname;
         this.phoneNumber = phoneNumber;
-        this.profileImage = profileImage;
         this.comment = comment;
         this.introduce = introduce;
         this.updatedAt = LocalDateTime.now();
@@ -142,6 +142,14 @@ public class Member {
     // 유저가 탈퇴하더라도 작성한 게시글은 삭제하지않음
     public void delete() {
         this.status = 0;
+    }
+
+    public void profileImageUrlUpdate(String fileName) {
+        this.profileImage = "/image/profiles/" + fileName; //경로까지.
+    }
+
+    public void defaultProfileImageUpdate(){
+        this.profileImage = "/image/profiles/Default.jpg";
     }
 
 }

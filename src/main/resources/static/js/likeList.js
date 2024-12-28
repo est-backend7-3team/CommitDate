@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
 // 1) DTO 객체를 받아서 '전체 HTML' 문자열을 만드는 함수
 function createItemHTML(likeDto) {
     // matchingResult === 0 이면 수락 버튼, 아니면 입장하기 버튼
@@ -35,7 +34,7 @@ function createItemHTML(likeDto) {
         return `
        <div class="avatar">
         <div class="w-12 rounded-full">
-          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+          <img src="${likeDto.profileImageUrl}" alt="User Avatar"/>
         </div>
       </div>
       <div class="ml-4 flex-1">
@@ -61,7 +60,7 @@ function createItemHTML(likeDto) {
         return `
       <div class="avatar">
         <div class="w-12 rounded-full">
-          <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User Avatar"/>
+          <img src="${likeDto.profileImageUrl}" alt="User Avatar"/>
         </div>
       </div>
       <div class="ml-4 flex-1">
@@ -107,7 +106,7 @@ function createItem(likeDto) {
     if (likeDto.matchingResult === 0) {
         const acceptButton = itemDiv.querySelector("#acceptButton");
         acceptButton.addEventListener("click", () => {
-            // (1) 서버에 '수락' 알림을 보내거나, matchingResult를 1로 바꾸는 API 호출
+            // (1) 서버에 '수락' 알림을 보내거나, matchingResult 를 1로 바꾸는 API 호출
             // fetch('/choose/accept', {...}) 등으로 DB에 반영할 수도 있음
             // 여기서는 단순히 'UI만' 바뀐다고 가정
             // likeDto.matchingResult = 0;
@@ -121,12 +120,12 @@ function createItem(likeDto) {
                if(!response.ok){
                    alert("예기치 못한 에러!")
                }
-               return response;
+               return response.test();
             }).then(message => {
                 if(message === "Success"){
                     console.log("Success")
                 }else if(message => "로그인이 필요합니다."){
-                    window.location.href('/login')
+                    window.location.href = '/swipe/api/requestMatchingResult';
                 }else{
                     alert("문제가 생겼습니다.")
                 }
@@ -140,4 +139,3 @@ function createItem(likeDto) {
     // 완성된 요소를 #list에 붙인다.
     list.appendChild(itemDiv);
 }
-
