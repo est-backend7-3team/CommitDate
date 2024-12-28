@@ -5,6 +5,7 @@ import est.commitdate.dto.post.PostDto;
 import est.commitdate.dto.post.PostUpdateDto;
 import est.commitdate.entity.Member;
 import est.commitdate.service.BoardService;
+import est.commitdate.service.LikeService;
 import est.commitdate.service.PostService;
 import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +26,7 @@ public class PostController {
     private final PostService postService;
     private final BoardService boardService;
     private final MemberService memberService;
+    private final LikeService likeService;
 
     // 게시글 목록 페이지
     @GetMapping("")
@@ -48,6 +50,7 @@ public class PostController {
         model.addAttribute("role", loginInfo.get("role"));
         PostDetailDto post = PostDetailDto.from(postService.getPostById(id));
         model.addAttribute("postDetail", post);
+        model.addAttribute("isLike", likeService.getIsLike(session, id));
 
         // 경로 수정
         return "view/post/postDetail";
