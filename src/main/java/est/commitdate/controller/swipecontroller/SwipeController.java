@@ -83,11 +83,6 @@ public class SwipeController {
         }
 
     }
-
-
-
-
-
 }
 
 

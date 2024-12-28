@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{view/layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{view/layout/layout}">
 <head>
-  <meta charset="UTF-8">
+<!--  <meta charset="UTF-8" class="whatisthis">-->
   <title>내 정보 수정</title>
-  <th:block layout:fragment="script">
   <script defer src="/js/profileValidation.js"></script>
-  </th:block>
 </head>
 <body>
 <div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -62,10 +59,20 @@
     </div>
 
     <!-- 프로필 이미지 URL -->
-    <div class="form-group">
-      <label for="profileImage" class="block text-gray-700 font-medium">프로필 이미지 URL</label>
-      <input type="text" id="profileImage" th:field="*{profileImage}" placeholder="프로필 이미지 URL 입력"
-             class="input input-bordered w-full bg-white" />
+    <div>
+      <label class="block text-gray-700 font-medium mb-2">프로필 이미지 변경</label>
+      <div class="flex items-end">
+        <div class="avatar">
+          <div class="w-24 rounded">
+            <img id = "img" th:src="*{profileImage}" />
+          </div>
+        </div>
+        <a id="profileImageUploadBtn" th:data-user-id="*{memberId}" class="btn btn-primary btn-sm ml-3">사진 수정</a>
+        <a id="toggleDefaultImageBtn"  class="btn btn-primary btn-sm ml-3">삭제</a>
+        <input type="file" id="fileInput" class="hidden" accept="image/*" />
+      </div>
+<!--      <input type="text" id="profileImage" th:field="*{profileImage}" placeholder="프로필 이미지 URL 입력"-->
+<!--             class="input input-bordered w-full bg-white" />-->
     </div>
 
     <!-- 한 줄 소개 -->

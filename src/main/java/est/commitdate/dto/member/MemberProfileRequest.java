@@ -8,6 +8,7 @@ import est.commitdate.entity.Member;
 @Setter
 public class MemberProfileRequest {
 
+        private Long memberId;
         private String email;
         private String password;
         private String nickname;
@@ -18,6 +19,7 @@ public class MemberProfileRequest {
 
         public static MemberProfileRequest fromMember(Member member) {
             MemberProfileRequest form = new MemberProfileRequest();
+            form.setMemberId(member.getId());
             form.setEmail(member.getEmail());
             form.setNickname(member.getNickname());
             form.setPhoneNumber(member.getPhoneNumber());
@@ -34,7 +36,6 @@ public class MemberProfileRequest {
                     (encryptedPassword != null) ? encryptedPassword : member.getPassword(),
                     this.nickname,
                     this.phoneNumber,
-                    this.profileImage,
                     this.comment,
                     this.introduce
             );
