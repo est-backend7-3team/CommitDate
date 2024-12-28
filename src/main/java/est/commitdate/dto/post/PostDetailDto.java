@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class PostDetailDto {
+
     private Long postId;
     private String title;
     private String description;
@@ -21,6 +22,7 @@ public class PostDetailDto {
     private LocalDateTime createdAt;
     private List<Comment> comments;
     private Integer likeCount;
+    private Integer likeResult = 0;
 
 
 
@@ -34,6 +36,7 @@ public class PostDetailDto {
                 .createdAt(post.getCreatedAt())
                 .comments(post.getComments())
                 .likeCount(post.updateLikeCount())
+
                 .build();
     }
 }
