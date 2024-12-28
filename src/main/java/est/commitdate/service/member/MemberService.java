@@ -156,6 +156,7 @@ public class MemberService {
                 return memberRepository.findById(customUser.getId())
                         .orElseThrow(() -> new EntityNotFoundException("Member not found"));
             } else if (principal instanceof FormUserDetails formUser) {
+                log.info("formUser.getId() = {}", formUser.getId());
                 return memberRepository.findById(formUser.getId())
                         .orElseThrow(() -> new EntityNotFoundException("Member not found"));
             }else{//로그인은 했는데 이상한것. RuntimeException 터트림.

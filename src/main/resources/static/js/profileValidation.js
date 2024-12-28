@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const phoneNumberField = document.getElementById("phoneNumber");
 
     // hidden 필드
+
     const originalNickname = document.getElementById("originalNickname")?.value || "";
     const originalPhoneNumber = document.getElementById("originalPhoneNumber")?.value || "";
 
@@ -246,4 +247,76 @@ document.addEventListener("DOMContentLoaded", () => {
     confirmPasswordWrapper.style.display = "none";
     formatPhoneNumber();
     validateFormBasic();
+
+    //프로필 이미지 관련 로직 추가.
+    //관련 요소 추가
+    const profileImg = document.getElementById("img");
+    const profileImageUploadBtn = document.getElementById("profileImageUploadBtn");
+    const toggleDefaultImageBtn = document.getElementById("toggleDefaultImageBtn");
+    const fileInput = document.getElementById("fileInput");
+
+    //ID 가져옴
+    const userId = profileImageUploadBtn.getAttribute("data-user-id");
+
+    profileImageUploadBtn.addEventListener('click', ()=>{
+        console.log("click");
+        fileInput.click();
+    });
+
+    toggleDefaultImageBtn.addEventListener('click',()=>{
+        profileImg.src = "/image/profiles/Default.jpg"
+
+        fetch('/defaultProfileImage',{
+            method : "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body : JSON.stringify({"userId": userId})
+        })
+            .then(response => {
+                return response.text().then(message => {
+                    if(!response.ok){
+                        alert(message)
+                    }
+                    return message;
+                });
+            })
+            .then(message => {
+                alert(message);
+            });
+
+    })
+
+
+
+    fileInput.addEventListener('change',()=>{
+        const file = fileInput.files[0] ;
+        if(!file){
+            alert("취소합니다.");
+            return;
+        }
+
+        //보낼 이미지 준비
+        const formData = new FormData();
+        formData.append("file",file);
+        formData.append("userId",userId);
+
+        fetch('/uploadProfileImage',{
+            method : "POST",
+            body : formData
+        })
+            .then(response => {
+                return response.text().then(message => {
+                    if(!response.ok){
+                        alert(message)
+                    }
+                    return message;
+                });
+            })
+            .then(URL => {
+                profileImg.src = URL;
+                alert("성공적으로 변경되었습니다.");
+            });
+    });
 });
+

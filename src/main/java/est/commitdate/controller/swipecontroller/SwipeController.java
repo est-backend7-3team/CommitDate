@@ -88,9 +88,6 @@ public class SwipeController {
     public ResponseEntity<String> requestMatchingResult(@RequestBody ChooseDto chooseDto, HttpSession session) {
         return ResponseEntity.ok(swipeService.toggle(chooseDto, session));
     }
-
-
-
 }
 
 

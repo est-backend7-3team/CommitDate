@@ -18,17 +18,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class PostService {
+
     private final PostRepository postRepository;
     private final BoardService boardService;
     private final MemberService memberService;
@@ -48,6 +48,7 @@ public class PostService {
         Post findPost = getPostById(postUpdateDto.getPostId());
         findPost.update(postUpdateDto);
     }
+
     // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void delete(Long id) {
         Post findPost = getPostById(id);
@@ -65,6 +66,7 @@ public class PostService {
                         ()-> new PostNotFoundException("해당 게시글을 찾을 수 없습니다.")
                 );
     }
+
     public Post getDeletePostById(Long postId) {
         return postRepository.findDeleteById(postId)
                 .orElseThrow(
@@ -82,6 +84,7 @@ public class PostService {
         }
         return postDtos;
     }
+
     // 게시판에 해당되는 글들만 불러오기
     public List<PostDto> getPostsByBoardId(Integer boardId) {
         log.info("boardId = " + boardId);
@@ -105,7 +108,6 @@ public class PostService {
             return false;
         }
     }
-
 
     public String postCommentRemove(@RequestBody Map<String,Object> removeJson, HttpSession session){
 
@@ -137,7 +139,6 @@ public class PostService {
         return "accessDenied_작성자불일치";
     }
 
-
     public String postCommentEdit(@RequestBody Map<String,Object> editJson, HttpSession session){
 
         //정보 파싱.
@@ -165,8 +166,4 @@ public class PostService {
 
         return "accessDenied_작성자불일치";
     }
-
-
-
-
 }
