@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세보기</title>
-    <th:block layout:fragment="script">
-        <script src="/js/postDetail.js" type="module" defer></script>
-    </th:block>
+    <script src="/js/postDetail.js" type="module" defer></script>
+    <style>
+        #likeButton.liked {
+            background-color: magenta;
+            color: white;
+            border-color: magenta;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen">
 <div layout:fragment="content" class="container max-w-screen-lg mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
@@ -67,10 +72,14 @@
 
             <!-- 액션 버튼들 -->
             <div class="actions flex items-center space-x-4 mb-8">
-                <button id="likeButton" class="btn btn-outline btn-success btn-sm">
+                <button id="likeButton" class="btn btn-outline btn-success btn-sm"
+                        th:classappend = "${isLike} ? 'liked' : ''">
                     👍 <span id="likeCount" th:text="${postDetail.likeCount}"></span>
                 </button>
             </div>
+
+
+
 
             <!-- 댓글 입력 폼 -->
             <div class="comment-form mb-8">
