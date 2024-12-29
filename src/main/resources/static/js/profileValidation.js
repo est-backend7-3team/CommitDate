@@ -309,13 +309,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.text().then(message => {
                     if(!response.ok){
                         alert(message)
+                        return;
                     }
                     return message;
                 });
             })
             .then(URL => {
-                profileImg.src = URL;
-                alert("성공적으로 변경되었습니다.");
+                if(URL){
+                    profileImg.src = URL;
+                    alert("성공적으로 변경되었습니다.");
+                }
             });
     });
 });

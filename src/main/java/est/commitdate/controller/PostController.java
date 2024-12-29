@@ -30,35 +30,34 @@ public class PostController {
     private final MemberService memberService;
     private final LikeService likeService;
 
-    // 게시글 목록 페이지
+    // 보드 or UserId 로 게시글 리스트 출력
     @GetMapping("{classification}/{id}")
     public String postListView(Model model, HttpSession session, @PathVariable String classification, @PathVariable String id) {
 
         Member member = memberService.getLoggedInMember(session);
         List<PostDto> postDtoList = postService.classification(classification,id,member);
+        String listName = postService.returnListName(classification,id);
 
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname", loginInfo.get("nickname"));
         model.addAttribute("role", loginInfo.get("role"));
         model.addAttribute("post", postDtoList);
         model.addAttribute("boards", boardService.BoardList());
-        model.addAttribute("pageTitle", "게시글 목록");
-
+        model.addAttribute("pageTitle", listName+"의 게시글");
 
         // 경로 수정
         return "view/post/posts";
     }
-    // 게시글 목록 페이지
+    // 모든 게시글 보기
     @GetMapping("")
     public String postListView(Model model, HttpSession session) {
-
 
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname", loginInfo.get("nickname"));
         model.addAttribute("role", loginInfo.get("role"));
         model.addAttribute("post", postService.PostList());
         model.addAttribute("boards", boardService.BoardList());
-        model.addAttribute("pageTitle", "게시글 목록");
+        model.addAttribute("pageTitle", "모든 게시글 목록");
 
         // 경로 수정
         return "view/post/posts";

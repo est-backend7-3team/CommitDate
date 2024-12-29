@@ -3,7 +3,6 @@ package est.commitdate.service.member;
 import est.commitdate.dto.member.MemberProfileRequest;
 import est.commitdate.dto.member.CustomUserDetails;
 import est.commitdate.dto.member.FormUserDetails;
-import est.commitdate.dto.member.MemberDetailRequest;
 import est.commitdate.dto.member.MemberSignUpRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.exception.*;

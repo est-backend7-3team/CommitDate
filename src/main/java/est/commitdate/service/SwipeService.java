@@ -126,6 +126,11 @@ public class SwipeService {
         );
     }
 
+    //JPA 네이티브 쿼리로 랜덤 포스트 추출
+    public Post getRealRandomPost() {
+        return postRepository.findRandomPostNative().orElse(null);
+    }
+
     //유저가 해당 포스트를 좋아요했는지 검사하는 메서드
     public Integer isLike(Member member, Post post) {
         //찾기
