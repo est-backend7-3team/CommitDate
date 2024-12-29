@@ -52,6 +52,7 @@ dependencies {
 
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
 }
 
 tasks.named('test') {
