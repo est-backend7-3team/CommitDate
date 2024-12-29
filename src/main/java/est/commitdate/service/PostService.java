@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -73,8 +76,8 @@ public class PostService {
     }
 
     // 모든 게시판의 글들을 불러오기
-    public List<PostDto> PostList() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> PostList(Pageable pageable) {
+        Page<Post> posts = postRepository.findAll(pageable);
         List<PostDto> postDtos = new ArrayList<>();
         for (Post post : posts) {
             PostDto findDTO = PostDto.from(post);
@@ -86,9 +89,10 @@ public class PostService {
     public List<PostDto> getPostsByBoardId(Integer boardId) {
         log.info("boardId = " + boardId);
         Board findBoard = boardService.getBoardById(boardId);
-        List<Post> BoardPosts = postRepository.findByBoard(findBoard);
+        Pageable pageable = PageRequest.of(0, 10);  // 페이지와 크기 설정
+        Page<Post> boardPosts = postRepository.findByBoard(findBoard, pageable);  // 게시판에 해당하는 페이징된 글 조회
         List<PostDto> postDtos = new ArrayList<>();
-        for (Post post : BoardPosts) {
+        for (Post post : boardPosts) {
             PostDto findDTO = PostDto.from(post);
             postDtos.add(findDTO);
         }
