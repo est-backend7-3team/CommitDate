@@ -15,11 +15,8 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByPostId(Long id);
-
+    List<Post> findByBoard(Board board);
     Page<Post> findAll(Pageable pageable);
-
-    Page<Post> findByBoard(Board board, Pageable pageable);
-
     //Swipe 에서만 쓰는 것.
     Optional<Post> findByBoardBoardIdAndPostId(Integer boardId, Long postId);
 
