@@ -49,7 +49,7 @@ function createItemHTML(likeDto) {
       <div class="buttonSection">
       <!--  <form> -->
       <!-- <input type="hidden" name="likeId" value="${likeDto.likeId}" /> -->
-        <button id="acceptButton" class="btn btn-primary bg-pink-500 border-none rounded-full text-white">
+        <button id = "acceptButton" class="btn btn-primary bg-pink-500 border-none rounded-full text-white">
           대기 중
         </button>
       <!--</form>  -->
@@ -101,40 +101,6 @@ function createItem(likeDto) {
 
     // matchingResult 상태에 맞게 안쪽 HTML을 만든다.
     itemDiv.innerHTML = createItemHTML(likeDto);
-
-    // 만약 matchingResult 가 0이면 '채팅' 버튼이 있을 것이므로 이벤트 달아준다.
-    if (likeDto.matchingResult === 0) {
-        const acceptButton = itemDiv.querySelector("#acceptButton");
-        acceptButton.addEventListener("click", () => {
-            // (1) 서버에 '수락' 알림을 보내거나, matchingResult 를 1로 바꾸는 API 호출
-            // fetch('/choose/accept', {...}) 등으로 DB에 반영할 수도 있음
-            // 여기서는 단순히 'UI만' 바뀐다고 가정
-            // likeDto.matchingResult = 0;
-            fetch('/swipe/api/requestMatchingResult', {
-                method: "POST",
-                headers:{
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(likeDto)
-            }).then(response =>{
-               if(!response.ok){
-                   alert("예기치 못한 에러!")
-               }
-               return response.test();
-            }).then(message => {
-                if(message === "Success"){
-                    console.log("Success")
-                }else if(message => "로그인이 필요합니다."){
-                    window.location.href = '/swipe/api/requestMatchingResult';
-                }else{
-                    alert("문제가 생겼습니다.")
-                }
-            });
-
-            // (2) 기존 아이템 내용 전체를 다시 '입장하기' 버튼 형태로 교체
-            itemDiv.innerHTML = createItemHTML(likeDto);
-        });
-    }
 
     // 완성된 요소를 #list에 붙인다.
     list.appendChild(itemDiv);

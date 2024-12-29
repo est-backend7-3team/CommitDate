@@ -53,7 +53,7 @@
           <a>내 게시물</a>
         </li>
         <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
-          <a>채팅</a>
+          <a>좋아요 보기</a>
         </li>
         <!-- 로그인시 메뉴 -->
         <li sec:authorize="isAuthenticated()">
@@ -62,9 +62,9 @@
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>
         </li>
-        <li sec:authorize="isAuthenticated()"><a>내 게시물</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a></li>
         <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a></li>
-        <li sec:authorize="isAuthenticated()"><a>채팅</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a></li>
         <!-- ADMIN 권한일 때만 보이는 항목 -->
         <li sec:authorize="hasAuthority('ADMIN')" th:onclick="|location.href='@{/board}'|">
           <a>게시판 관리</a>

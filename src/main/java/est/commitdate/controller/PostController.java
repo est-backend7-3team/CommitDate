@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,8 +31,28 @@ public class PostController {
     private final LikeService likeService;
 
     // 게시글 목록 페이지
+    @GetMapping("{classification}/{id}")
+    public String postListView(Model model, HttpSession session, @PathVariable String classification, @PathVariable String id) {
+
+        Member member = memberService.getLoggedInMember(session);
+        List<PostDto> postDtoList = postService.classification(classification,id,member);
+
+        Map<String, String> loginInfo = memberService.getLoginInfo(session);
+        model.addAttribute("nickname", loginInfo.get("nickname"));
+        model.addAttribute("role", loginInfo.get("role"));
+        model.addAttribute("post", postDtoList);
+        model.addAttribute("boards", boardService.BoardList());
+        model.addAttribute("pageTitle", "게시글 목록");
+
+
+        // 경로 수정
+        return "view/post/posts";
+    }
+    // 게시글 목록 페이지
     @GetMapping("")
     public String postListView(Model model, HttpSession session) {
+
+
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname", loginInfo.get("nickname"));
         model.addAttribute("role", loginInfo.get("role"));
