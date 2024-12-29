@@ -32,7 +32,7 @@ public class PostController {
     private final MemberService memberService;
     private final LikeService likeService;
 
-    // 게시글 목록 페이지
+    // 보드 or UserId로 게시글 리스트 출력
     @GetMapping("{classification}/{id}")
     public String postListView(Model model, HttpSession session, @PathVariable String classification, @PathVariable String id) {
 
@@ -46,7 +46,6 @@ public class PostController {
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "게시글 목록");
 
-
         // 경로 수정
         return "view/post/posts";
     }
@@ -56,10 +55,7 @@ public class PostController {
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname", loginInfo.get("nickname"));
         model.addAttribute("role", loginInfo.get("role"));
-
-        // 페이징 처리: 페이지 번호를 파라미터로 받아서, 해당 페이지의 게시글만 조회
-        Pageable pageable = PageRequest.of(page, 10); // 한 페이지에 10개의 게시글
-        model.addAttribute("post", postService.PostList(pageable));
+        model.addAttribute("post", postService.PostList());
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "게시글 목록");
 
