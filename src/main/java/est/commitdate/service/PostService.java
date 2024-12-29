@@ -6,6 +6,7 @@ import est.commitdate.entity.Board;
 import est.commitdate.entity.Comment;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
+import est.commitdate.exception.BoardNotFoundException;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.CommentRepository;
 import est.commitdate.repository.MemberRepository;
@@ -95,6 +96,17 @@ public class PostService {
         return BoardPosts.stream().map(PostDto::from).toList();
     }
 
+    // 유저에 해당되는 글들만 불러오기
+    public List<PostDto> getPostsByBoardId(Long userId) {
+        log.info("userId = {}", userId);
+        Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        List<Post> BoardPosts = member.getPosts()
+                .stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .toList();
+        return BoardPosts.stream().map(PostDto::from).toList();
+    }
+
     // post의 작성자를 찾고 현재 로그인 되어있는 사용자와 비교하여 일치하면 true
     public Boolean postAuthorizationCheck(Long id, HttpSession session) {
         String PostWriter = getPostById(id).getMember().getNickname();
@@ -162,5 +174,38 @@ public class PostService {
         }
 
         return "accessDenied_작성자불일치";
+    }
+
+    public List<PostDto> classification(String classification, String id, Member member) {
+
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        try {
+            //예외처리
+            if (member == null) {
+                return null; // 비 로그인일 경우.
+            } else if (!(classification.equals("board") || classification.equals("user"))) {
+                return null; //classification 이 아니라면
+            } else if (classification.equals("user")) {
+                if (!member.getId().equals(Long.valueOf(id))) {
+                    return null; // 내 게시물에 있는 사람이 세션에 들어있는 사람(동일인)이 아니라면
+                }
+            }
+
+            //분기처리
+            if (classification.equals("board")) { //보드리스트일 때,
+                Integer boardId = Integer.valueOf(id);
+                postDtoList = getPostsByBoardId(boardId);
+            } else { //use r로 들어온경우
+                Long userId = Long.valueOf(id);
+                postDtoList = getPostsByBoardId(userId);
+            }
+
+
+            return postDtoList;
+        }catch (BoardNotFoundException e){
+            e.printStackTrace();
+            return null; // Exception
+        }
     }
 }
