@@ -138,7 +138,7 @@ function mappingData(data){
     // JSON 데이터로 th:text가 적용된 부분 업데이트
     document.getElementById('postId').textContent = data.id;
     document.getElementById('title').textContent = data.title;
-    document.getElementById('profileImageURL').src = data.profileImageURL;
+    document.getElementById('profileImageURL').src = data.profileImageURL.trim();
     document.getElementById('userName').textContent = data.userName;
     document.getElementById('introduce').textContent = data.introduce;
     document.getElementById('likeCount').textContent = data.likeCount;
