@@ -21,6 +21,7 @@ public class CustomUserDetails implements OAuth2User {
     private boolean additionalInfoCompleted;
     private Map<String, Object> attributes;
 
+
     @Setter
     private String role;
 

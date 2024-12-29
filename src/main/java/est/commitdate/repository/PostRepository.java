@@ -23,6 +23,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     //Swipe 에서만 쓰는 것.
     Optional<Post> findByBoardBoardIdAndPostId(Integer boardId, Long postId);
 
+    @Query("SELECT p FROM Post p WHERE p.status = 1 ORDER BY p.createdAt DESC")
+    List<Post> findAllPostsOrderedByCreatedAtDesc();
+
     @Query(value = "SELECT * FROM Post WHERE status = 0" ,nativeQuery = true)
     Optional<Post> findDeletedPosts();
 

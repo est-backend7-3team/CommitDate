@@ -17,7 +17,6 @@ public class MemberDetailRequest {
     private String username;
     private String nickname;
     private String phoneNumber;
-    private String profileImage;
     private String comment;
     private String introduce;
 
@@ -27,7 +26,6 @@ public class MemberDetailRequest {
                 encryptedPassword != null ? encryptedPassword : member.getPassword(),
                 nickname,
                 phoneNumber,
-                profileImage,
                 comment,
                 introduce
         );
