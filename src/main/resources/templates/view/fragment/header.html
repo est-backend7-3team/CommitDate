@@ -4,11 +4,11 @@
 </head>
 <body>
 <header th:fragment="headerFrag"
-        class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b px-4 flex items-center justify-between z-50">
+        class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b p-0 flex items-center justify-between z-50">
 
   <div class="flex items-center">
     <a th:href="@{/login}" class="flex items-center">
-      <img th:src="@{/images/logo.png}" alt="Logo" class="h-8 mr-2" />
+      <img th:src="@{/images/logo.png}" alt="Logo" class="h-14 mx-4" />
       <span class="text-xl font-bold">Commitdate</span>
     </a>
   </div>
@@ -57,7 +57,7 @@
         </li>
         <!-- 로그인시 메뉴 -->
         <li sec:authorize="isAuthenticated()">
-          <a th:text="${#authentication.name} + ' 님 안녕하세요.'"></a>
+          <a th:text="${member.nickname} + ' 님 안녕하세요.'"></a>
         </li>
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>
@@ -72,7 +72,6 @@
       </ul>
     </div>
   </div>
-
 </header>
 </body>
 </html>
