@@ -38,9 +38,13 @@ public class ChatService {
     // 채팅방 생성
     @Transactional
     public void ChatRoom(Long roomId) {
-        log.info("채팅방 생성됨" + roomId);
-        ChatRoom chatRoom = ChatRoom.of(roomId);
-        chatRoomRepository.save(ChatRoom.of(roomId));
+        if(chatRoomRepository.findById(roomId).isPresent()) {
+            log.info("채팅방 이미 존재: " + roomId);
+        } else {
+            log.info("채팅방 생성됨" + roomId);
+            ChatRoom chatRoom = ChatRoom.of(roomId);
+            chatRoomRepository.save(ChatRoom.of(roomId));
+        }
     }
 
     // 생성된 채팅방 찾기

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -33,6 +34,8 @@ public class ChatMessage {
         newChatMessage.timestamp = LocalDateTime.now();
         return newChatMessage;
     }
-
+//    public String getFormattedTimestamp() {
+//        return timestamp.format(DateTimeFormatter.ofPattern("HH:mm"));
+//    }
 
 }

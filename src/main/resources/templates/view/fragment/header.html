@@ -61,7 +61,7 @@
         </li>
         <li sec:authorize="isAuthenticated()"><a>내 게시물</a></li>
         <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a></li>
-        <li sec:authorize="isAuthenticated()"><a>채팅</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/choose/likes/{id}}'|">채팅</a></li>
       </ul>
     </div>
   </div>

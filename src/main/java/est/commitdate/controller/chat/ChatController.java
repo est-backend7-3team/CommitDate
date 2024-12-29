@@ -39,6 +39,7 @@ public class ChatController {
     @GetMapping("/chatting/{roomId}")
     public String chat(Model model, @PathVariable Long roomId, HttpSession session) {
         Member loggedInMember = memberService.getLoggedInMember(session);
+        model.addAttribute("userImage", loggedInMember.getProfileImage());
         model.addAttribute("username", loggedInMember.getNickname());
         model.addAttribute("roomId", roomId);  // roomId도 모델에 추가
         model.addAttribute("previousMessages", chatService.previousMessages(roomId)); // 이전 메시지를 모델에 추가
@@ -49,7 +50,7 @@ public class ChatController {
     @MessageMapping("/sendMessage/{roomId}")  // 클라이언트에서 /app/sendMessage/roomId로 메시지 보내면 이 메서드가 처리
     @SendTo("/topic/{roomId}")  // 응답 메시지가 /topic/roomId로 발송
     public ChatMessage sendMessage(ChatMessage message, @DestinationVariable Long roomId) {
-        log.info("chatMessage = " + message.toString());
+        log.info("chatMessage = " + message);
         ChatRoom findchatRoom = chatService.getChatRoom(roomId);
         // 메시지 저장
 //        chatService.Chatting(message);

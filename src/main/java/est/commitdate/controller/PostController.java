@@ -10,6 +10,8 @@ import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +30,14 @@ public class PostController {
 
     // 게시글 목록 페이지
     @GetMapping("")
-    public String postListView(Model model, HttpSession session) {
+    public String postListView(Model model, HttpSession session, @RequestParam(defaultValue = "0") int page) {
         Map<String, String> loginInfo = memberService.getLoginInfo(session);
         model.addAttribute("nickname", loginInfo.get("nickname"));
         model.addAttribute("role", loginInfo.get("role"));
-        model.addAttribute("post", postService.PostList());
+
+        // 페이징 처리: 페이지 번호를 파라미터로 받아서, 해당 페이지의 게시글만 조회
+        Pageable pageable = PageRequest.of(page, 10); // 한 페이지에 10개의 게시글
+        model.addAttribute("post", postService.PostList(pageable));
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", "게시글 목록");
 
@@ -106,6 +111,10 @@ public class PostController {
 
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "chatHtmlTest";
+    }
 
 }
 
