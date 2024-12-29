@@ -1,13 +1,12 @@
 spring:
   datasource:
-
-    url:
+    url: jdbc:mariadb://localhost:3306/commit_date
     username:
     password:
-    driver-class-name:
+    driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto:
+      ddl-auto: none
   mail:
     host: smtp.gmail.com
     port: 587
