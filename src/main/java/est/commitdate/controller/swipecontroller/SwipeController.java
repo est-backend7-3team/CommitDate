@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.util.*;
 
 
@@ -37,7 +39,7 @@ public class SwipeController {
     public ResponseEntity<SwipeDto> getSwipeJson(HttpSession session) {
 
         Member user = memberService.getLoggedInMember(session);
-        Post randomPost = swipeService.getRandomPost(499);
+        Post randomPost = swipeService.getRandomPost(2);
 
         SwipeDto swipeDto = SwipeDto.from(randomPost);
 

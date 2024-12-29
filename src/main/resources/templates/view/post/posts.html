@@ -66,16 +66,16 @@
                             </svg>
                         </button>
                         <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li>
-                                <form th:action="@{'/post/updateView/'+${post.postId}}" method="get">
+                            <form th:action="@{'/post/updateView/'+${post.postId}}" method="get">
+                                <li>
                                     <button class="w-full text-left">게시글 수정</button>
-                                </form>
-                            </li>
-                            <li>
-                                <form th:action="@{'/post/delete/'+${post.postId}}" method="post">
+                                </li>
+                            </form>
+                            <form th:action="@{'/post/delete/'+${post.postId}}" method="post">
+                                <li>
                                     <button class="w-full text-left text-error">게시글 삭제</button>
-                                </form>
-                            </li>
+                                </li>
+                            </form>
                         </ul>
                     </div>
                 </div>
