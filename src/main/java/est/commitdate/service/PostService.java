@@ -8,6 +8,7 @@ import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
 import est.commitdate.exception.BoardNotFoundException;
 import est.commitdate.exception.PostNotFoundException;
+import est.commitdate.repository.BoardRepository;
 import est.commitdate.repository.CommentRepository;
 import est.commitdate.repository.MemberRepository;
 import est.commitdate.repository.PostRepository;
@@ -42,6 +43,7 @@ public class PostService {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
 
     public PostDto save(PostDto postDto) {
         Board findBoard = boardService.getBoardById(postDto.getBoardId());
@@ -181,7 +183,7 @@ public class PostService {
 
     public List<PostDto> classification(String classification, String id, Member member) {
 
-        List<PostDto> postDtoList = new ArrayList<>();
+        List<PostDto> postDtoList;
 
         try {
             //예외처리
@@ -204,11 +206,26 @@ public class PostService {
                 postDtoList = getPostsByBoardId(userId);
             }
 
-
             return postDtoList;
         }catch (BoardNotFoundException e){
             e.printStackTrace();
             return null; // Exception
         }
+    }
+
+    public String returnListName(String classification, String id) {
+
+        String listName;
+
+        if(classification.equals("board")) {
+            Integer boardId = Integer.valueOf(id);
+            listName = boardRepository.findByBoardId(boardId).orElse(null).getBoardName().toString();
+        }
+
+        Long userId = Long.valueOf(id);
+        listName = memberRepository.findById(userId).get().getNickname();
+
+
+        return listName;
     }
 }
