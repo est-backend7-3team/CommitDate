@@ -48,12 +48,15 @@ class SwipeServiceTest {
 
 
 
+
+
     @BeforeAll
     static void setUp(
             @Autowired BoardRepository boardRepository,
             @Autowired PasswordEncoder passwordEncoder,
             @Autowired MemberRepository memberRepository,
-            @Autowired PostRepository postRepository){
+            @Autowired PostRepository postRepository,
+            @Autowired RandomCodes randomCodes){
 
         MemberSignUpRequest requestDto;
         PostDto postDto;
@@ -93,21 +96,38 @@ class SwipeServiceTest {
             //임의의 문자열 생성
             String paragraph = faker.lorem().paragraph();
 
+
+
+
+
+
             //임의의 사용자 찾기.
             Random r = new Random(System.currentTimeMillis());
             findMember = memberRepository.findById(r.nextLong(19)+1)
                         .orElseThrow(EntityNotFoundException::new);
+
+            //랜덤한 코드 작성.
+            int random = r.nextInt(4) + 1;
+            String codes = randomCodes.getCodes(random);
+
 
             //Post1000개 저장
             postDto = PostDto.builder()
                     .boardId(findBoard.getBoardId())
                     .author(findMember.getNickname())
                     .title("Random title" + i)
-                    .sourceCode(paragraph + i)
+                    .sourceCode(codes + i)
                     .description("Random description" + i)
                     .build();
 
             postRepository.save(Post.testTransformEntity(postDto,findBoard,findMember));
+
+
+
+
+
+
+
         }
     }
 

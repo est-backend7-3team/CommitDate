@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth ->
                                 auth
+
                                         .requestMatchers("/css/**", "/js/**", "/images/**","image/profiles/**").permitAll()
                                         .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "update").permitAll()
                                         .requestMatchers("/member/forgot-password").permitAll()
