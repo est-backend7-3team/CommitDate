@@ -35,10 +35,10 @@ document.addEventListener('DOMContentLoaded',  () =>{
 
                 editForm.innerHTML = `
                  
-                <div class="comment-form">
-                        <textarea class="edit-textarea" placeholder="${originalContent}" required></textarea>
-                        <button class="save-edit-btn">저장</button>
-                        <button class="cancel-edit-btn">취소</button>
+                <div class="comment-form mb-8">
+                        <textarea class="textarea edit-textarea textarea-bordered w-full bg-white" placeholder="${originalContent}" required></textarea>
+                        <button class="btn btn-primary btn-sm save-edit-btn">저장</button>
+                        <button class="btn btn-primary btn-sm cancel-edit-btn">취소</button>
                 </div>
                 `;
 
@@ -138,13 +138,9 @@ function toggleLike(likeButton) {
             if (status === "Success") {
                 if (likeButton.classList.contains("liked")) {
                     likeButton.classList.remove("liked");
-                    likeButton.style.backgroundColor = "";
-                    likeButton.style.color = "";
                     likeCount.textContent = Number(likeCount.textContent) - 1;
                 } else {
                     likeButton.classList.add("liked");
-                    likeButton.style.backgroundColor = "magenta";
-                    likeButton.style.color = "white";
                     likeCount.textContent = parseInt(likeCount.textContent) + 1;
                 }
             }

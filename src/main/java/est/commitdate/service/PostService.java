@@ -6,6 +6,7 @@ import est.commitdate.entity.Board;
 import est.commitdate.entity.Comment;
 import est.commitdate.entity.Member;
 import est.commitdate.entity.Post;
+import est.commitdate.exception.BoardNotFoundException;
 import est.commitdate.exception.PostNotFoundException;
 import est.commitdate.repository.CommentRepository;
 import est.commitdate.repository.MemberRepository;
@@ -25,13 +26,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
+
+
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Slf4j
 public class PostService {
+
     private final PostRepository postRepository;
     private final BoardService boardService;
     private final MemberService memberService;
@@ -51,6 +56,7 @@ public class PostService {
         Post findPost = getPostById(postUpdateDto.getPostId());
         findPost.update(postUpdateDto);
     }
+
     // 현재 로그인 되어있는 사용자와 post의 작성자가 같아함 혹은 관리자
     public void delete(Long id) {
         Post findPost = getPostById(id);
@@ -68,6 +74,7 @@ public class PostService {
                         ()-> new PostNotFoundException("해당 게시글을 찾을 수 없습니다.")
                 );
     }
+
     public Post getDeletePostById(Long postId) {
         return postRepository.findDeleteById(postId)
                 .orElseThrow(
@@ -76,27 +83,31 @@ public class PostService {
     }
 
     // 모든 게시판의 글들을 불러오기
-    public List<PostDto> PostList(Pageable pageable) {
-        Page<Post> posts = postRepository.findAll(pageable);
-        List<PostDto> postDtos = new ArrayList<>();
-        for (Post post : posts) {
-            PostDto findDTO = PostDto.from(post);
-            postDtos.add(findDTO);
-        }
-        return postDtos;
+    public List<PostDto> PostList() {
+        List<Post> posts = postRepository.findAllPostsOrderedByCreatedAtDesc();
+        return posts.stream().map(PostDto::from).toList();
     }
+
     // 게시판에 해당되는 글들만 불러오기
     public List<PostDto> getPostsByBoardId(Integer boardId) {
         log.info("boardId = " + boardId);
         Board findBoard = boardService.getBoardById(boardId);
-        Pageable pageable = PageRequest.of(0, 10);  // 페이지와 크기 설정
-        Page<Post> boardPosts = postRepository.findByBoard(findBoard, pageable);  // 게시판에 해당하는 페이징된 글 조회
-        List<PostDto> postDtos = new ArrayList<>();
-        for (Post post : boardPosts) {
-            PostDto findDTO = PostDto.from(post);
-            postDtos.add(findDTO);
-        }
-        return postDtos;
+        List<Post> BoardPosts = postRepository.findByBoard(findBoard)
+                .stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .toList();
+        return BoardPosts.stream().map(PostDto::from).toList();
+    }
+
+    // 유저에 해당되는 글들만 불러오기
+    public List<PostDto> getPostsByBoardId(Long userId) {
+        log.info("userId = {}", userId);
+        Member member = memberRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        List<Post> BoardPosts = member.getPosts()
+                .stream()
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .toList();
+        return BoardPosts.stream().map(PostDto::from).toList();
     }
 
     // post의 작성자를 찾고 현재 로그인 되어있는 사용자와 비교하여 일치하면 true
@@ -109,7 +120,6 @@ public class PostService {
             return false;
         }
     }
-
 
     public String postCommentRemove(@RequestBody Map<String,Object> removeJson, HttpSession session){
 
@@ -141,7 +151,6 @@ public class PostService {
         return "accessDenied_작성자불일치";
     }
 
-
     public String postCommentEdit(@RequestBody Map<String,Object> editJson, HttpSession session){
 
         //정보 파싱.
@@ -170,7 +179,36 @@ public class PostService {
         return "accessDenied_작성자불일치";
     }
 
+    public List<PostDto> classification(String classification, String id, Member member) {
+
+        List<PostDto> postDtoList = new ArrayList<>();
+
+        try {
+            //예외처리
+            if (member == null) {
+                return null; // 비 로그인일 경우.
+            } else if (!(classification.equals("board") || classification.equals("user"))) {
+                return null; //classification 이 아니라면
+            } else if (classification.equals("user")) {
+                if (!member.getId().equals(Long.valueOf(id))) {
+                    return null; // 내 게시물에 있는 사람이 세션에 들어있는 사람(동일인)이 아니라면
+                }
+            }
+
+            //분기처리
+            if (classification.equals("board")) { //보드리스트일 때,
+                Integer boardId = Integer.valueOf(id);
+                postDtoList = getPostsByBoardId(boardId);
+            } else { //use r로 들어온경우
+                Long userId = Long.valueOf(id);
+                postDtoList = getPostsByBoardId(userId);
+            }
 
 
-
+            return postDtoList;
+        }catch (BoardNotFoundException e){
+            e.printStackTrace();
+            return null; // Exception
+        }
+    }
 }

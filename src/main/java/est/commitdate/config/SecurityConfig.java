@@ -45,7 +45,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth ->
                                 auth
-                                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+
+                                        .requestMatchers("/css/**", "/js/**", "/images/**","image/profiles/**").permitAll()
                                         .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "update").permitAll()
                                         .requestMatchers("/member/forgot-password").permitAll()
                                         .requestMatchers("/member/**").permitAll() // 중복 확인 관련 API 허용

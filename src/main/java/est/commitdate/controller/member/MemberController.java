@@ -35,7 +35,6 @@ public class MemberController {
         // DB에서 회원 정보 조회 후 DTO 생성
         MemberProfileRequest profileRequest = memberService.getProfile(member.getId());
         model.addAttribute("memberProfileRequest", profileRequest);
-
         model.addAttribute("originalNickname", member.getNickname());
         model.addAttribute("originalPhoneNumber", member.getPhoneNumber());
 
