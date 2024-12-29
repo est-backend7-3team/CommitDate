@@ -14,6 +14,7 @@ public class ChatRoom {
     @Id
     private Long roomId;
 
+    @Column(nullable = false)
     private Integer status;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)

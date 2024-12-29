@@ -58,7 +58,7 @@ public class ChatController {
     }
 
 
-    //
+    // 채팅방 생성
     @ResponseBody
     @PostMapping("/chatroom/api/requestMatchingResult")
     public ResponseEntity<String> ChattingRoomMatching(@RequestBody ChooseDto chooseDto, HttpSession session) {

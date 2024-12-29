@@ -11,8 +11,10 @@
 <div id="chat-box"></div>
 <div th:if="${#lists.isEmpty(previousMessages)}">
 </div>
+<!--저장된 메시지 내역 불러오기-->
 <div th:each="message : ${previousMessages}" th:if="${!#lists.isEmpty(previousMessages)}">
-  <p th:text="${message.sender} + ': ' + ${message.content}"></p>
+  <span th:text="${message.sender}">Sender</span>:
+  <span th:text="${message.content}">Message</span>
 </div>
 <input type="text" id="username" th:value="${username}" disabled placeholder="Username" />
 <input type="hidden" id="roomId" th:value="${roomId}" />
@@ -44,12 +46,13 @@
     document.getElementById('message').value = '';
   }
 
-  // 메시지 출력
+  // 실시간 메시지 출력
   function showMessage(message) {
     var chatBox = document.getElementById('chat-box');
     var messageElement = document.createElement('div');
     messageElement.textContent = message.sender + ": " + message.content;
     chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // 자동 스크롤
   }
 
   // 페이지 로드 시 연결 시작

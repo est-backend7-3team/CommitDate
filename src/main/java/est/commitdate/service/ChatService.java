@@ -8,14 +8,18 @@ import est.commitdate.exception.BoardNotFoundException;
 import est.commitdate.exception.ChatRoomNotFoundException;
 import est.commitdate.repository.ChatMessageRepository;
 import est.commitdate.repository.ChatRoomRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
@@ -32,11 +36,15 @@ public class ChatService {
     }
 
     // 채팅방 생성
+    @Transactional
     public void ChatRoom(Long roomId) {
+        log.info("채팅방 생성됨" + roomId);
+        ChatRoom chatRoom = ChatRoom.of(roomId);
         chatRoomRepository.save(ChatRoom.of(roomId));
     }
 
     // 생성된 채팅방 찾기
+
     public ChatRoom getChatRoom(Long roomId) {
         return chatRoomRepository.findByRoomId(roomId)
                 .orElseThrow(
