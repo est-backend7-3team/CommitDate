@@ -7,8 +7,10 @@ let currentJson = null;
 const leftButton = document.getElementById('leftButton')
 const rightButton = document.getElementById('rightButton')
 const likeButton = document.getElementById('likeButton');
+const likeButtonImg=document.getElementById('likeButtonImg');
 const likeCount = document.getElementById('likeCount');
 const blockPostButton = document.getElementById('blockPostButton');
+const postView = document.getElementById('postView');
 
 document.addEventListener('DOMContentLoaded', () => {
     //최초 데이터 불러오기
@@ -64,6 +66,7 @@ function toggleLike(likeButton) {
             if (status === "Success") {
                 if (likeButton.classList.contains("liked")) {
                     likeButton.classList.remove("liked");
+                    likeButtonImg.classList.remove("invert");
                     likeButton.style.backgroundColor = "";
                     likeButton.style.color = "";
                     likeCount.textContent = Number(likeCount.textContent) - 1;
@@ -71,6 +74,7 @@ function toggleLike(likeButton) {
                     currentJson.likeCount = Number(currentJson.likeCount) - 1;
                 } else {
                     likeButton.classList.add("liked");
+                    likeButtonImg.classList.add("invert");
                     likeButton.style.backgroundColor = "magenta";
                     likeButton.style.color = "white";
                     likeCount.textContent = parseInt(likeCount.textContent) + 1;
@@ -144,6 +148,7 @@ function mappingData(data){
     document.getElementById('likeCount').textContent = data.likeCount;
     document.getElementById('comment').textContent = data.comment;
     document.getElementById('sourceCode').textContent = data.sourceCode;
+    document.getElementById('postView').href = "/post/view/"+data.id;
     loadingLike(data.isLike);
 }
 
@@ -152,10 +157,13 @@ function mappingData(data){
 function loadingLike(isLike){
     if(isLike === 1){
         likeButton.classList.add("liked");
+        likeButtonImg.classList.add("invert");
         likeButton.style.backgroundColor = "magenta";
         likeButton.style.color = "white";
+
     }else{
         likeButton.classList.remove("liked");
+        likeButtonImg.classList.remove("invert");
         likeButton.style.backgroundColor = "";
         likeButton.style.color = "";
     }

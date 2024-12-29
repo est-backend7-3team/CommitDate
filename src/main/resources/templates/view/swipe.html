@@ -17,7 +17,7 @@
         data-theme="light">
 
   <div class="flex items-center">
-    <a th:href="@{/login}" class="flex items-center">
+    <a th:href="@{/aboutUs}" class="flex items-center">
       <img th:src="@{/images/logo.png}" alt="Logo" class="h-14 mx-4" />
       <span class="text-xl font-bold">Commitdate</span>
     </a>
@@ -114,9 +114,8 @@
     <details class ="dropdown dropdown-end">
         <summary class="btn btn-sm btn-circle btn-ghost m-1">⚙️</summary>
         <ul class="dropdown-content menu p-2 shadow rounded-box w-52 bg-white">
-          <li><a class="!active:bg-white">해당 게시글 보기</a></li>
+          <li><a class="!active:bg-white" id = "postView">게시글 보기</a></li>
           <li><a class="!active:bg-gray-100" id="blockPostButton">해당 게시글 차단</a></li>
-          <li><a class="active:bg-gray-300">로그인</a></li>
         </ul>
     </details >
 
@@ -139,6 +138,12 @@
     </div>
   </div>
 
+
+  <!-- 소스 코드 -->
+  <div class="text-primary-content bg-gray-100 p-3 rounded-lg mb-4 flex-grow min-h-0 min-w-0 overflow-y-auto overflow-x-auto before:mr-0">
+    <pre class="before:mr-0"><code id="sourceCode" class="before:mr-0 text-gray-700 text-sm whitespace-wrap ">SourceCode</code></pre>
+  </div>
+
   <!-- 코드 간략한 설명 -->
   <div class="bg-gray-100 p-3 rounded-lg mb-4">
     <p id="comment" class="text-gray-700 text-sm break-words">
@@ -146,16 +151,12 @@
     </p>
   </div>
 
-  <!-- 소스 코드 -->
-  <div class="text-primary-content bg-gray-100 p-3 rounded-lg mb-4 flex-grow min-h-0 min-w-0 overflow-y-auto overflow-x-auto before:mr-0">
-    <pre class="before:mr-0"><code id="sourceCode" class="before:mr-0 text-gray-700 text-sm whitespace-wrap ">SourceCode</code></pre>
-  </div>
-
-
   <!-- 좋아요 버튼 -->
   <div class="flex justify-center ">
     <button id="likeButton" class="btn btn-circle btn-outline">
-      ⭐
+      <P id="likeButtonImg" class="">
+        💓
+      </P>
     </button>
   </div>
     </div>

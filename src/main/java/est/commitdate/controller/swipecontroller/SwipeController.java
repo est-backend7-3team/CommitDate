@@ -39,7 +39,7 @@ public class SwipeController {
     public ResponseEntity<SwipeDto> getSwipeJson(HttpSession session) {
 
         Member user = memberService.getLoggedInMember(session);
-        Post randomPost = swipeService.getRandomPost(2);
+        Post randomPost = swipeService.getRealRandomPost();
 
         SwipeDto swipeDto = SwipeDto.from(randomPost);
 
