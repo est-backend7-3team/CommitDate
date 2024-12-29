@@ -67,7 +67,7 @@
         </li>
         <!-- 로그인시 메뉴 -->
         <li sec:authorize="isAuthenticated()">
-          <a th:text="${#authentication.name} + ' 님 안녕하세요.'"></a>
+          <a th:text="${member.nickname} + ' 님 안녕하세요.'"></a>
         </li>
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>

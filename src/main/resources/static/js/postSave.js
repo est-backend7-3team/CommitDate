@@ -9,7 +9,7 @@ document.getElementById('boardId').addEventListener('change', function () {
     // 특정 게시판 선택 시 추가 입력폼 표시
 
 
-    if (selectedValue === 'Swipe') {
+    if (selectedValue === '멤버찾기') {
         container.style.display = 'block';
         console.log("생성 완료");
     }else{
