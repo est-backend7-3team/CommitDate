@@ -3,6 +3,8 @@ package est.commitdate.repository;
 
 import est.commitdate.entity.Board;
 import est.commitdate.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,9 +15,8 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByPostId(Long id);
-
     List<Post> findByBoard(Board board);
-
+    Page<Post> findAll(Pageable pageable);
     //Swipe 에서만 쓰는 것.
     Optional<Post> findByBoardBoardIdAndPostId(Integer boardId, Long postId);
 
