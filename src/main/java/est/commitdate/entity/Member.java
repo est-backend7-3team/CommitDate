@@ -46,7 +46,7 @@ public class Member {
     @Column(length = 500)
     private String introduce;
 
-    @Column(length = 20)
+    @Column(length = 50)
     private String comment;
 
     @Column(name = "created_at" , nullable = false, updatable = false)

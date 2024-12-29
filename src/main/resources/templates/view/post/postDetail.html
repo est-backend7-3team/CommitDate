@@ -19,39 +19,38 @@
             <!-- 게시글 ID (숨김 처리) -->
             <div id="postId" hidden="hidden" th:text="${postDetail.postId}">0</div>
 
-            <!-- 게시글 제목 -->
-            <h1 th:text="${postDetail.title}" class="text-3xl font-bold mb-4">Post Title</h1>
-<!--            <a th:href="@{/choose/{id}(id=${postDetail.postId})}" class="btn btn-secondary btn-sm mb-6">-->
-<!--                간택하기-->
-<!--            </a>-->
+            <div class="flex justify-between items-start mb-4">
+                <!-- 게시글 제목 -->
+                <h1 th:text="${postDetail.title}" class="text-3xl font-bold mb-4">Post Title</h1>
 
-            <!-- 삼점 버튼 - 작성자나 ADMIN만 볼 수 있도록 설정 -->
-            <div th:if="${(role != null and role == 'ADMIN') or (nickname != null and nickname == postDetail.author)}"
-                 class="dropdown dropdown-end">
-                <button tabindex="0" class="btn btn-ghost btn-circle">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
-                        </path>
-                    </svg>
-                </button>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                    <li th:if="${nickname != null and nickname == postDetail.author}">
+                <!-- 삼점 버튼 - 작성자나 ADMIN만 볼 수 있도록 설정 -->
+                <div th:if="${(role != null and role == 'ADMIN') or (nickname != null and nickname == postDetail.author)}"
+                     class="dropdown dropdown-end">
+                    <button tabindex="0" class="btn btn-ghost btn-circle">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
+                            </path>
+                        </svg>
+                    </button>
+                    <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                         <form th:action="@{/choose/{id}(id=${postDetail.postId})}" method="get">
-                            <button class="w-full text-left">간택하기</button>
+                            <li th:if="${nickname != null and nickname == postDetail.author}">
+                                <button class="w-full text-left">간택하기</button>
+                            </li>
                         </form>
-                    </li>
-                    <li>
                         <form th:action="@{'/post/updateView/'+${postDetail.postId}}" method="get">
-                            <button class="w-full text-left">게시글 수정</button>
+                            <li>
+                                <button class="w-full text-left">게시글 수정</button>
+                            </li>
                         </form>
-                    </li>
-                    <li>
                         <form th:action="@{'/post/delete/'+${postDetail.postId}}" method="post">
-                            <button class="w-full text-left text-error">게시글 삭제</button>
+                            <li>
+                                <button class="w-full text-left text-error">게시글 삭제</button>
+                            </li>
                         </form>
-                    </li>
-                </ul>
+                    </ul>
+                </div>
             </div>
 
             <!-- 게시글 작성자 및 작성 시간 -->
