@@ -6,7 +6,7 @@
     <title>게시판 수정</title>
 </head>
 <body>
-<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen"
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
 <div class="container w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold mb-6 text-center">게시판 수정</h1>
     <form th:action="@{/board/update}" method="post" th:object="${boardDto}" class="space-y-4">
@@ -23,15 +23,17 @@
                     class="input input-bordered w-full bg-white" />
         </div>
 
-        <!-- 히든필드! -->
-        <input type="hidden" th:value="*{boardId}" name="boardId" />
-        <input type="hidden" th:value="*{status}" name="status" />
+            <!-- 히든필드! -->
+            <input type="hidden" th:value="*{boardId}" name="boardId"/>
+            <input type="hidden" th:value="*{status}" name="status"/>
 
-        <!-- 수정 버튼 -->
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary w-full">수정</button>
-        </div>
-    </form>
+            <!-- 수정 버튼 -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary w-full">수정</button>
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 </body>
 </html>

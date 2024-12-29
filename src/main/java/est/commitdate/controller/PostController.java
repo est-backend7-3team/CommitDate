@@ -11,6 +11,8 @@ import est.commitdate.service.member.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,7 @@ public class PostController {
     private final MemberService memberService;
     private final LikeService likeService;
 
+
     // 보드 or UserId 로 게시글 리스트 출력
     @GetMapping("{classification}/{id}")
     public String postListView(Model model, HttpSession session, @PathVariable String classification, @PathVariable String id) {
@@ -44,7 +47,7 @@ public class PostController {
         model.addAttribute("post", postDtoList);
         model.addAttribute("boards", boardService.BoardList());
         model.addAttribute("pageTitle", listName+"의 게시글");
-
+       
         // 경로 수정
         return "view/post/posts";
     }
@@ -130,6 +133,12 @@ public class PostController {
         return ResponseEntity.ok(postService.postCommentEdit(removeJson, session));
 
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "chatHtmlTest";
+    }
+
 }
 
 

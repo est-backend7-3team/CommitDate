@@ -35,8 +35,6 @@ public class ChooseController {
         if ("null".equals(id) || id == null || id.isBlank()) {
             return null;
         }
-
-
         log.info("Received id: {}",id);
         model.addAttribute("id", Long.valueOf(id));
         return "view/choose";

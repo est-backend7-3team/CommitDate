@@ -3,7 +3,7 @@
       layout:decorate="~{view/layout/layout}">
 <head>
     <meta charset="UTF-8">
-    <title>게시판 목록</title>
+    <title>게시판 관리</title>
 </head>
 <body>
 <div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
@@ -19,11 +19,10 @@
             </thead>
             <tbody class="divide-y divide-gray-300">
             <form action="/board/saveView" method="get" class="inline">
-                <button type="submit" class="btn btn-primary btn-sm mr-2">게시판 생성</button>
+                <button type="submit" class="btn btn-primary btn-sm mr-2 mb-2">게시판 생성</button>
             </form>
             <!-- boards는 모델에서 전달받은 게시판 목록 -->
             <th:block th:each="board : ${boards}">
-                <!-- 게시판 생성 버튼 -->
                 <tr>
                     <td th:text="${board.boardName}" class="p-4"></td>
                     <td class="p-4">
