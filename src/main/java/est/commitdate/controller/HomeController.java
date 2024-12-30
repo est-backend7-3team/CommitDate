@@ -9,11 +9,11 @@ public class HomeController {
 
     @GetMapping("")
     public String home() {
-        return "/view/swipe";
+        return "view/swipe";
     }
 
     @GetMapping("/aboutUs")
     public String aboutUs() {
-        return "/view/aboutUs";
+        return "view/aboutUs";
     }
 }
