@@ -59,9 +59,9 @@
                 <span th:text="${#temporals.format(postDetail.createdAt, 'yyyy-MM-dd HH:mm')}">작성 시간</span>
             </div>
 
-            <!-- 게시글 내용 -->
+            <!-- 소스코드부분 -->
             <div class="post-content mb-6">
-                <p th:text="${postDetail.text}" class="text-gray-700 leading-relaxed break-words">본문 내용</p>
+                <pre><code th:text="${postDetail.text}" class="text-gray-700 leading-relaxed break-words">본문 내용</code></pre>
             </div>
 
             <!-- 게시글 설명 -->
@@ -76,9 +76,6 @@
                     👍 <span id="likeCount" th:text="${postDetail.likeCount}"></span>
                 </button>
             </div>
-
-
-
 
             <!-- 댓글 입력 폼 -->
             <div class="comment-form mb-8">
