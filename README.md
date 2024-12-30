@@ -66,15 +66,43 @@
 </tbody>
 </table>
 <br>
+<br>
 
 # 사용 기술 스택
-spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RDS)
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+  <img src="https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+  <img src="https://img.shields.io/badge/JPA-2E3B53?style=for-the-badge&logo=Java&logoColor=white">
+  <img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=MariaDB&logoColor=white">
+  <img src="https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=Thymeleaf&logoColor=white">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
+  <img src="https://img.shields.io/badge/SMTP-FF6600?style=for-the-badge&logo=Mail.ru&logoColor=white">
+  <img src="https://img.shields.io/badge/SockJS-00A9E0?style=for-the-badge&logo=SockJS&logoColor=white">
+  <img src="https://img.shields.io/badge/AWS%20EC2-FF9900?style=for-the-badge&logo=Amazon%20AWS&logoColor=white">
+  <img src="https://img.shields.io/badge/AWS%20RDS-527FFF?style=for-the-badge&logo=Amazon%20AWS&logoColor=white">
+</div>
+<br>
+<br>
+
 # 접속 방법
 ### aws 배포 주소 : http://3.39.0.173/
+
 <br>
 <br>
 
 # 프로젝트 개요 및 개발 일정
+### 📜 프로젝트 설명 (Project Description)
+#### TeamMate는 팀원을 구하기 어려운 개발자들을 위한 혁신적인 커뮤니티 서비스입니다. 개발자들은 자신이 필요로 하는 팀원을 찾기 위해 게시글을 작성하거나, 스와이프 페이지를 통해 소개팅 앱처럼 매칭을 시도할 수 있습니다.
+#### 사용자는 게시글을 작성하여 팀원을 구하거나, 다른 개발자의 프로필을 스와이프하며 마음에 드는 코드나 개발자에게 좋아요를 눌러 매칭됩니다. 매칭이 성사되면, 채팅 기능을 통해 손쉽게 소통할 수 있습니다.
+
+### 🔑 핵심 기능 (Key Features)
+**게시글 작성**: 팀원을 찾기 위해 게시글을 작성하고 필요한 기술 스택을 공유
+- **스와이프 매칭**: 소개팅 앱처럼 사용자의 코드나 프로필을 스와이프하여 매칭
+- **좋아요 기능**: 마음에 드는 개발자에게 좋아요를 눌러 매칭
+- **채팅 시스템**: 매칭된 사용자와 실시간으로 채팅을 통해 협업 시작
+- **프로필 관리**: 개발자들이 자신의 기술 스택과 프로젝트 경험을 프로필에 추가하여 더욱 명확한 매칭
+
+### 개발 일정
 ![개발일정](https://github.com/user-attachments/assets/e4316236-dbea-4426-ae62-f371a811b773)
 ![개발일정 표사ㅣ](https://github.com/user-attachments/assets/849aa146-5176-4fa8-9ee9-ffec275aec76)
 <br>
@@ -94,9 +122,9 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 
 # ERD
 ![ERD](https://github.com/user-attachments/assets/9ecd9965-85b4-4b05-9f82-be73bba7d0cd)
-<div align="center">
-    **ERD 클라우드 주소** : [https://www.erdcloud.com/d/MQqYSZjC4o2ynXC2T](https://www.erdcloud.com/d/MQqYSZjC4o2ynXC2T)
-</div>
+
+**ERD 클라우드 주소**: [https://www.erdcloud.com/d/MQqYSZjC4o2ynXC2T](https://www.erdcloud.com/d/MQqYSZjC4o2ynXC2T)
+
 <br>
 
 
