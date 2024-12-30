@@ -217,15 +217,21 @@ public class PostService {
 
         String listName;
 
-        if(classification.equals("board")) {
-            Integer boardId = Integer.valueOf(id);
-            listName = boardRepository.findByBoardId(boardId).orElse(null).getBoardName().toString();
+
+        try {
+            if (classification.equals("board")) {
+                Integer boardId = Integer.valueOf(id);
+                listName = boardRepository.findByBoardId(boardId).orElse(null).getBoardName().toString();
+                log.info("여기임");
+                return listName;
+            }else{
+                Long userId = Long.valueOf(id);
+                listName = memberRepository.findById(userId).get().getNickname();
+                return listName;
+            }
+        }catch (BoardNotFoundException e){
+            e.printStackTrace();
+            return null;
         }
-
-        Long userId = Long.valueOf(id);
-        listName = memberRepository.findById(userId).get().getNickname();
-
-
-        return listName;
     }
 }
