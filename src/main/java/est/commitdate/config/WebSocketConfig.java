@@ -21,4 +21,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/chat")  // 클라이언트가 연결할 엔드포인트
                 .withSockJS();  // SockJS 사용 설정
     }
+
 }
