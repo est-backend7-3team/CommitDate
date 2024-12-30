@@ -47,7 +47,7 @@ public class SecurityConfig {
 
                                         .requestMatchers("/css/**", "/js/**", "/images/**","image/profiles/**").permitAll()
                                         .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "/update").permitAll()
-                                        .requestMatchers("/member/forgot-password","aboutUs").permitAll()
+                                        .requestMatchers("/member/forgot-password","/aboutUs").permitAll()
                                         .requestMatchers("/member/profile").authenticated()
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")
                                         .requestMatchers("/board/**").hasAuthority("ADMIN")
