@@ -66,7 +66,7 @@ class SwipeServiceTest {
 
         //Board 저장
         boardDto = BoardDto.builder()
-                .boardName("SwipeMainPage")
+                .boardName("멤버찾기")
                 .build();
         boardRepository.save(Board.of(boardDto));
 
