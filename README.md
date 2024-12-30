@@ -1,21 +1,25 @@
 
 
 # Commit Date
+<div align="center">
+   
 ![logo](https://github.com/user-attachments/assets/3ef561c5-6241-4cfc-8cea-d0655049a5d4)
 
-개발자를 위한 팀원 매칭 서비스
+### 개발자를 위한 팀원 매칭 서비스
+</div>
 <br>
 
 # 목차
-1. 팀원 소개 및 역할
-2. 사용 기술 스택
-3. 접속 방법 , 배포주소
-4. 프로젝트 개요 및 개발 일정
-6. Architecture
-7. 플로우 차트 , 피그마(화면설계)
-8. ERD
-9. API 명세
-10. 구성화면 , 시연 영상
+1. [팀원 소개 및 역할](#팀원-소개-및-역할)
+2. [사용 기술 스택](#사용-기술-스택)
+3. [접속 방법 , 배포주소](#접속-방법)
+4. [프로젝트 개요 및 개발 일정](#프로젝트-개요-및-개발일정)
+5. [Architecture](#architecture)
+6. [플로우 차트 , 피그마(화면설계)](#플로우-차트-피그마화면설계)
+7. [ERD](#erd)
+8. [API 명세](#api-명세)
+9. [구성화면 , 시연 영상](#구성화면-시연-영상)
+10. [트러블 슈팅](#트러블-슈팅)
 <br>
 
 # 팀원 소개 및 역할
@@ -66,7 +70,7 @@
 # 사용 기술 스택
 spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RDS)
 # 접속 방법
-## aws 배포 주소 : http://3.39.0.173/
+### aws 배포 주소 : http://3.39.0.173/
 <br>
 <br>
 
@@ -80,9 +84,9 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 <br>
 
 # 플로우 차트 , 피그마(화면설계)
-## 플로우 차트
+### 플로우 차트
 ![image](https://github.com/user-attachments/assets/ef3a17d0-aaef-4517-ae2f-df25725bee92)
-## Figma(화면설계)
+### Figma(화면설계)
 ![피그마1](https://github.com/user-attachments/assets/89ef44b8-f73d-424a-8703-ed281c3f07d3)
 ![피그마2](https://github.com/user-attachments/assets/eaaa9a38-3a72-43d7-af1a-dbd159a4cc4a)
 ![피그마3](https://github.com/user-attachments/assets/4f351397-3fed-4c59-8596-9a53a96c5366)
@@ -97,7 +101,7 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 
 
 # API 명세
-## BOARD
+### BOARD
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -109,7 +113,7 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 | deleteBoard | POST | /board/delete/{id} | 게시판 삭제 |
 | boardRestore | POST | /board/restore/{id} | 게시판 복구 |
 
-## POST
+### POST
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -125,7 +129,7 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 | postComment | POST | /comment/{id} | 댓글 생성 |
 | aboutUs | GET | /aboutUs | 팀원 소개 페이지 조회 |
 
-## SWIPE
+### SWIPE
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -134,7 +138,7 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 | toggleLike | POST | /swipe/api/toggleLike | 좋아요 요청 |
 | blockPost | POST | /swipe/api/blockPost | 스와이프 관심없음 |
 
-## Choose
+### Choose
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -143,7 +147,7 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 | getJsons | POST | /swipe/Jsons | 좋아요 수락 |
 | getLikeJsons | POST | /swipe/likeJsons | 좋아요 누른 게시글 응답 |
 
-## Member
+### Member
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -163,14 +167,14 @@ spring , js, thymeleaf, jpa, security , mariaDB , (smtp? , sockjs) , aws(EC2, RD
 | uploadProfileImage | POST | /uploadProfileImage | 프로필 이미지 업로드  |
 | defaultImage | POST | /defaultProfileImage | 기본 프로필 이미지 업로드 |
 
-## Chat
+### Chat
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
 | chat | GET | /chatting/{rooId} | 채팅방 불러오기 |
 | ChattingRoomMatching | POST | /chatroom/api/requestMatchingResult | 채팅방 생성 |
 
-## WebSocket api 명세
+### WebSocket api 명세
 
 | **메서드명** | **메시징 경로** | **역할** |
 | --- | --- | --- |
