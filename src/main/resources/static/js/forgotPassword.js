@@ -4,6 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitBtn = document.getElementById("submitBtn");
     const emailError = document.getElementById("emailError");
 
+    // CSRF 토큰 가져오는 함수 추가했음
+    function getCsrfToken() {
+        return {
+            token: document.querySelector("meta[name='_csrf']").content,
+            headerName: document.querySelector("meta[name='_csrf_header']").content
+        };
+    }
+
     const clearErrors = () => {
         emailError.textContent = "";
     };
