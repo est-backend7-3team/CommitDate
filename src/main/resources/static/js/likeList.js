@@ -73,7 +73,7 @@ function createItemHTML(likeDto) {
         </a>
       </div>
       <div class="buttonSection flex flex-content ">
-        <form action="/chat" method="post">
+        <form action="/chatting/${likeDto.postId}" method="get">
           <input type="hidden" name="likeId" value="${likeDto.likeId}" />
           <button class="w-16 btn btn-primary bg-pink-500 border-none rounded-full text-white" type="submit">
             입장
