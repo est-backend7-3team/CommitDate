@@ -7,7 +7,7 @@
         class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b p-0 flex items-center justify-between z-50">
 
   <div class="flex items-center">
-    <a th:href="@{/login}" class="flex items-center">
+    <a th:href="@{/swipe}" class="flex items-center">
       <img th:src="@{/images/logo.png}" alt="Logo" class="h-14 mx-4" />
       <span class="text-xl font-bold">Commitdate</span>
     </a>
@@ -62,9 +62,15 @@
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>
         </li>
-        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a>
+        </li>
         <!-- ADMIN 권한일 때만 보이는 항목 -->
         <li sec:authorize="hasAuthority('ADMIN')" th:onclick="|location.href='@{/board}'|">
           <a>게시판 관리</a>

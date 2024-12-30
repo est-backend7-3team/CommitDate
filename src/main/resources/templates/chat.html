@@ -1,118 +1,5 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org" data-theme="light">-->
-<!--<head>-->
-<!--  <title>Spring WebSocket Chat</title>-->
-<!--  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>-->
-<!--  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>-->
-<!--  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />-->
-<!--  <script src="https://cdn.tailwindcss.com"></script>-->
-<!--  <style>-->
-<!--    /* 채팅 박스 스타일 */-->
-<!--    #chat-box {-->
-<!--      border: 1px solid #ccc;-->
-<!--      padding: 10px;-->
-<!--      width: 400px;-->
-<!--      height: 300px;-->
-<!--      overflow-y: auto;-->
-<!--      margin-bottom: 10px;-->
-<!--      background-color: #f9f9f9;-->
-<!--    }-->
-
-<!--    /* 내가 보낸 메시지 */-->
-<!--    .my-message {-->
-<!--      background-color: #e6f7ff; /* 내가 보낸 메시지는 파란색 배경 */-->
-<!--      margin-left: auto; /* 오른쪽 정렬 */-->
-<!--      text-align: right;-->
-<!--    }-->
-
-<!--    /* 상대방이 보낸 메시지 */-->
-<!--    .other-message {-->
-<!--      background-color: #ffffff; /* 상대방이 보낸 메시지는 흰색 배경 */-->
-<!--      margin-right: auto; /* 왼쪽 정렬 */-->
-<!--      text-align: left;-->
-<!--    }-->
-<!--  </style>-->
-<!--</head>-->
-<!--<body data-theme="light">-->
-
-<!--<h2>Chat Room</h2>-->
-<!--<div id="chat-box">-->
-<!--  <div>-->
-<!--    <div th:each="message : ${previousMessages}" th:if="${!#lists.isEmpty(previousMessages)}">-->
-<!--      <div class="message" th:classappend="${message.sender == username ? 'my-message' : 'other-message'}"-->
-<!--           th:text="${message.sender} + ': ' + ${message.content}"></div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-<!--&lt;!&ndash; 사용자 이름 및 메시지 입력 &ndash;&gt;-->
-<!--<input type="text" id="username" th:value="${username}" disabled placeholder="Username" />-->
-<!--<input type="hidden" id="roomId" th:value="${roomId}" />-->
-<!--<input type="text" id="message" placeholder="Enter message" />-->
-<!--<button onclick="sendMessage()">Send</button>-->
-
-<!--<script type="text/javascript">-->
-<!--  let stompClient = null;-->
-<!--  let roomId = document.getElementById('roomId').value;-->
-
-<!--  // 연결 설정-->
-<!--  function connect() {-->
-<!--    let socket = new SockJS('/chat');-->
-<!--    stompClient = Stomp.over(socket);-->
-<!--    stompClient.connect({}, function (frame) {-->
-<!--      console.log('Connected: ' + frame);-->
-<!--      // 실시간 메시지 구독-->
-<!--      stompClient.subscribe('/topic/' + roomId, function (messageOutput) {-->
-<!--        showMessage(JSON.parse(messageOutput.body));-->
-<!--      });-->
-<!--    });-->
-<!--  }-->
-
-<!--  // 메시지 전송-->
-<!--  function sendMessage() {-->
-<!--    const username = document.getElementById('username').value;-->
-<!--    const content = document.getElementById('message').value;-->
-<!--    stompClient.send(-->
-<!--            "/app/sendMessage/" + roomId,-->
-<!--            {},-->
-<!--            JSON.stringify({ sender: username, content: content, roomId: roomId })-->
-<!--    );-->
-<!--    document.getElementById('message').value = ''; // 입력창 초기화-->
-<!--  }-->
-
-<!--  // 메시지 출력 (이전 및 실시간 메시지 공통 처리)-->
-<!--  function showMessage(message) {-->
-<!--    const chatBox = document.getElementById('chat-box');-->
-<!--    const messageElement = createMessageElement(message);-->
-<!--    chatBox.appendChild(messageElement);-->
-<!--    chatBox.scrollTop = chatBox.scrollHeight; // 자동 스크롤-->
-<!--  }-->
-
-<!--  // 메시지 DOM 요소 생성 함수-->
-<!--  function createMessageElement(message) {-->
-<!--    const messageElement = document.createElement('div');-->
-<!--    messageElement.className = 'message'; // 공통 스타일 클래스-->
-
-<!--    // 현재 사용자의 메시지인지 확인하고 클래스를 다르게 적용-->
-<!--    const currentUser = document.getElementById('username').value;-->
-<!--    if (message.sender === currentUser) {-->
-<!--      messageElement.classList.add('my-message'); // 내가 보낸 메시지-->
-<!--    } else {-->
-<!--      messageElement.classList.add('other-message'); // 상대방이 보낸 메시지-->
-<!--    }-->
-
-<!--    messageElement.textContent = `${message.sender}: ${message.content}`;-->
-<!--    return messageElement;-->
-<!--  }-->
-
-<!--  // 페이지 로드 시 WebSocket 연결-->
-<!--  connect();-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" data-theme="light">
+<html xmlns:th="http://www.thymeleaf.org" data-theme="light" layout:decorate="~{view/layout/layout}">
 <head>
   <title>Spring WebSocket Chat</title>
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
@@ -140,9 +27,10 @@
     }
   </style>
 </head>
-<body data-theme="light" >
-<h2 class = "text-2xl mb-6">Chat Room</h2>
-<div id="chat-box">
+<body layout:fragment="content" data-theme="light" >
+<div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/6 min-h-[700px] mt-32 max-w-screen-sm w-full mx-auto items-center">
+<h2 class = "text-2xl font-bold mb-4">Chat Room</h2>
+<div id="chat-box" class="flex-grow overflow-y-auto mb-4 bg-gray-50 rounded-lg p-4">
   <div>
     <div th:each="message : ${previousMessages}" th:if="${!#lists.isEmpty(previousMessages)}">
       <!-- Daisy UI 채팅 메시지 클래스 추가 -->
@@ -154,15 +42,15 @@
 </div>
 
 <!-- 사용자 이름 및 메시지 입력 -->
-<div class="flex items-center space-x-4  w-full max-w-[500px] mx-auto" >
-  <div class="avatar">
+<div class="flex gap-4 mt-auto" >
+  <div class="avatar flex-shrink-0 mx-4">
     <div class="ring-primary ring-offset-base-100 w-12 rounded-full ring ring-offset-2">
       <img th:src="${userImage}" />
     </div>
   </div>
   <input type="hidden" id="username" th:value="${username}" disabled placeholder="Username" />
   <input type="hidden" id="roomId" th:value="${roomId}" />
-  <input type="text" id="message" placeholder="Enter message" class="input input-bordered w-full max-w-xs"/>
+  <input type="text" id="message" placeholder="Enter message" class="input input-bordered w-80"/>
   <button class="btn btn-primary " onclick="sendMessage()">Send</button>
 </div>
 
@@ -227,6 +115,7 @@
   // 페이지 로드 시 WebSocket 연결
   connect();
 </script>
+</div>
 </body>
 </html>
 
