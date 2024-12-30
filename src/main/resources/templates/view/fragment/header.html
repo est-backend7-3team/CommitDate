@@ -20,12 +20,13 @@
             th:onclick="|location.href='@{/login}'|">
       Login
     </button>
-    <button
-            class="btn btn-primary btn-sm"
-            sec:authorize="isAuthenticated()"
-            th:onclick="|location.href='@{/logout}'|">
-      Logout
-    </button>
+    <form sec:authorize="isAuthenticated()"
+          th:action="@{/logout}"
+          method="post">
+      <button type="submit" class="btn btn-primary btn-sm">
+        Logout
+      </button>
+    </form>
 
     <!-- 드롭다운 -->
     <div class="dropdown dropdown-end">

@@ -23,13 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
     blockPostButton.addEventListener('click',blockPost);
     });
 
+// CSRF 토큰 가져오는 함수 추가했음
+function getCsrfToken() {
+    return {
+        token: document.querySelector("meta[name='_csrf']").content,
+        headerName: document.querySelector("meta[name='_csrf_header']").content
+    };
+}
+
 function blockPost(){
     const postId = document.getElementById('postId').textContent.trim();
+    const csrfInfo = getCsrfToken();
 
     fetch("swipe/api/blockPost",{
         method: "POST",
         headers: {
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({postId: postId})
     })

@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.addEventListener("click", async (e) => {
         e.preventDefault();
         clearErrors();
+        const csrfInfo = getCsrfToken();
 
         const emailVal = emailInput.value.trim();
         if (!emailVal) {
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const res = await fetch("/member/forgot-password-request", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { "Content-Type": "application/json", [csrfInfo.headerName]: csrfInfo.token},
                 body: JSON.stringify({ email: emailVal })
             });
             const data = await res.json();
