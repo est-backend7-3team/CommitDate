@@ -11,4 +11,9 @@ public class HomeController {
     public String home() {
         return "/view/swipe";
     }
+
+    @GetMapping("/aboutUs")
+    public String aboutUs() {
+        return "/view/aboutUs";
+    }
 }
