@@ -25,6 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const nicknameError = document.getElementById("nicknameError");
     const phoneNumberError = document.getElementById("phoneNumberError");
 
+// CSRF 토큰 가져오는 함수 추가했음
+    function getCsrfToken() {
+        return {
+            token: document.querySelector("meta[name='_csrf']").content,
+            headerName: document.querySelector("meta[name='_csrf_header']").content
+        };
+    }
+
     function validatePassword() {
         const passVal = passwordField.value.trim();
         if (!passVal) {
@@ -265,11 +273,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleDefaultImageBtn.addEventListener('click',()=>{
         profileImg.src = "/image/profiles/Default.jpg"
+        const csrfInfo = getCsrfToken();
 
         fetch('/defaultProfileImage',{
             method : "POST",
             headers:{
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
             },
             body : JSON.stringify({"userId": userId})
         })
@@ -287,10 +297,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
-
-
     fileInput.addEventListener('change',()=>{
         const file = fileInput.files[0] ;
+        const csrfInfo = getCsrfToken();
         if(!file){
             alert("취소합니다.");
             return;
@@ -303,6 +312,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch('/uploadProfileImage',{
             method : "POST",
+            headers : {[csrfInfo.headerName]: csrfInfo.token},
             body : formData
         })
             .then(response => {

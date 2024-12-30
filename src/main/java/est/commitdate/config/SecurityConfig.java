@@ -28,7 +28,6 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MemberRepository memberRepository) throws Exception {
         return http
                 .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/process-login")
@@ -47,16 +46,14 @@ public class SecurityConfig {
                                 auth
 
                                         .requestMatchers("/css/**", "/js/**", "/images/**","image/profiles/**").permitAll()
-                                        .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "update").permitAll()
+                                        .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "/update").permitAll()
                                         .requestMatchers("/member/forgot-password").permitAll()
-                                        .requestMatchers("/member/**").permitAll() // 중복 확인 관련 API 허용
                                         .requestMatchers("/member/profile").authenticated()
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")
-                                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                        .requestMatchers("/board/**").permitAll()
-                                        .requestMatchers("/post/**").permitAll()
-                                        .requestMatchers("/post/test").permitAll()
+                                        .requestMatchers("/board/**").hasAuthority("ADMIN")
+                                        .requestMatchers("/member/**").permitAll()
                                         .requestMatchers("/swipe/**").permitAll()
+                                        .requestMatchers("/post/**").permitAll()
                                         .requestMatchers("/chat/**").permitAll()
                                         .anyRequest().authenticated()
                 )
