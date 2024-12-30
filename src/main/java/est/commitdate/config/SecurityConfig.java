@@ -47,14 +47,11 @@ public class SecurityConfig {
 
                                         .requestMatchers("/css/**", "/js/**", "/images/**","image/profiles/**").permitAll()
                                         .requestMatchers("/login", "/sign-up", "/oauth2/additional-info", "/update").permitAll()
-                                        .requestMatchers("/member/forgot-password").permitAll()
+                                        .requestMatchers("/member/forgot-password","aboutUs").permitAll()
                                         .requestMatchers("/member/profile").authenticated()
                                         .requestMatchers("/users/**").hasAnyAuthority("MEMBER", "ADMIN")
                                         .requestMatchers("/board/**").hasAuthority("ADMIN")
-                                        .requestMatchers("/member/**").permitAll()
-                                        .requestMatchers("/swipe/**").permitAll()
-                                        .requestMatchers("/post/**").permitAll()
-                                        .requestMatchers("/chat/**").permitAll()
+                                        .requestMatchers("/member/**","/swipe/**","/post/**","/chat/**").permitAll()
                                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
