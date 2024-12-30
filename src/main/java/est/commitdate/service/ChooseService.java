@@ -57,13 +57,14 @@ public class ChooseService {
                 ChooseDto chooseDto = new ChooseDto();
 
                 chooseDto.setUserId(String.valueOf(member.getId()));
-                chooseDto.setUserName(member.getUsername());
+                chooseDto.setUserName(member.getNickname());
                 chooseDto.setComment(member.getComment());
                 chooseDto.setProfileImageURL(member.getProfileImage());
                 chooseDto.setTimestamp(like.getLikeDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 chooseDto.setLikeId(like.getLikeId());
                 chooseDto.setMatchingResult(like.getMatchingResult());
                 chooseDto.setPostId(like.getPost().getPostId());
+
 
                 chooseDtos.add(chooseDto);
             });
