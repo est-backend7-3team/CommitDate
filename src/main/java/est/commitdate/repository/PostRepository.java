@@ -33,7 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT * from Post where post_id = :id and status = 0", nativeQuery = true)
     Optional<Post> findDeleteById(Long id); // 여기 id가 boardId에 바인딩 됨
 
-    @Query(value = "SELECT * FROM Post WHERE board_id = 1 AND status != 0 ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM post WHERE board_id = 1 AND status != 0 ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<Post> findRandomPostNative();
 
 
