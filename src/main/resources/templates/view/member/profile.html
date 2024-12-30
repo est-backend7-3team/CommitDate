@@ -99,6 +99,14 @@
       </button>
     </div>
   </form>
+
+  <form th:action= "@{/member/delete}" method="post" novalidate class="space-y-4 mt-6">
+    <input type="hidden" name = "id" th:value="${memberId}" />
+      <button type="submit" id = "memberDeleteButton" class="btn w-full bg-red-600 border-none">
+        회원 탈퇴
+      </button>
+  </form>
+
 </div>
 </div>
 </body>
