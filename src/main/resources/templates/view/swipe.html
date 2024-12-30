@@ -11,7 +11,7 @@
   </style>
 </head>
 
-<body class="bg-gray-100 grid grid-cols-[1fr_2fr_1fr] items-center relative h-screen min-h-0 min-w-0" >
+<body class="bg-gray-100 grid grid-cols-[1fr_2fr_1fr] items-center justify-center h-screen pt-16">
 
 <header class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b p-0 flex items-center justify-between z-50"
         data-theme="light">
@@ -72,9 +72,15 @@
         <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
           <a>회원정보</a>
         </li>
-        <li sec:authorize="isAuthenticated()"><a>내 게시물</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a></li>
-        <li sec:authorize="isAuthenticated()"><a>채팅</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a>
+        </li>
         <!-- ADMIN 권한일 때만 보이는 항목 -->
         <li sec:authorize="hasAuthority('ADMIN')" th:onclick="|location.href='@{/board}'|">
           <a>게시판 관리</a>
@@ -82,29 +88,26 @@
       </ul>
     </div>
   </div>
-
 </header>
-<!-- 왼쪽 버튼 (흰색 카드 외부, 녹색 배경 위) -->
 
-<div class="relative w-full h-64 flex items-center justify-center bg-gray-100">
-<button id = 'leftButton' class="btn btn-circle btn-ghost btn-lg absolute top-3/5">
-  <svg xmlns="http://www.w3.org/2000/svg"
-       class="h-12 w-12"
-       fill="none"
-       viewBox="0 0 24 24"
-       stroke="currentColor">
-    <path stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7" />
-  </svg>
-</button>
+<!-- 왼쪽 버튼 영역 -->
+<div class="flex items-center justify-end h-full">
+  <button id='leftButton' class="btn btn-circle btn-ghost btn-lg">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="h-12 w-12"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
 </div>
 
-<!--btn btn-circle btn-ghost absolute left-5 top-1/2 -translate-y-1/2 active:transform-none-->
-<!-- 흰색 카드 영역 -->
-<div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/5 min-h-0 min-w-0"  >
-
+<!-- 가운데 카드 영역 -->
+<div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/6 min-h-0 max-w-screen-sm w-full mx-auto">
   <!--포스트 번호-->
   <div id="postId" hidden="hidden">0</div>
   <!-- 제목 -->
@@ -112,13 +115,12 @@
     <h1 id="title" class="font-bold text-lg break-words" >Title</h1>
     <!-- 톱니바퀴 버튼: 클릭 시 드롭다운 오픈 -->
     <details class ="dropdown dropdown-end">
-        <summary class="btn btn-sm btn-circle btn-ghost m-1">⚙️</summary>
-        <ul class="dropdown-content menu p-2 shadow rounded-box w-52 bg-white">
-          <li><a class="!active:bg-white" id = "postView">게시글 보기</a></li>
-          <li><a class="!active:bg-gray-100" id="blockPostButton">해당 게시글 차단</a></li>
-        </ul>
+      <summary class="btn btn-sm btn-circle btn-ghost m-1">⚙️</summary>
+      <ul class="dropdown-content menu p-2 shadow rounded-box w-52 bg-white">
+        <li><a class="!active:bg-white" id = "postView">게시글 보기</a></li>
+        <li><a class="!active:bg-gray-100" id="blockPostButton">해당 게시글 차단</a></li>
+      </ul>
     </details >
-
   </div>
 
   <!-- 이미지 및 사용자 정보 -->
@@ -138,10 +140,9 @@
     </div>
   </div>
 
-
   <!-- 소스 코드 -->
   <div class="text-primary-content bg-gray-100 p-3 rounded-lg mb-4 flex-grow min-h-0 min-w-0 overflow-y-auto overflow-x-auto before:mr-0">
-    <pre class="before:mr-0"><code id="sourceCode" class="before:mr-0 text-gray-700 text-sm whitespace-wrap ">SourceCode</code></pre>
+    <pre class="before:mr-0"><code id="sourceCode" class="before:mr-0 text-gray-700 text-sm whitespace-wrap">SourceCode</code></pre>
   </div>
 
   <!-- 코드 간략한 설명 -->
@@ -152,41 +153,30 @@
   </div>
 
   <!-- 좋아요 버튼 -->
-  <div class="flex justify-center ">
+  <div class="flex justify-center">
     <button id="likeButton" class="btn btn-circle btn-outline">
       <P id="likeButtonImg" class="">
         💓
       </P>
     </button>
   </div>
-    </div>
-
-<!-- 오른쪽 버튼 (흰색 카드 외부, 녹색 배경 위) -->
-<div class="relative w-full h-64 flex items-center justify-center bg-gray-100">
-<button id = "rightButton" class="btn btn-circle btn-ghost btn-lg absolute top-3/5 ">
-  <svg xmlns="http://www.w3.org/2000/svg"
-       class="h-12 w-12"
-       fill="none"
-       viewBox="0 0 24 24"
-       stroke="currentColor">
-    <path stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5l7 7-7 7" />
-  </svg>
-</button>
 </div>
 
-<!-- 드로어 구조 -->
-<!--<input id="settings-drawer" type="checkbox" class="drawer-toggle" />-->
-<!--<div class="drawer-side">-->
-<!--  <label for="settings-drawer" class="drawer-overlay"></label>-->
-<!--  <ul class="menu p-4 w-80 bg-base-100 text-base-content">-->
-<!--    <li><a>해당 게시글 보기</a></li>-->
-<!--    <li><a id = "blockPostButton">해당 게시글 차단</a></li>-->
-<!--    <li><a>로그인</a></li>-->
-<!--  </ul>-->
-<!--</div>-->
+<!-- 오른쪽 버튼 영역 -->
+<div class="flex items-center justify-start h-full">
+  <button id="rightButton" class="btn btn-circle btn-ghost btn-lg">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="h-12 w-12"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
 </div>
+
 </body>
 </html>

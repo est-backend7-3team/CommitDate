@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<div th:if="${currentUri == null or !currentUri.startsWith('/swipe')}">
 <aside th:fragment="sidebarFrag"
        class="fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] bg-white border-r p-4">
     <nav>
@@ -66,7 +67,7 @@
                 <div class="collapse-content px-2">
                     <ul class="menu gap-2">
                         <li>
-                            <a class="hover:bg-gray-100 gap-4">
+                            <a class="hover:bg-gray-100 gap-4" th:onclick="|location.href='@{/aboutUs}'|">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                                 ABOUT US
                             </a>
@@ -101,5 +102,6 @@
         </ul>
     </nav>
 </aside>
+</div>
 </body>
 </html>
