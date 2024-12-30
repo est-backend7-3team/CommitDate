@@ -162,7 +162,7 @@ https://www.erdcloud.com/d/MQqYSZjC4o2ynXC2T
 
 
 # API 명세
-BOARD
+## BOARD
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -174,7 +174,7 @@ BOARD
 | deleteBoard | POST | /board/delete/{id} | 게시판 삭제 |
 | boardRestore | POST | /board/restore/{id} | 게시판 복구 |
 
-POST
+## POST
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -190,7 +190,7 @@ POST
 | postComment | POST | /comment/{id} | 댓글 생성 |
 | aboutUs | GET | /aboutUs | 팀원 소개 페이지 조회 |
 
-SWIPE
+## SWIPE
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -199,7 +199,7 @@ SWIPE
 | toggleLike | POST | /swipe/api/toggleLike | 좋아요 요청 |
 | blockPost | POST | /swipe/api/blockPost | 스와이프 관심없음 |
 
-Choose
+## Choose
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -208,7 +208,7 @@ Choose
 | getJsons | POST | /swipe/Jsons | 좋아요 수락 |
 | getLikeJsons | POST | /swipe/likeJsons | 좋아요 누른 게시글 응답 |
 
-Member
+## Member
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
@@ -228,14 +228,14 @@ Member
 | uploadProfileImage | POST | /uploadProfileImage | 프로필 이미지 업로드  |
 | defaultImage | POST | /defaultProfileImage | 기본 프로필 이미지 업로드 |
 
-Chat
+## Chat
 
 | **메서드명** | **HTTP 메서드** | **엔드포인트** | **역할** |
 | --- | --- | --- | --- |
 | chat | GET | /chatting/{rooId} | 채팅방 불러오기 |
 | ChattingRoomMatching | POST | /chatroom/api/requestMatchingResult | 채팅방 생성 |
 
-WebSocket api 명세
+## WebSocket api 명세
 
 | **메서드명** | **메시징 경로** | **역할** |
 | --- | --- | --- |
