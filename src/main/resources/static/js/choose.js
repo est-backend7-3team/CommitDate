@@ -1,10 +1,20 @@
+// CSRF 토큰 가져오는 함수 추가했음
+function getCsrfToken() {
+    return {
+        token: document.querySelector("meta[name='_csrf']").content,
+        headerName: document.querySelector("meta[name='_csrf_header']").content
+    };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const postId = document.getElementById('postId').textContent.trim();
+    const csrfInfo = getCsrfToken();
 
     fetch('/choose/Jsons', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({ postId: postId })
     })
@@ -99,6 +109,8 @@ function createItem(chooseDto) {
     // matchingResult 상태에 맞게 안쪽 HTML을 만든다.
     itemDiv.innerHTML = createItemHTML(chooseDto);
 
+    const csrfInfo = getCsrfToken();
+
     // 만약 matchingResult가 0이면 '수락' 버튼이 있을 것이므로 이벤트 달아준다.
     if (chooseDto.matchingResult === 0) {
         const acceptButton = itemDiv.querySelector("#acceptButton");
@@ -110,7 +122,8 @@ function createItem(chooseDto) {
             fetch('/chatroom/api/requestMatchingResult', {
                 method: "POST",
                 headers:{
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
                 },
                 body: JSON.stringify(chooseDto)
             }).then(response =>{

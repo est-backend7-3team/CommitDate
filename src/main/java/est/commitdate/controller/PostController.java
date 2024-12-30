@@ -95,7 +95,6 @@ public class PostController {
         Member loggedInMember = memberService.getLoggedInMember(session);
         postDto.setAuthor(loggedInMember.getNickname());
         postService.save(postDto);
-
         return "redirect:/post";
     }
 

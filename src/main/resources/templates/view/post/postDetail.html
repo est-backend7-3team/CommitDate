@@ -12,6 +12,9 @@
             border-color: magenta;
         }
     </style>
+    <!-- csrf 토큰관리 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body class="bg-gray-100 flex flex-col items-center min-h-screen">
 <div layout:fragment="content" class="container max-w-screen-lg mx-auto mt-4 p-6 bg-white rounded-lg shadow-lg">
