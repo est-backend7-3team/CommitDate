@@ -60,7 +60,6 @@ function blockPost(){
             if(status === "Success"){
                 currentJson.isBlocked = 1;
                 alert("정상적으로 처리되었습니다. 해당 게시물은 7일간 표시되지 않습니다.");
-                closeDrawer();
                 loadPostData();
             }
         })
@@ -177,11 +176,6 @@ function loadingLike(isLike){
         likeButton.style.backgroundColor = "";
         likeButton.style.color = "";
     }
-}
-
-function closeDrawer() {
-    const drawerCheckbox = document.getElementById("settings-drawer");
-    drawerCheckbox.checked = false; // 드로어 닫기
 }
 
 function fetchSwipeJsonData(){
