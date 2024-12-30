@@ -1,10 +1,20 @@
+// CSRF 토큰 가져오는 함수 추가했음
+function getCsrfToken() {
+    return {
+        token: document.querySelector("meta[name='_csrf']").content,
+        headerName: document.querySelector("meta[name='_csrf_header']").content
+    };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const userId = document.getElementById('userId').textContent.trim();
+    const csrfInfo = getCsrfToken();
     console.log(userId);
     fetch('/choose/likeJsons', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({ userId: userId })
     })

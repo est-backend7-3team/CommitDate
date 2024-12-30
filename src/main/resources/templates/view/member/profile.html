@@ -4,6 +4,8 @@
 <!--  <meta charset="UTF-8" class="whatisthis">-->
   <title>내 정보 수정</title>
   <script defer src="/js/profileValidation.js"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">

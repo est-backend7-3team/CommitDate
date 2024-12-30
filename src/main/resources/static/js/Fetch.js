@@ -1,8 +1,18 @@
+// CSRF 토큰 가져오는 함수 추가했음
+export function getCsrfToken() {
+    return {
+        token: document.querySelector("meta[name='_csrf']").content,
+        headerName: document.querySelector("meta[name='_csrf_header']").content
+    };
+}
+
 export function likeFetch(postId) {
+    const csrfInfo = getCsrfToken();
     return fetch("/swipe/api/toggleLike", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({ postId: postId })
     })
@@ -23,10 +33,12 @@ export function likeFetch(postId) {
 
 
 export function removeFetch(postId,commentId) {
+    const csrfInfo = getCsrfToken();
     return fetch("/post/api/commentDelete", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({
             postId: postId,
@@ -49,10 +61,12 @@ export function removeFetch(postId,commentId) {
 }
 
 export function editFetch(editText,commentId) {
+    const csrfInfo = getCsrfToken();
     return fetch("/post/api/commentEdit", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            [csrfInfo.headerName]: csrfInfo.token // CSRF 토큰 추가
         },
         body: JSON.stringify({
             commentId: commentId,

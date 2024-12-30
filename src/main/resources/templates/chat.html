@@ -26,6 +26,9 @@
       flex-direction: column; /* 세로 정렬 */
     }
   </style>
+  <!-- csrf 토큰관리 -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body layout:fragment="content" data-theme="light" >
 <div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/6 min-h-[700px] mt-32 max-w-screen-sm w-full mx-auto items-center">
