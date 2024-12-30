@@ -4,6 +4,8 @@ import est.commitdate.dto.member.MemberProfileRequest;
 import est.commitdate.entity.Member;
 import est.commitdate.service.SwipeService;
 import est.commitdate.service.member.MemberService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +23,20 @@ public class MemberController {
     private final MemberService memberService;
     private final SwipeService swipeService;
 
+
+
     @PostMapping("/delete")
-    public String deleteMember(@RequestParam Long id) {
+    public String deleteMember(@RequestParam Long id, HttpServletRequest request) {
+
+        try {
+            request.logout();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
+
         memberService.delete(id);
-        return "redirect:/logout"; // 탈퇴 후 로그아웃 처리
+
+        return "redirect:/swipe"; // 탈퇴 후 로그아웃 처리
     }
 
     @GetMapping("/profile")
@@ -37,6 +49,7 @@ public class MemberController {
         model.addAttribute("memberProfileRequest", profileRequest);
         model.addAttribute("originalNickname", member.getNickname());
         model.addAttribute("originalPhoneNumber", member.getPhoneNumber());
+        model.addAttribute("memberId", member.getId());
 
         return "view/member/profile";
     }

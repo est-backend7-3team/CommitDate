@@ -78,8 +78,11 @@ public class MemberService {
 
     @Transactional
     public void delete(Long id) {
+        log.info("delete 탐");
         Member findMember = getMemberById(id);
+        log.info("Member찾음");
         findMember.delete();
+        log.info("삭제함");
         System.out.println("탈퇴 완료." + findMember.getStatus()+ " " + findMember.getUsername());
     }
 
