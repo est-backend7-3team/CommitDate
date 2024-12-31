@@ -85,7 +85,7 @@
 <br>
 
 # 접속 방법
-### aws 배포 주소 : ec2-52-78-221-220.ap-northeast-2.compute.amazonaws.com
+### aws 배포 주소 : [서비스 바로가기](http://ec2-52-78-221-220.ap-northeast-2.compute.amazonaws.com)
 
 <br>
 <br>
