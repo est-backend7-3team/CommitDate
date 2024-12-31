@@ -21,10 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-
 import java.util.Random;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -97,10 +94,6 @@ class SwipeServiceTest {
             String paragraph = faker.lorem().paragraph();
 
 
-
-
-
-
             //임의의 사용자 찾기.
             Random r = new Random(System.currentTimeMillis());
             findMember = memberRepository.findById(r.nextLong(19)+1)
@@ -121,11 +114,6 @@ class SwipeServiceTest {
                     .build();
 
             postRepository.save(Post.testTransformEntity(postDto,findBoard,findMember));
-
-
-
-
-
 
 
         }
