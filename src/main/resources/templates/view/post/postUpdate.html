@@ -23,6 +23,19 @@
               class="input input-bordered w-full bg-white" />
     </div>
 
+    <!-- 소스코드 -->
+    <div th:if="*{boardId == 1}"  class="form-group">
+      <label for="postSourcecode" class="block text-gray-700 font-medium">소스코드</label>
+      <textarea
+              id="postSourcecode"
+              th:text="*{sourceCode}"
+              name="sourceCode"
+              rows="6"
+              required
+              class="textarea textarea-bordered w-full bg-white max-h-[500] overflow-auto"
+              placeholder="내용을 입력하세요"></textarea>
+    </div>
+
     <!-- 내용 -->
     <div class="form-group">
       <label for="postDescription" class="block text-gray-700 font-medium">내용</label>

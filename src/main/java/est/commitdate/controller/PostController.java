@@ -108,6 +108,13 @@ public class PostController {
         return "redirect:/post";
     }
 
+    // 게시글 수정 페이지
+    @PostMapping("/update")
+    public String postUpdateView(PostUpdateDto postUpdateDto, Model model, HttpSession session) {
+        postService.update(postUpdateDto);
+        return "redirect:/post/view/"+ postUpdateDto.getPostId();
+    }
+
     // 게시글 삭제 요청
     @PostMapping("/delete/{id}")
     public String postDeletePost(@PathVariable Long id, HttpSession session) {

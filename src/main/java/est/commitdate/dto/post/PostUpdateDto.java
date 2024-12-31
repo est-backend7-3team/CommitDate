@@ -14,11 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 public class PostUpdateDto {
     private Long postId;
+    private Integer boardId;
     private String title;
     private String sourceCode;
     private String text;
     private String description;
     private String author;
+
 //    private Integer likeCount;
 //    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -32,6 +34,7 @@ public class PostUpdateDto {
                 .description(post.getDescription())
                 .author(post.getMember().getUsername())
                 .updatedAt(post.getUpdatedAt())
+                .boardId(post.getBoard().getBoardId())
                 .build();
     }
 
