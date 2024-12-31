@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="light" th:fragment="layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Commitdate</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+<!--    <script layout:fragment="script"></script>-->
+<!--    <th:block layout:fragment="style"></th:block>-->
+</head>
+<body class="bg-gray-100">
+<div th:replace="~{view/fragment/header :: headerFrag}"></div>
+<div th:replace="~{view/fragment/sidebar :: sidebarFrag}"></div>
+<div th:replace="~{view/fragment/content :: contentFrag}"></div>
+</body>
+</html>

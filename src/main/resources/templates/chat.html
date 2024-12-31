@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-theme="light" layout:decorate="~{view/layout/layout}">
+<head>
+  <title>Spring WebSocket Chat</title>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 기존 스타일은 그대로 두고 Daisy UI 스타일을 추가 */
+    #chat-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 500px;
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      background-color: #f9f9f9;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* 화면 전체 높이 사용 */
+      margin: 0;
+      flex-direction: column; /* 세로 정렬 */
+    }
+  </style>
+  <!-- csrf 토큰관리 -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body layout:fragment="content" data-theme="light" >
+<div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/6 min-h-[700px] mt-32 max-w-screen-sm w-full mx-auto items-center">
+<h2 class = "text-2xl font-bold mb-4">Chat Room</h2>
+<div id="chat-box" class="flex-grow overflow-y-auto mb-4 bg-gray-50 rounded-lg p-4">
+  <div>
+    <div th:each="message : ${previousMessages}" th:if="${!#lists.isEmpty(previousMessages)}">
+      <!-- Daisy UI 채팅 메시지 클래스 추가 -->
+      <div class="chat" th:classappend="${message.sender == username ? 'chat-end' : 'chat-start'}">
+        <div class="chat-bubble" th:text="${message.sender} + ': ' + ${message.content}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 사용자 이름 및 메시지 입력 -->
+<div class="flex gap-4 mt-auto" >
+  <div class="avatar flex-shrink-0 mx-4">
+    <div class="ring-primary ring-offset-base-100 w-12 rounded-full ring ring-offset-2">
+      <img th:src="${userImage}" />
+    </div>
+  </div>
+  <input type="hidden" id="username" th:value="${username}" disabled placeholder="Username" />
+  <input type="hidden" id="roomId" th:value="${roomId}" />
+  <input type="text" id="message" placeholder="Enter message" class="input input-bordered w-80"/>
+  <button class="btn btn-primary " onclick="sendMessage()">Send</button>
+</div>
+
+
+<script type="text/javascript">
+  let stompClient = null;
+  let roomId = document.getElementById('roomId').value;
+
+  // 연결 설정
+  function connect() {
+    let socket = new SockJS('/chat');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+      console.log('Connected: ' + frame);
+      // 실시간 메시지 구독
+      stompClient.subscribe('/topic/' + roomId, function (messageOutput) {
+        showMessage(JSON.parse(messageOutput.body));
+      });
+    });
+  }
+
+  // 메시지 전송
+  function sendMessage() {
+    const username = document.getElementById('username').value;
+    const content = document.getElementById('message').value;
+    stompClient.send(
+            "/app/sendMessage/" + roomId,
+            {},
+            JSON.stringify({ sender: username, content: content, roomId: roomId })
+    );
+    document.getElementById('message').value = ''; // 입력창 초기화
+  }
+
+  // Enter 키 입력 시 메시지 전송
+  document.getElementById('message').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // 기본 Enter 키 동작 방지
+      sendMessage();
+    }
+  });
+
+  // 메시지 출력 (이전 및 실시간 메시지 공통 처리)
+  function showMessage(message) {
+    const chatBox = document.getElementById('chat-box');
+    const messageElement = createMessageElement(message);
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight; // 자동 스크롤
+  }
+
+  // 메시지 DOM 요소 생성 함수
+  function createMessageElement(message) {
+    const messageElement = document.createElement('div');
+
+    // Daisy UI의 'chat-start' 또는 'chat-end' 클래스를 적용
+    const currentUser = document.getElementById('username').value;
+    if (message.sender === currentUser) {
+      messageElement.classList.add('chat', 'chat-end'); // 내가 보낸 메시지
+    } else {
+      messageElement.classList.add('chat', 'chat-start'); // 상대방이 보낸 메시지
+    }
+
+    // 채팅 버블 스타일 추가
+    const bubbleElement = document.createElement('div');
+    bubbleElement.className = 'chat-bubble';
+    bubbleElement.textContent = `${message.sender}: ${message.content}`;
+
+    messageElement.appendChild(bubbleElement);
+    return messageElement;
+  }
+  // 페이지 로드 시 WebSocket 연결
+  connect();
+</script>
+</div>
+</body>
+</html>
+
+
+

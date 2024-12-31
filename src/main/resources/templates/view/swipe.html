@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>커밋데이트</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.22/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/js/swipe.js" type="module" defer></script>
+  <!-- csrf 토큰관리 -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+  <style>
+  </style>
+</head>
+
+<body class="bg-gray-100 grid grid-cols-[1fr_2fr_1fr] items-center justify-center h-screen pt-16">
+
+<header class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b p-0 flex items-center justify-between z-50"
+        data-theme="light">
+
+  <div class="flex items-center">
+    <a th:href="@{/aboutUs}" class="flex items-center">
+      <img th:src="@{/images/logo.png}" alt="Logo" class="h-14 mx-4" />
+      <span class="text-xl font-bold">Commitdate</span>
+    </a>
+  </div>
+
+  <div class="flex items-center space-x-4">
+    <button
+            class="btn btn-primary btn-sm"
+            sec:authorize="isAnonymous()"
+            th:onclick="|location.href='@{/login}'|">
+      Login
+    </button>
+    <form sec:authorize="isAuthenticated()"
+          th:action="@{/logout}"
+          method="post">
+      <button type="submit" class="btn btn-primary btn-sm">
+        Logout
+      </button>
+    </form>
+
+    <!-- 드롭다운 -->
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-square btn-ghost">
+        <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-6 h-6">
+          <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 5.25h16.5m-16.5 6.75h16.5m-16.5 6.75h16.5"/>
+        </svg>
+      </label>
+      <!-- 드롭다운 메뉴 -->
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <!-- 비로그인시 메뉴 -->
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>회원정보</a>
+        </li>
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>내 게시물</a>
+        </li>
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>채팅</a>
+        </li>
+        <!-- 로그인시 메뉴 -->
+        <li sec:authorize="isAuthenticated()">
+          <a th:text="${member.nickname} + ' 님 안녕하세요.'"></a>
+        </li>
+        <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
+          <a>회원정보</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a>
+        </li>
+        <!-- ADMIN 권한일 때만 보이는 항목 -->
+        <li sec:authorize="hasAuthority('ADMIN')" th:onclick="|location.href='@{/board}'|">
+          <a>게시판 관리</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<!-- 왼쪽 버튼 영역 -->
+<div class="flex items-center justify-end h-full">
+  <button id='leftButton' class="btn btn-circle btn-ghost btn-lg">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="h-12 w-12"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+</div>
+
+<!-- 가운데 카드 영역 -->
+<div class="flex flex-col bg-white p-6 rounded-lg shadow-lg h-4/6 min-h-0 max-w-screen-sm w-full mx-auto">
+  <!--포스트 번호-->
+  <div id="postId" hidden="hidden">0</div>
+  <!-- 제목 -->
+  <div class="flex items-center justify-between mb-4">
+    <h1 id="title" class="font-bold text-lg break-words" >Title</h1>
+    <!-- 톱니바퀴 버튼: 클릭 시 드롭다운 오픈 -->
+    <details class ="dropdown dropdown-end">
+      <summary class="btn btn-sm btn-circle btn-ghost m-1">⚙️</summary>
+      <ul class="dropdown-content menu p-2 shadow rounded-box w-52 bg-white">
+        <li><a class="!active:bg-white" id = "postView">게시글 보기</a></li>
+        <li><a class="!active:bg-gray-100" id="blockPostButton">해당 게시글 차단</a></li>
+      </ul>
+    </details >
+  </div>
+
+  <!-- 이미지 및 사용자 정보 -->
+  <div class="flex items-center mb-4">
+    <div class="avatar">
+      <div class="w-12 rounded-full">
+        <img id="profileImageURL" alt="User Avatar">
+      </div>
+    </div>
+    <div class="ml-3">
+      <p id="userName" class="font-semibold" >UserName</p>
+      <p id="introduce" class="text-gray-500 text-sm" >Introduce</p>
+    </div>
+    <div class="ml-auto flex items-center">
+      <span id="likeCount" class="mr-1 text-lg" >0</span>
+      <span>💓</span>
+    </div>
+  </div>
+
+  <!-- 소스 코드 -->
+  <div class="text-primary-content bg-gray-100 p-3 rounded-lg mb-4 flex-grow min-h-0 min-w-0 overflow-y-auto overflow-x-auto before:mr-0">
+    <pre class="before:mr-0"><code id="sourceCode" class="before:mr-0 text-gray-700 text-sm whitespace-wrap">SourceCode</code></pre>
+  </div>
+
+  <!-- 코드 간략한 설명 -->
+  <div class="bg-gray-100 p-3 rounded-lg mb-4">
+    <p id="comment" class="text-gray-700 text-sm break-words">
+      Inline Comment
+    </p>
+  </div>
+
+  <!-- 좋아요 버튼 -->
+  <div class="flex justify-center">
+    <button id="likeButton" class="btn btn-circle btn-outline">
+      <P id="likeButtonImg" class="">
+        💓
+      </P>
+    </button>
+  </div>
+</div>
+
+<!-- 오른쪽 버튼 영역 -->
+<div class="flex items-center justify-start h-full">
+  <button id="rightButton" class="btn btn-circle btn-ghost btn-lg">
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="h-12 w-12"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+</div>
+
+</body>
+</html>

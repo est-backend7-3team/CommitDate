@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{view/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+</head>
+<body>
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen" data-theme="light">
+    <div class="container w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg">
+
+
+
+        <div class="flex justify-center items-center w-full mb-16">
+            <img
+                src="/image/profiles/aboutIMG/intro.jpg"
+                alt="팀원1 프로필"
+                class="w-[300] object-cover"
+            />
+        </div>
+
+        <!-- 팀원 소개 제목 -->
+        <h1 class="text-2xl font-bold mb-6 text-center">상남자 클럽 소개</h1>
+
+
+        <!-- 카드 그리드 : 한 줄에 3명 (화면 폭이 좁아지면 자동 줄바꿈) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+
+            <!-- 팀원 #1 카드 -->
+            <div class="card bg-base-100 shadow border">
+                <figure>
+                    <!-- 팀원 사진(이미지) -->
+                    <img
+                            src="/image/profiles/aboutIMG/myh.jpg"
+                            alt="팀원1 프로필"
+                            class="w-64 object-cover"
+                    />
+                </figure>
+                <div class="card-body">
+                    <h3 class="card-title">문영훈</h3>
+                    <p class="text-sm text-gray-400">팀 리더, 백엔드</p>
+                    <p class="mt-2 text-gray-700 text-sm leading-relaxed">
+                        게시판, 게시물, 채팅기능 구현<br/>(JPA, WebSocket)<br/>
+                        테스트와 프로젝트 관리(QA)<br/>
+                    </p>
+                    <div class="card-actions justify-end mt-4">
+                        <!-- 필요하면 버튼 or 링크 -->
+                        <a class="btn btn-primary btn-sm" href="https://github.com/myh7754">깃허브</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- 팀원 #3 카드 -->
+            <div class="card bg-base-100 shadow border">
+                <figure>
+                    <img
+                            src="/image/profiles/aboutIMG/ybs.jpg"
+                            alt="팀원3 프로필"
+                            class="w-64 object-cover"
+                    />
+                </figure>
+                <div class="card-body">
+                    <h3 class="card-title">심윤보</h3>
+                    <p class="text-sm text-gray-400">백엔드, 프론트엔드</p>
+                    <p class="mt-2 text-gray-700 text-sm leading-relaxed">
+                        회원기능 및 보안정책 구현(Spring Security, Fetch API)<br/>
+                        폼 구성 및 디자인 구현(Thymeleaf, daisyUI, Tailwind CSS)
+                    </p>
+                    <div class="card-actions justify-end mt-4">
+                        <a class="btn btn-primary btn-sm" href="https://github.com/Waffle-ens">깃허브</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 팀원 #2 카드 -->
+            <div class="card bg-base-100 shadow border">
+                <figure>
+                    <img
+                            src="/image/profiles/aboutIMG/shl.jpg"
+                            alt="팀원2 프로필"
+                            class="w-64 object-cover"
+                    />
+                </figure>
+                <div class="card-body">
+                    <h3 class="card-title">이시현</h3>
+                    <p class="text-sm text-gray-400">백엔드, 인프라</p>
+                    <p class="mt-2 text-gray-700 text-sm leading-relaxed">
+                        비동기 통신 기반 메인 서비스 로직&레이아웃 구성<br/>(Fetch API, Thymeleaf)<br/>
+                        정적 파일 서빙 및 AWS 배포 환경 설정<br/>(Tailwind CSS, AWS S3, EC2)
+                    </p>
+                    <div class="card-actions justify-end mt-4">
+                        <a class="btn btn-primary btn-sm" href="https://github.com/Philo-LEE">깃허브</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+.input-error {
+    border-color: #ef4444 !important;
+}
+
+.errorMessage {
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* 사이드바 항목 hover 색상 더 강조 */
+.menu li:hover {
+    background-color: #f5f5f5;
+}
+/* 헤더 높이 커스텀 등 */
+.navbar {
+    height: 60px;
+}
