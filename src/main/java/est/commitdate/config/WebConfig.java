@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOriginPatterns("http://localhost:8080")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true)
-                .maxAge(3600);
+                .maxAge(10800);
 
     }
 
