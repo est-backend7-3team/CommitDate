@@ -1,0 +1,97 @@
+/* 댓글 목록 및 댓글 항목 */
+.comment-list {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-list h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.comment-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.comment-item:last-child {
+    margin-bottom: 0;
+}
+
+.comment-author {
+    font-weight: bold;
+    font-size: 14px;
+    color: #007BFF;
+    margin-bottom: 5px;
+}
+
+.comment-content {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #777;
+    text-align: right;
+}
+
+/* 댓글 작성 폼 */
+.comment-form {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.comment-form textarea:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.comment-form button {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-form button:hover {
+    background-color: #0056b3;
+}
+
+/* 댓글이 없는 경우 */
+.no-comments {
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    margin-top: 20px;
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+<header th:fragment="headerFrag"
+        class="navbar fixed top-0 left-0 right-0 h-16 bg-white border-b p-0 flex items-center justify-between z-50">
+
+  <div class="flex items-center">
+    <a th:href="@{/swipe}" class="flex items-center">
+      <img th:src="@{/images/logo.png}" alt="Logo" class="h-14 mx-4" />
+      <span class="text-xl font-bold">Commitdate</span>
+    </a>
+  </div>
+
+  <div class="flex items-center space-x-4">
+    <button
+            class="btn btn-primary btn-sm"
+            sec:authorize="isAnonymous()"
+            th:onclick="|location.href='@{/login}'|">
+      Login
+    </button>
+    <form sec:authorize="isAuthenticated()"
+          th:action="@{/logout}"
+          method="post">
+      <button type="submit" class="btn btn-primary btn-sm">
+        Logout
+      </button>
+    </form>
+
+    <!-- 드롭다운 -->
+    <div class="dropdown dropdown-end">
+      <label tabindex="0" class="btn btn-square btn-ghost">
+        <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+                class="w-6 h-6">
+          <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3.75 5.25h16.5m-16.5 6.75h16.5m-16.5 6.75h16.5"/>
+        </svg>
+      </label>
+      <!-- 드롭다운 메뉴 -->
+      <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <!-- 비로그인시 메뉴 -->
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>회원정보</a>
+        </li>
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>내 게시물</a>
+        </li>
+        <li sec:authorize="isAnonymous()" th:onclick="|location.href='@{/login}'|">
+          <a>좋아요 보기</a>
+        </li>
+        <!-- 로그인시 메뉴 -->
+        <li sec:authorize="isAuthenticated()">
+          <a th:text="${member.nickname} + ' 님 안녕하세요.'"></a>
+        </li>
+        <li sec:authorize="isAuthenticated()" th:onclick="|location.href='@{/member/profile}'|">
+          <a>회원정보</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/user/{id}(id=${#authentication.principal.id})}'|">내 게시물</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/post/saveView}'|">글 작성</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+          <a th:onclick="|location.href='@{/choose/likes/{id}(id=${#authentication.principal.id})}'|">좋아요 보기</a>
+        </li>
+        <!-- ADMIN 권한일 때만 보이는 항목 -->
+        <li sec:authorize="hasAuthority('ADMIN')" th:onclick="|location.href='@{/board}'|">
+          <a>게시판 관리</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+</body>
+</html>

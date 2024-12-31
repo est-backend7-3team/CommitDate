@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{view/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="script">
+    <script defer src="/js/postSave.js" type="module"></script>
+    </th:block>
+    <title>게시글 작성</title>
+</head>
+<body>
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="container w-full max-w-3xl bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center">게시글 작성</h1>
+    <form th:action="@{/post/save}" method="post" th:object="${postDto}" class="space-y-4">
+
+        <!-- 게시판 선택 -->
+        <div class="form-group">
+            <label for="boardId" class="block text-gray-700 font-medium">게시판</label>
+            <select
+                    name="boardId"
+                    id="boardId"
+                    required
+                    class="select select-bordered bg-white w-1/2 text-gray-700">
+                <option value="" disabled selected>게시판을 선택하세요</option>
+                <th:block th:each="board : ${boards}">
+                    <option th:value="${board.boardId}" th:text="${board.boardName}">게시판 이름</option>
+                </th:block>
+            </select>
+        </div>
+
+        <!-- 제목 입력 -->
+        <div class="form-group">
+            <label for="title" class="block text-gray-700 font-medium">제목</label>
+            <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    th:field="*{title}"
+                    placeholder="제목을 입력하세요"
+                    required
+                    class="input input-bordered w-full bg-white" />
+        </div>
+
+        <!-- 소스코드 입력폼 -->
+        <div id="additionalInputContainer" style="display: none;" class="mt-4">
+            <div class="form-group">
+                <label for="sourceCode" class="block text-gray-700 font-medium">소스코드</label>
+                <textarea
+                        id="sourceCode"
+                        name="sourceCode"
+                        th:field="*{sourceCode}"
+                        rows="6"
+                        class="textarea textarea-bordered w-full bg-white"
+                        placeholder="소스코드를 입력해주세요"></textarea>
+            </div>
+        </div>
+
+        <!-- 본문 입력 -->
+        <div class="form-group">
+            <label for="text" class="block text-gray-700 font-medium">본문</label>
+            <textarea
+                    id="text"
+                    name="text"
+                    th:field="*{description}"
+                    rows="6"
+                    required
+                    class="textarea textarea-bordered w-full bg-white"
+                    placeholder="본문을 입력하세요"></textarea>
+        </div>
+
+        <!-- 숨겨진 필드 -->
+        <input type="hidden" th:value="*{author}" name="author" />
+
+        <!-- 제출 버튼 -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary w-full">게시글 작성</button>
+        </div>
+    </form>
+</div>
+</body>
+</body>
+</html>

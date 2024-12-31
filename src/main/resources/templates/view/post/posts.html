@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{view/layout/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+    <style>
+        .content-preview {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 6;
+        }
+        .title-preview {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-line-clamp: 1;
+        }
+    </style>
+    <!-- csrf 토큰관리 -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body class="bg-gray-100 flex flex-col items-center min-h-screen">
+<div layout:fragment="content" class="container w-full max-w-screen-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div th:fragment="postList">
+        <!-- 게시글이 없을 때 메시지 출력 -->
+        <div th:if="${#lists.isEmpty(post)}" class="text-center text-gray-600 mb-6">
+            <p>게시글이 없습니다. 새로운 게시글을 작성해보세요!</p>
+        </div>
+
+        <!-- 게시글 생성 버튼 -->
+        <div class="mb-6 flex justify-end">
+            <form action="/post/saveView">
+                <button class="btn btn-primary">게시글 생성</button>
+            </form>
+        </div>
+
+        <!-- 게시글이 있을 때 목록 출력 -->
+        <div th:unless="${#lists.isEmpty(post)}" th:each="post : ${post}" class="post border-b border-gray-200 pb-6 mb-6">
+            <div class="block p-4 rounded-lg">
+                <!-- 작성자, 작성 시간, 제목, 삼점 버튼 및 본문 내용 -->
+                <div class="flex justify-between items-start">
+                    <!-- 왼쪽: 작성자, 작성 시간 -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span th:text="${post.author}" class="font-medium text-gray-700 text-xs">작성자</span>
+                            <span class="text-gray-500 text-xs">•</span>
+                            <span th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}" class="text-gray-500 text-xs">작성 시간</span>
+                        </div>
+                        <!-- 제목 -->
+                        <a th:href="@{/post/view/{id}(id=${post.postId})}">
+                            <h2 th:text="${post.title}" class="title-preview text-xl font-bold text-gray-800 mb-2">Post Title</h2>
+                        </a>
+                    </div>
+
+                    <!-- 삼점 버튼 -->
+                    <!-- th:if 로 해당게시글의 작성자이거나 관리자인 경우에만 수정/삭제가능한 삼점버튼 출력 -->
+                    <div class="dropdown dropdown-end"
+                         th:if="${(role != null and role == 'ADMIN') or (nickname != null and nickname == post.author)}">
+                        <button tabindex="0" class="btn btn-ghost btn-circle">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
+                                </path>
+                            </svg>
+                        </button>
+                        <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                            <form th:action="@{'/post/updateView/'+${post.postId}}" method="get">
+                                <li>
+                                    <button class="w-full text-left">게시글 수정</button>
+                                </li>
+                            </form>
+                            <form th:action="@{'/post/delete/'+${post.postId}}" method="post">
+                                <li>
+                                    <button class="w-full text-left text-error">게시글 삭제</button>
+                                </li>
+                            </form>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 본문 내용 -->
+                <div class="mb-4">
+                    <div th:if="${post.text != null}">
+                        <pre th:text="${post.text}" class="content-preview font-sans text-gray-700">Code Content</pre>
+                        <p th:text="${post.description}" class="text-gray-600 mt-2">Description Content</p>
+                    </div>
+                    <div th:unless="${post.text != null}">
+                        <p th:text="${post.description}" class="content-preview text-gray-600">Description Content</p>
+                    </div>
+                </div>
+
+                <!-- 좋아요 및 댓글 버튼 -->
+                <div class="flex space-x-4 mt-4">
+                    <button class="btn btn-primary btn-sm">
+                        👍 <span th:text="${post.likeCount}"></span>
+                    </button>
+                    <button class="btn btn-primary btn-sm">
+                        💬 <span th:text="${post.commentCount}"></span>
+                    </button>
+                    <button class="btn btn-primary btn-sm">🔗 공유</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

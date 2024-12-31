@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>프로필 이미지 업로드</title>
+</head>
+<body>
+<form action="/uploadProfileImage" method="post" enctype="multipart/form-data">
+  <label for="file">이미지 파일:</label>
+  <input type="file" id="file" name="file" accept="image/*" required>
+  <button type="submit">업로드</button>
+</form>
+</body>
+</html>
+
+

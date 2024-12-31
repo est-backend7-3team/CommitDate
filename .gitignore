@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/application.yml
+/src/main/resources/application-Dev.yml
+/src/main/resources/application-EC2.yml
+/src/test/resources/application.yml
+/tailwindcss.exe

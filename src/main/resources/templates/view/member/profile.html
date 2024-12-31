@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{view/layout/layout}">
+<head>
+<!--  <meta charset="UTF-8" class="whatisthis">-->
+  <title>내 정보 수정</title>
+  <script defer src="/js/profileValidation.js"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<div layout:fragment="content" class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="container w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
+  <h1 class="text-2xl font-bold mb-6 text-center">내 정보 수정</h1>
+  <form id="profileForm"
+        th:object="${memberProfileRequest}"
+        th:action="@{/member/profile}"
+        method="post"
+        novalidate
+        class="space-y-4">
+
+    <input type="hidden" id="originalNickname" th:value="${originalNickname}" />
+    <input type="hidden" id="originalPhoneNumber" th:value="${originalPhoneNumber}" />
+
+    <!-- 이메일 -->
+    <div class="form-group">
+      <label for="email" class="block text-gray-700 font-medium">이메일</label>
+      <input type="email" id="email" th:field="*{email}" readonly
+             class="input input-bordered w-full bg-gray-100" />
+    </div>
+
+    <!-- 비밀번호 -->
+    <div class="form-group">
+      <label for="password" class="block text-gray-700 font-medium">새 비밀번호</label>
+      <input type="password" id="password" th:field="*{password}" placeholder="새 비밀번호 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="passwordError"></small>
+    </div>
+
+    <!-- 비밀번호 확인 -->
+    <div class="form-group" id="confirmPasswordWrapper" style="display:none;">
+      <label for="confirmPassword" class="block text-gray-700 font-medium">비밀번호 확인</label>
+      <input type="password" id="confirmPassword" placeholder="비밀번호 확인"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="confirmPasswordError"></small>
+    </div>
+
+    <!-- 닉네임 -->
+    <div class="form-group">
+      <label for="nickname" class="block text-gray-700 font-medium">닉네임</label>
+      <input type="text" id="nickname" th:field="*{nickname}" placeholder="닉네임 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="nicknameError"></small>
+    </div>
+
+    <!-- 전화번호 -->
+    <div class="form-group">
+      <label for="phoneNumber" class="block text-gray-700 font-medium">전화번호</label>
+      <input type="text" id="phoneNumber" th:field="*{phoneNumber}" placeholder="전화번호 입력"
+             class="input input-bordered w-full bg-white" />
+      <small class="errorMessage text-red-500 text-sm" id="phoneNumberError"></small>
+    </div>
+
+    <!-- 프로필 이미지 URL -->
+    <div>
+      <label class="block text-gray-700 font-medium mb-2">프로필 이미지 변경</label>
+      <div class="flex items-end">
+        <div class="avatar">
+          <div class="w-24 rounded">
+            <img id = "img" th:src="*{profileImage}" />
+          </div>
+        </div>
+        <a id="profileImageUploadBtn" th:data-user-id="*{memberId}" class="btn btn-primary btn-sm ml-3">사진 수정</a>
+        <a id="toggleDefaultImageBtn"  class="btn btn-primary btn-sm ml-3">삭제</a>
+        <input type="file" id="fileInput" class="hidden" accept="image/*" />
+      </div>
+<!--      <input type="text" id="profileImage" th:field="*{profileImage}" placeholder="프로필 이미지 URL 입력"-->
+<!--             class="input input-bordered w-full bg-white" />-->
+    </div>
+
+    <!-- 한 줄 소개 -->
+    <div class="form-group">
+      <label for="comment" class="block text-gray-700 font-medium">한 줄 소개</label>
+      <input type="text" id="comment" th:field="*{comment}" placeholder="한 줄 소개 입력"
+             class="input input-bordered w-full bg-white" />
+    </div>
+
+    <!-- 자기소개 -->
+    <div class="form-group">
+      <label for="introduce" class="block text-gray-700 font-medium">자기소개</label>
+      <textarea id="introduce" th:field="*{introduce}" rows="5"
+                class="textarea textarea-bordered w-full bg-white h-32"
+                placeholder="자기소개를 입력해주세요"></textarea>
+    </div>
+
+    <!-- 수정하기 버튼 -->
+    <div class="form-group">
+      <button type="submit" id="profileSubmitBtn" class="btn btn-primary w-full btn-disabled" disabled>
+        수정하기
+      </button>
+    </div>
+  </form>
+
+  <form th:action= "@{/member/delete}" method="post" novalidate class="space-y-4 mt-6">
+    <input type="hidden" name = "id" th:value="${memberId}" />
+      <button type="submit" id = "memberDeleteButton" class="btn w-full bg-red-600 border-none">
+        회원 탈퇴
+      </button>
+  </form>
+
+</div>
+</div>
+</body>
+</html>
